@@ -13,7 +13,23 @@ module.exports = {
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    indent: [
+      'error',
+      2
+    ],
+    'vue/no-v-model-argument': 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/component-definition-name-casing': 'off',
+    'linebreak-style': 0,
+    quotes: [
+      'error',
+      'single'
+    ],
+    semi: [
+      'error',
+      'never'
+    ]
   },
   overrides: [
     {

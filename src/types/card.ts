@@ -1,5 +1,9 @@
 
 
+export const powerTypes = new Set(['hero', 'decoy', 'scorch', 'mardroeme', 'fog', 'frost', 'rain', 'clear', 'horn', 'storm'])
+export const weatherTypes = new Set(['fog', 'frost', 'rain', 'clear', 'storm'])
+export const specialAbilities = new Set(['spy','decoy', 'scorch', 'mardroeme', 'fog', 'frost', 'rain', 'clear', 'horn', 'storm'])
+
 export interface CardType {
   id: number;
   name: string;

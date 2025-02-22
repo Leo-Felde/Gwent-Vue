@@ -3,21 +3,27 @@
 export interface CardType {
   id: number;
   name: string;
-  deck: string;
+  faction: string;
   row: string;
-  strength: string;
+  strength: number | null;
   ability: string;
   filename: string;
   count: number;
 }
 
-export const card_dict: CardType[] = [
+export interface PremadeDeckType {
+  faction: string;
+  leader: number;
+  cards: number[][];
+}
+
+export const cardDictionary: CardType[] = [
   {
     name: 'Mysterious Elf',
     id: 1,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '0',
+    strength: 0,
     ability: 'hero spy',
     filename: 'mysterious_elf',
     count: 1
@@ -25,9 +31,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Decoy',
     id: 2,
-    deck: 'special',
+    faction: 'special',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'decoy',
     filename: 'decoy',
     count: 3
@@ -35,9 +41,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Biting Frost',
     id: 3,
-    deck: 'weather',
+    faction: 'weather',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'frost',
     filename: 'frost',
     count: 3
@@ -45,9 +51,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cirilla Fiona Elen Riannon',
     id: 4,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '15',
+    strength: 15,
     ability: 'hero',
     filename: 'ciri',
     count: 1
@@ -55,9 +61,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clear Weather',
     id: 5,
-    deck: 'weather',
+    faction: 'weather',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'clear',
     filename: 'clear',
     count: 2
@@ -65,9 +71,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Commander\\\'s Horn',
     id: 6,
-    deck: 'special',
+    faction: 'special',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'horn',
     filename: 'horn',
     count: 3
@@ -75,9 +81,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dandelion',
     id: 7,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'horn',
     filename: 'dandelion',
     count: 1
@@ -85,9 +91,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emiel Regis Rohellec Terzieff',
     id: 8,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'emiel',
     count: 1
@@ -95,9 +101,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Geralt of Rivia',
     id: 9,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '15',
+    strength: 15,
     ability: 'hero',
     filename: 'geralt',
     count: 1
@@ -105,9 +111,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Impenetrable Fog',
     id: 10,
-    deck: 'weather',
+    faction: 'weather',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'fog',
     filename: 'fog',
     count: 3
@@ -115,9 +121,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Scorch',
     id: 11,
-    deck: 'special',
+    faction: 'special',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'scorch',
     filename: 'scorch',
     count: 3
@@ -125,9 +131,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Torrential Rain',
     id: 12,
-    deck: 'weather',
+    faction: 'weather',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'rain',
     filename: 'rain',
     count: 2
@@ -135,9 +141,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Triss Merigold',
     id: 13,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '7',
+    strength: 7,
     ability: 'hero',
     filename: 'triss',
     count: 1
@@ -145,9 +151,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vesemir',
     id: 14,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'vesemir',
     count: 1
@@ -155,9 +161,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Villentretenmerth',
     id: 15,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '7',
+    strength: 7,
     ability: 'scorch_c',
     filename: 'villen',
     count: 1
@@ -165,9 +171,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Yennefer of Vengerberg',
     id: 16,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'ranged',
-    strength: '7',
+    strength: 7,
     ability: 'hero medic',
     filename: 'yennefer',
     count: 1
@@ -175,9 +181,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Zoltan Chivay',
     id: 17,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'zoltan',
     count: 1
@@ -185,9 +191,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Olgierd von Everec',
     id: 18,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: 'morale',
     filename: 'olgierd',
     count: 1
@@ -195,9 +201,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Gaunter O\\\'Dimm',
     id: 19,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'siege',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'gaunter_odimm',
     count: 1
@@ -205,9 +211,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Gaunter O\\\'Dimm - Darkness',
     id: 20,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'gaunter_odimm_darkness',
     count: 3
@@ -215,9 +221,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cow',
     id: 21,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'ranged',
-    strength: '0',
+    strength: 0,
     ability: 'avenger',
     filename: 'cow',
     count: 1
@@ -225,9 +231,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Bovine Defense Force',
     id: 22,
-    deck: 'neutral',
+    faction: 'neutral',
     row: 'close',
-    strength: '8',
+    strength: 8,
     ability: '',
     filename: 'chort',
     count: 0
@@ -235,9 +241,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foltest - King of Temeria',
     id: 23,
-    deck: 'realms',
+    faction: 'realms',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'foltest_king',
     filename: 'foltest_silver',
     count: 1
@@ -245,9 +251,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foltest - Lord Commander of the North',
     id: 24,
-    deck: 'realms',
+    faction: 'realms',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'foltest_lord',
     filename: 'foltest_gold',
     count: 1
@@ -255,9 +261,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foltest - The Siegemaster',
     id: 25,
-    deck: 'realms',
+    faction: 'realms',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'foltest_siegemaster',
     filename: 'foltest_copper',
     count: 1
@@ -265,9 +271,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foltest - The Steel-Forged',
     id: 26,
-    deck: 'realms',
+    faction: 'realms',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'foltest_steelforged',
     filename: 'foltest_bronze',
     count: 1
@@ -275,9 +281,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foltest - Son of Medell',
     id: 27,
-    deck: 'realms',
+    faction: 'realms',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'foltest_son',
     filename: 'foltest_son_of_medell',
     count: 1
@@ -285,9 +291,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ballista',
     id: 28,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'ballista',
     count: 1
@@ -295,9 +301,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Blue Stripes Commando',
     id: 29,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'bond',
     filename: 'blue_stripes',
     count: 3
@@ -305,9 +311,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Catapult',
     id: 30,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '8',
+    strength: 8,
     ability: 'bond',
     filename: 'catapult_1',
     count: 2
@@ -315,9 +321,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Crinfrid Reavers Dragon Hunter',
     id: 31,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '5',
+    strength: 5,
     ability: 'bond',
     filename: 'crinfrid',
     count: 3
@@ -325,9 +331,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dethmold',
     id: 32,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'dethmold',
     count: 1
@@ -335,9 +341,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dun Banner Medic',
     id: 33,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '5',
+    strength: 5,
     ability: 'medic',
     filename: 'banner_nurse',
     count: 1
@@ -345,9 +351,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Esterad Thyssen',
     id: 34,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'esterad',
     count: 1
@@ -355,9 +361,9 @@ export const card_dict: CardType[] = [
   {
     name: 'John Natalis',
     id: 35,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'natalis',
     count: 1
@@ -365,9 +371,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Kaedweni Siege Expert',
     id: 36,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '1',
+    strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege',
     count: 1
@@ -375,9 +381,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Kaedweni Siege Expert',
     id: 37,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '1',
+    strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege_1',
     count: 1
@@ -385,9 +391,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Kaedweni Siege Expert',
     id: 38,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '1',
+    strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege_2',
     count: 1
@@ -395,9 +401,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Keira Metz',
     id: 39,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'keira',
     count: 1
@@ -405,9 +411,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Philippa Eilhart',
     id: 40,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'philippa',
     count: 1
@@ -415,9 +421,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Poor Fucking Infantry',
     id: 41,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: 'bond',
     filename: 'poor_infantry',
     count: 4
@@ -425,9 +431,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Prince Stennis',
     id: 42,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'spy',
     filename: 'stennis',
     count: 1
@@ -435,9 +441,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Redanian Foot Soldier',
     id: 43,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: '',
     filename: 'redania',
     count: 1
@@ -445,9 +451,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Redanian Foot Soldier',
     id: 44,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: '',
     filename: 'redania_1',
     count: 1
@@ -455,9 +461,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Sheldon Skaggs',
     id: 45,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'sheldon',
     count: 1
@@ -465,9 +471,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Siege Tower',
     id: 46,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'siege_tower',
     count: 1
@@ -475,9 +481,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Siegfried of Denesle',
     id: 47,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'siegfried',
     count: 1
@@ -485,9 +491,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Sigismund Dijkstra',
     id: 48,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'spy',
     filename: 'dijkstra',
     count: 1
@@ -495,9 +501,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Síle de Tansarville',
     id: 49,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'sheala',
     count: 1
@@ -505,9 +511,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Thaler',
     id: 50,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '1',
+    strength: 1,
     ability: 'spy',
     filename: 'thaler',
     count: 1
@@ -515,9 +521,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Sabrina Glevissig',
     id: 51,
-    deck: 'realms',
+    faction: 'realms',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'sabrina',
     count: 1
@@ -525,9 +531,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vernon Roche',
     id: 52,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'vernon',
     count: 1
@@ -535,9 +541,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ves',
     id: 53,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'ves',
     count: 1
@@ -545,9 +551,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Yarpen Zigrin',
     id: 54,
-    deck: 'realms',
+    faction: 'realms',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'yarpen',
     count: 1
@@ -555,9 +561,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Trebuchet',
     id: 55,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'trebuchet',
     count: 1
@@ -565,9 +571,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Trebuchet',
     id: 56,
-    deck: 'realms',
+    faction: 'realms',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'trebuchet_1',
     count: 1
@@ -575,9 +581,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emhyr var Emreis - His Imperial Majesty',
     id: 57,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'emhyr_imperial',
     filename: 'emhyr_silver',
     count: 1
@@ -585,9 +591,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emhyr var Emreis - Emperor of Nilfgaard',
     id: 58,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'emhyr_emperor',
     filename: 'emhyr_copper',
     count: 1
@@ -595,9 +601,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emhyr var Emreis - the White Flame',
     id: 59,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'emhyr_whiteflame',
     filename: 'emhyr_bronze',
     count: 1
@@ -605,9 +611,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emhyr var Emreis - The Relentless',
     id: 60,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'emhyr_relentless',
     filename: 'emhyr_gold',
     count: 1
@@ -615,9 +621,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Emhyr var Emreis - Invader of the North',
     id: 61,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'emhyr_invader',
     filename: 'emhyr_invader_of_the_north',
     count: 1
@@ -625,9 +631,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Albrich',
     id: 62,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'albrich',
     count: 1
@@ -635,9 +641,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Assire var Anahid',
     id: 63,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'assire',
     count: 1
@@ -645,9 +651,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Black Infantry Archer',
     id: 64,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: '',
     filename: 'black_archer',
     count: 1
@@ -655,9 +661,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Black Infantry Archer',
     id: 65,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: '',
     filename: 'black_archer_1',
     count: 1
@@ -665,9 +671,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cahir Mawr Dyffryn aep Ceallach',
     id: 66,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'cahir',
     count: 1
@@ -675,9 +681,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cynthia',
     id: 67,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'cynthia',
     count: 1
@@ -685,9 +691,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Etolian Auxiliary Archers',
     id: 68,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '1',
+    strength: 1,
     ability: 'medic',
     filename: 'archer_support',
     count: 1
@@ -695,9 +701,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Etolian Auxiliary Archers',
     id: 69,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '1',
+    strength: 1,
     ability: 'medic',
     filename: 'archer_support_1',
     count: 1
@@ -705,9 +711,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Fringilla Vigo',
     id: 70,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'fringilla',
     count: 1
@@ -715,9 +721,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Heavy Zerrikanian Fire Scorpion',
     id: 71,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '10',
+    strength: 10,
     ability: '',
     filename: 'heavy_zerri',
     count: 1
@@ -725,9 +731,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Impera Brigade Guard',
     id: 72,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '3',
+    strength: 3,
     ability: 'bond',
     filename: 'imperal_brigade',
     count: 4
@@ -735,9 +741,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Letho of Gulet',
     id: 73,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'letho',
     count: 1
@@ -745,9 +751,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Menno Coehoorn',
     id: 74,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero medic',
     filename: 'menno',
     count: 1
@@ -755,9 +761,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Morteisen',
     id: 75,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '3',
+    strength: 3,
     ability: '',
     filename: 'morteisen',
     count: 1
@@ -765,9 +771,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Morvran Voorhis',
     id: 76,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'moorvran',
     count: 1
@@ -775,9 +781,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Nausicaa Cavalry Rider',
     id: 77,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'bond',
     filename: 'nauzicaa_2',
     count: 3
@@ -785,9 +791,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Puttkammer',
     id: 78,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '3',
+    strength: 3,
     ability: '',
     filename: 'puttkammer',
     count: 1
@@ -795,9 +801,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Rainfarn',
     id: 79,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'rainfarn',
     count: 1
@@ -805,9 +811,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Renuald aep Matsen',
     id: 80,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'renuald',
     count: 1
@@ -815,9 +821,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Rotten Mangonel',
     id: 81,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '3',
+    strength: 3,
     ability: '',
     filename: 'rotten',
     count: 1
@@ -825,9 +831,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Shilard Fitz-Oesterlen',
     id: 82,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '7',
+    strength: 7,
     ability: 'spy',
     filename: 'shilard',
     count: 1
@@ -835,9 +841,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Siege Engineer',
     id: 83,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'siege_engineer',
     count: 1
@@ -845,9 +851,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Siege Technician',
     id: 84,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '0',
+    strength: 0,
     ability: 'medic',
     filename: 'siege_support',
     count: 1
@@ -855,9 +861,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Stefan Skellen',
     id: 85,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '9',
+    strength: 9,
     ability: 'spy',
     filename: 'stefan',
     count: 1
@@ -865,9 +871,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Sweers',
     id: 86,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'sweers',
     count: 1
@@ -875,9 +881,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Tibor Eggebracht',
     id: 87,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'tibor',
     count: 1
@@ -885,9 +891,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vanhemar',
     id: 88,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'vanhemar',
     count: 1
@@ -895,9 +901,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vattier de Rideaux',
     id: 89,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'spy',
     filename: 'vattier',
     count: 1
@@ -905,9 +911,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vreemde',
     id: 90,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'vreemde',
     count: 1
@@ -915,9 +921,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Young Emissary',
     id: 91,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'bond',
     filename: 'young_emissary',
     count: 1
@@ -925,9 +931,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Young Emissary',
     id: 92,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'bond',
     filename: 'young_emissary_1',
     count: 1
@@ -935,9 +941,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Zerrikanian Fire Scorpion',
     id: 93,
-    deck: 'nilfgaard',
+    faction: 'nilfgaard',
     row: 'siege',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'zerri',
     count: 1
@@ -945,9 +951,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eredin - Commander of the Red Riders',
     id: 94,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'eredin_commander',
     filename: 'eredin_silver',
     count: 1
@@ -955,9 +961,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eredin - Bringer of Death',
     id: 95,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'eredin_bringer_of_death',
     filename: 'eredin_bronze',
     count: 1
@@ -965,9 +971,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eredin - Destroyer of Worlds',
     id: 96,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'eredin_destroyer',
     filename: 'eredin_gold',
     count: 1
@@ -975,9 +981,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eredin - King of the Wild Hunt',
     id: 97,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'eredin_king',
     filename: 'eredin_copper',
     count: 1
@@ -985,9 +991,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eredin Bréacc Glas - The Treacherous',
     id: 98,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'eredin_treacherous',
     filename: 'eredin_the_treacherous',
     count: 1
@@ -995,9 +1001,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Arachas ',
     id: 99,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'arachas',
     count: 1
@@ -1005,9 +1011,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Arachas ',
     id: 100,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'arachas_1',
     count: 1
@@ -1015,9 +1021,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Arachas ',
     id: 101,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'arachas_2',
     count: 1
@@ -1025,9 +1031,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Arachas- Behemoth',
     id: 102,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: 'muster',
     filename: 'arachas_behemoth',
     count: 1
@@ -1035,9 +1041,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Botchling',
     id: 103,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'poroniec',
     count: 1
@@ -1045,9 +1051,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Celaeno Harpy',
     id: 104,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'agile',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'celaeno_harpy',
     count: 1
@@ -1055,9 +1061,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cockatrice',
     id: 105,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'cockatrice',
     count: 1
@@ -1065,9 +1071,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Crone - Brewess',
     id: 106,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: 'muster',
     filename: 'witch_velen',
     count: 1
@@ -1075,9 +1081,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Crone - Weavess',
     id: 107,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: 'muster',
     filename: 'witch_velen_1',
     count: 1
@@ -1085,9 +1091,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Crone - Whispess',
     id: 108,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: 'muster',
     filename: 'witch_velen_2',
     count: 1
@@ -1095,9 +1101,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Draug',
     id: 109,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'draug',
     count: 1
@@ -1105,9 +1111,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Earth Elemental',
     id: 110,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'earth_elemental',
     count: 1
@@ -1115,9 +1121,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Endrega',
     id: 111,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'endrega',
     count: 1
@@ -1125,9 +1131,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Fiend',
     id: 112,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'fiend',
     count: 1
@@ -1135,9 +1141,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Fire Elemental',
     id: 113,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'fire_elemental',
     count: 1
@@ -1145,9 +1151,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Foglet',
     id: 114,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'fogling',
     count: 1
@@ -1155,9 +1161,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Forktail',
     id: 115,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'forktail',
     count: 1
@@ -1165,9 +1171,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Frightener',
     id: 116,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'frightener',
     count: 1
@@ -1175,9 +1181,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Gargoyle',
     id: 117,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'gargoyle',
     count: 1
@@ -1185,9 +1191,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ghoul',
     id: 118,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: 'muster',
     filename: 'ghoul',
     count: 1
@@ -1195,9 +1201,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ghoul',
     id: 119,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: 'muster',
     filename: 'ghoul_1',
     count: 1
@@ -1205,9 +1211,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ghoul',
     id: 120,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '1',
+    strength: 1,
     ability: 'muster',
     filename: 'ghoul_2',
     count: 1
@@ -1215,9 +1221,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Grave Hag',
     id: 121,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'gravehag',
     count: 1
@@ -1225,9 +1231,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Griffin',
     id: 122,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'gryffin',
     count: 1
@@ -1235,9 +1241,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Harpy',
     id: 123,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'agile',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'harpy',
     count: 1
@@ -1245,9 +1251,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ice Giant',
     id: 124,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'siege',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'frost_giant',
     count: 1
@@ -1255,9 +1261,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Imlerith',
     id: 125,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'imlerith',
     count: 1
@@ -1265,9 +1271,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Kayran',
     id: 126,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'agile',
-    strength: '8',
+    strength: 8,
     ability: 'hero morale',
     filename: 'kayran',
     count: 1
@@ -1275,9 +1281,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Leshen',
     id: 127,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'leshen',
     count: 1
@@ -1285,9 +1291,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Nekker',
     id: 128,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'nekker',
     count: 1
@@ -1295,9 +1301,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Nekker',
     id: 129,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'nekker_1',
     count: 1
@@ -1305,9 +1311,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Nekker',
     id: 130,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'nekker_2',
     count: 1
@@ -1315,9 +1321,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Plague Maiden',
     id: 131,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mighty_maiden',
     count: 1
@@ -1325,9 +1331,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vampire - Bruxa',
     id: 132,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'bruxa',
     count: 1
@@ -1335,9 +1341,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vampire - Ekimmara',
     id: 133,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'ekkima',
     count: 1
@@ -1345,9 +1351,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vampire - Fleder',
     id: 134,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'fleder',
     count: 1
@@ -1355,9 +1361,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vampire - Garkain',
     id: 135,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'garkain',
     count: 1
@@ -1365,9 +1371,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vampire - Katakan',
     id: 136,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'muster',
     filename: 'katakan',
     count: 1
@@ -1375,9 +1381,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Werewolf',
     id: 137,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'werewolf',
     count: 1
@@ -1385,9 +1391,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Wyvern',
     id: 138,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'wyvern',
     count: 1
@@ -1395,9 +1401,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Toad',
     id: 139,
-    deck: 'monsters',
+    faction: 'monsters',
     row: 'ranged',
-    strength: '7',
+    strength: 7,
     ability: 'scorch_r',
     filename: 'toad',
     count: 1
@@ -1405,9 +1411,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Francesca Findabair - Queen of Dol Blathanna',
     id: 140,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'francesca_queen',
     filename: 'francesca_silver',
     count: 1
@@ -1415,9 +1421,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Francesca Findabair - the Beautiful',
     id: 141,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'francesca_beautiful',
     filename: 'francesca_gold',
     count: 1
@@ -1425,9 +1431,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Francesca Findabair - Daisy of the Valley',
     id: 142,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'francesca_daisy',
     filename: 'francesca_copper',
     count: 1
@@ -1435,9 +1441,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Francesca Findabair - Pureblood Elf',
     id: 143,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'francesca_pureblood',
     filename: 'francesca_bronze',
     count: 1
@@ -1445,9 +1451,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Francesca Findabair - Hope of the Aen Seidhe',
     id: 144,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'francesca_hope',
     filename: 'francesca_hope_of_the_aen_seidhe',
     count: 1
@@ -1455,9 +1461,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ciaran aep Easnillien',
     id: 145,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '3',
+    strength: 3,
     ability: '',
     filename: 'ciaran',
     count: 1
@@ -1465,9 +1471,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Barclay Els',
     id: 146,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'barclay',
     count: 1
@@ -1475,9 +1481,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dennis Cranmer',
     id: 147,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'dennis',
     count: 1
@@ -1485,9 +1491,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dol Blathanna Archer',
     id: 148,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'dol_archer',
     count: 1
@@ -1495,9 +1501,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dol Blathanna Scout',
     id: 149,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'dol_infantry',
     count: 1
@@ -1505,9 +1511,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dol Blathanna Scout',
     id: 150,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'dol_infantry_1',
     count: 1
@@ -1515,9 +1521,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dol Blathanna Scout',
     id: 151,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'dol_infantry_2',
     count: 1
@@ -1525,9 +1531,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dwarven Skirmisher',
     id: 152,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '3',
+    strength: 3,
     ability: 'muster',
     filename: 'dwarf',
     count: 1
@@ -1535,9 +1541,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dwarven Skirmisher',
     id: 153,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '3',
+    strength: 3,
     ability: 'muster',
     filename: 'dwarf_1',
     count: 1
@@ -1545,9 +1551,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Dwarven Skirmisher',
     id: 154,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '3',
+    strength: 3,
     ability: 'muster',
     filename: 'dwarf_2',
     count: 1
@@ -1555,9 +1561,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Eithné',
     id: 155,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'eithne',
     count: 1
@@ -1565,9 +1571,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Elven Skirmisher',
     id: 156,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher',
     count: 1
@@ -1575,9 +1581,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Elven Skirmisher',
     id: 157,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher_1',
     count: 1
@@ -1585,9 +1591,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Elven Skirmisher',
     id: 158,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher_2',
     count: 1
@@ -1595,9 +1601,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Filavandrel aen Fidhail',
     id: 159,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'filavandrel',
     count: 1
@@ -1605,9 +1611,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Healer',
     id: 160,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '0',
+    strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse',
     count: 1
@@ -1615,9 +1621,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Healer',
     id: 161,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '0',
+    strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse_1',
     count: 1
@@ -1625,9 +1631,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Healer',
     id: 162,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '0',
+    strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse_2',
     count: 1
@@ -1635,9 +1641,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Smuggler',
     id: 163,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'muster',
     filename: 'havekar_support',
     count: 1
@@ -1645,9 +1651,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Smuggler',
     id: 164,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'muster',
     filename: 'havekar_support_1',
     count: 1
@@ -1655,9 +1661,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Havekar Smuggler',
     id: 165,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: 'muster',
     filename: 'havekar_support_2',
     count: 1
@@ -1665,9 +1671,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ida Emean aep Sivney',
     id: 166,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'ida',
     count: 1
@@ -1675,9 +1681,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Iorveth',
     id: 167,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'iorveth',
     count: 1
@@ -1685,9 +1691,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Isengrim Faoiltiarna',
     id: 168,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero morale',
     filename: 'isengrim',
     count: 1
@@ -1695,9 +1701,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mahakaman Defender',
     id: 169,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mahakam',
     count: 1
@@ -1705,9 +1711,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mahakaman Defender',
     id: 170,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mahakam_1',
     count: 1
@@ -1715,9 +1721,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mahakaman Defender',
     id: 171,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mahakam_2',
     count: 1
@@ -1725,9 +1731,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mahakaman Defender',
     id: 172,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mahakam_3',
     count: 1
@@ -1735,9 +1741,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mahakaman Defender',
     id: 173,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'close',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'mahakam_4',
     count: 1
@@ -1745,9 +1751,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Milva',
     id: 174,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'morale',
     filename: 'milva',
     count: 1
@@ -1755,9 +1761,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Riordain',
     id: 175,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '1',
+    strength: 1,
     ability: '',
     filename: 'riordain',
     count: 1
@@ -1765,9 +1771,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Saesenthessis',
     id: 176,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'saskia',
     count: 1
@@ -1775,9 +1781,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Toruviel',
     id: 177,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: '',
     filename: 'toruviel',
     count: 1
@@ -1785,9 +1791,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vrihedd Brigade Recruit',
     id: 178,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'vrihedd_cadet',
     count: 1
@@ -1795,9 +1801,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vrihedd Brigade Veteran',
     id: 179,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'vrihedd_brigade',
     count: 1
@@ -1805,9 +1811,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Vrihedd Brigade Veteran',
     id: 180,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '5',
+    strength: 5,
     ability: '',
     filename: 'vrihedd_brigade_1',
     count: 1
@@ -1815,9 +1821,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Yaevinn',
     id: 181,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'agile',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'yaevinn',
     count: 1
@@ -1825,9 +1831,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Berserker',
     id: 182,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'berserker',
     filename: 'berserker',
     count: 1
@@ -1835,9 +1841,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Birna Bran',
     id: 183,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '2',
+    strength: 2,
     ability: 'medic',
     filename: 'birna',
     count: 1
@@ -1845,9 +1851,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Blueboy Lugos',
     id: 184,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'blueboy',
     count: 1
@@ -1855,9 +1861,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cerys',
     id: 185,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '10',
+    strength: 10,
     ability: 'hero muster',
     filename: 'cerys',
     count: 1
@@ -1865,9 +1871,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clan Brokva Archer',
     id: 186,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'brokva_archer',
     count: 2
@@ -1875,9 +1881,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clan Dimun Pirate',
     id: 187,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '6',
+    strength: 6,
     ability: 'scorch',
     filename: 'dimun_pirate',
     count: 1
@@ -1885,9 +1891,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
     id: 188,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'bond',
     filename: 'shield_maiden',
     count: 1
@@ -1895,9 +1901,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
     id: 189,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'bond',
     filename: 'shield_maiden_1',
     count: 1
@@ -1905,9 +1911,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
     id: 190,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: 'bond',
     filename: 'shield_maiden_2',
     count: 1
@@ -1915,9 +1921,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clan Heymaey Skald',
     id: 191,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'heymaey',
     count: 1
@@ -1925,9 +1931,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clan Tordarroch Armorsmith',
     id: 192,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'tordarroch',
     count: 1
@@ -1935,9 +1941,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Clan an Craite Warrior',
     id: 193,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: 'bond',
     filename: 'craite_warrior',
     count: 3
@@ -1945,9 +1951,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Donar an Hindar',
     id: 194,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'donar',
     count: 1
@@ -1955,9 +1961,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Draig Bon-Dhu',
     id: 195,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'siege',
-    strength: '2',
+    strength: 2,
     ability: 'horn',
     filename: 'draig',
     count: 1
@@ -1965,9 +1971,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Ermion',
     id: 196,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '8',
+    strength: 8,
     ability: 'hero mardroeme',
     filename: 'ermion',
     count: 1
@@ -1975,9 +1981,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Hemdall',
     id: 197,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '11',
+    strength: 11,
     ability: 'hero',
     filename: 'hemdall',
     count: 0
@@ -1985,9 +1991,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Hjalmar',
     id: 198,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '10',
+    strength: 10,
     ability: 'hero',
     filename: 'hjalmar',
     count: 1
@@ -1995,9 +2001,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Holger Blackhand',
     id: 199,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'siege',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'holger',
     count: 1
@@ -2005,9 +2011,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Kambi',
     id: 200,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '0',
+    strength: 0,
     ability: 'avenger_kambi',
     filename: 'kambi',
     count: 1
@@ -2015,9 +2021,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Light Longship',
     id: 201,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '4',
+    strength: 4,
     ability: 'muster',
     filename: 'light_longship',
     count: 3
@@ -2025,9 +2031,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Madman Lugos',
     id: 202,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '6',
+    strength: 6,
     ability: '',
     filename: 'madmad_lugos',
     count: 1
@@ -2035,9 +2041,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Mardroeme',
     id: 203,
-    deck: 'special',
+    faction: 'special',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'mardroeme',
     filename: 'mardroeme',
     count: 3
@@ -2045,9 +2051,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Olaf',
     id: 204,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'agile',
-    strength: '12',
+    strength: 12,
     ability: 'morale',
     filename: 'olaf',
     count: 1
@@ -2055,9 +2061,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Skellige Storm',
     id: 205,
-    deck: 'weather',
+    faction: 'weather',
     row: '',
-    strength: '',
+    strength: null,
     ability: 'rain fog',
     filename: 'storm',
     count: 3
@@ -2065,9 +2071,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Svanrige',
     id: 206,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'svanrige',
     count: 1
@@ -2075,9 +2081,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Transformed Vildkaarl',
     id: 207,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '14',
+    strength: 14,
     ability: 'morale',
     filename: 'vildkaarl',
     count: 0
@@ -2085,9 +2091,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Transformed Young Vildkaarl',
     id: 208,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '8',
+    strength: 8,
     ability: 'bond',
     filename: 'young_vildkaarl',
     count: 0
@@ -2095,9 +2101,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Udalryk',
     id: 209,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'close',
-    strength: '4',
+    strength: 4,
     ability: '',
     filename: 'udalryk',
     count: 1
@@ -2105,9 +2111,9 @@ export const card_dict: CardType[] = [
   {
     name: 'War Longship',
     id: 210,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'siege',
-    strength: '6',
+    strength: 6,
     ability: 'bond',
     filename: 'war_longship',
     count: 2
@@ -2115,9 +2121,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Young Berserker',
     id: 211,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'ranged',
-    strength: '2',
+    strength: 2,
     ability: 'berserker',
     filename: 'young_berserker',
     count: 3
@@ -2125,9 +2131,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Crach an Craite',
     id: 212,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'crach_an_craite',
     filename: 'crach_an_craite',
     count: 0
@@ -2135,9 +2141,9 @@ export const card_dict: CardType[] = [
   {
     name: 'King Bran',
     id: 213,
-    deck: 'skellige',
+    faction: 'skellige',
     row: 'leader',
-    strength: '',
+    strength: null,
     ability: 'king_bran',
     filename: 'king_bran',
     count: 0
@@ -2145,9 +2151,9 @@ export const card_dict: CardType[] = [
   {
     name: 'Schirru',
     id: 214,
-    deck: 'scoiatael',
+    faction: 'scoiatael',
     row: 'siege',
-    strength: '8',
+    strength: 8,
     ability: 'scorch_s',
     filename: 'schirru',
     count: 1

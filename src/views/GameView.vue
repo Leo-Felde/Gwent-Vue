@@ -1,195 +1,96 @@
 <template>
   <div id="game">
+    <!-- Opponent's Hand -->
     <div id="opponent-hand" class="hand">
       <Card
-        v-for="card in oponentHand"
+        v-for="(card, index) in playerOpponent.hand"
         :key="card.id"
         :card="card"
-        :class="{ selected: selectedCard?.id === card.id }"
-        @click="selectCard(card)"
+        :class="{ selected: selectedCard?.card.id === card.id }"
+        @click="selectCard(card, index)"
       />
     </div>
-    <button @click="simulateOponent"> Simulate Oponent </button>
+    <button @click="simulateOponent"> Simulate Opponent </button>
 
-
+    <!-- Opponent's Board -->
     <div id="opponent-board" class="board">
       <div class="rows">
-        <div
-          v-for="row in ['close', 'ranged', 'siege']"
-          :key="row"
+        <div v-for="row in [...rows].reverse()" :key="row"
           class="row row-opponent"
-          :class="`row-${row}`"
-        >
-          <h4>{{ row }}</h4>
+          :class="['row-' + row, { highlight: isRowHighlighted(row, 'opponent') }]"
+          @click="playCard(selectedCard?.card, row)"
+          >
           <div class="cards">
-            <Card v-for="card in opponentBoard[row]" :key="card.id" :card="card" />
+            <Card v-for="card in boardRows.opponent[row]" :key="card.id" :card="card" />
           </div>
         </div>
       </div>
     </div>
 
-
+    <!-- Player's Board -->
     <div id="player-board" class="board">
       <div class="rows">
-        <div
-          v-for="row in ['close', 'ranged', 'siege']"
-          :key="row"
+        <div v-for="row in rows" :key="row"
           class="row"
-          @click="playCard(selectedCard, row)"
-          :class="['row-' + row, { highlight: selectedCard && selectedCard.row.includes(row) }]"
-        >
-          <h4>{{ row }}</h4>
+          @click="playCard(selectedCard?.card, row)"
+          :class="['row-' + row, { highlight: isRowHighlighted(row, 'player') }]">
           <div class="cards">
-            <Card v-for="card in playerBoard[row]" :key="card.id" :card="card" />
+            <Card v-for="card in boardRows.player[row]" :key="card.id" :card="card" />
           </div>
         </div>
       </div>
     </div>
-    <!-- Your Hand -->
+
+    <!-- Player's Hand -->
     <div id="player-hand" class="hand">
       <Card
-        v-for="card in playerHand"
-        :key="card.id"
+        v-for="(card, index) in playerMe.hand"
+        :key="index"
         :card="card"
-        :class="{ selected: selectedCard?.id === card.id }"
-        @click="selectCard(card)"
+        :class="{ selected: selectedCard?.card.id === card.id && selectedCard?.index === index }"
+        @click="selectCard(card, index)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
-import { CardType } from '@/types/card'
+import { computed, onMounted } from 'vue'
 
-import gsap from 'gsap'
+import { usePlayerStore } from '@/store/usePlayerStore'
+import { useGame } from '@/composables/useGame'
+import { RowType } from '@/types/game'
+
 import Card from '../components/Card.vue'
 
-const playerHand = ref<CardType[]>([
-  {
-    name: 'Blue Stripes Commando',
-    id: 29,
-    deck: 'realms',
-    row: 'close',
-    strength: '4',
-    ability: 'bond',
-    filename: 'blue_stripes',
-    count: 3
-  },
-  {
-    name: 'Yennefer of Vengerberg',
-    id: 16,
-    deck: 'neutral',
-    row: 'ranged',
-    strength: '7',
-    ability: 'hero medic',
-    filename: 'yennefer',
-    count: 1
-  },
-  {
-    name: 'Ballista',
-    id: 28,
-    deck: 'realms',
-    row: 'siege',
-    strength: '6',
-    ability: '',
-    filename: 'ballista',
-    count: 1
-  }
-])
+const playerStore = usePlayerStore()
+const playerMe = playerStore.players.player
+const playerOpponent = playerStore.players.opponent
 
-const oponentHand = ref<CardType[]>([
-  {
-    name: 'Blue Stripes Commando',
-    id: 29,
-    deck: 'realms',
-    row: 'close',
-    strength: '4',
-    ability: 'bond',
-    filename: 'blue_stripes',
-    count: 3
-  },
-  {
-    name: 'Yennefer of Vengerberg',
-    id: 16,
-    deck: 'neutral',
-    row: 'ranged',
-    strength: '7',
-    ability: 'hero medic',
-    filename: 'yennefer',
-    count: 1
-  },
-  {
-    name: 'Ballista',
-    id: 28,
-    deck: 'realms',
-    row: 'siege',
-    strength: '6',
-    ability: '',
-    filename: 'ballista',
-    count: 1
-  }
-])
+const {
+  initalize, boardRows,
+  selectedCard, selectCard,
+  playCard, simulateOponent
+} = useGame()
 
-// Player's board setup
-const playerBoard = ref<Record<string, CardType[]>>({
-  close: [],
-  ranged: [],
-  siege: []
+const rows = computed(() => ['close', 'ranged', 'siege'] as RowType[])
+
+onMounted(() => {
+  initalize()
 })
 
-// Opponent's board setup
-const opponentBoard = ref<Record<string, CardType[]>>({
-  close: [],
-  ranged: [],
-  siege: []
-})
-
-const selectedCard = ref<CardType | null>(null)
-
-function selectCard(card: CardType) {
-  selectedCard.value = card
-}
-
-// Function to play a card
-function playCard(card: CardType, row: string, player: 'player' | 'opponent' = 'player') {
-  if (!card|| !row || !card.row.includes(row)) return
-  const playerIsMe = player === 'player'
-
-  const board = playerIsMe ? playerBoard.value : opponentBoard.value
-  const handCardElement = document.getElementById(`${player}-hand`) as HTMLElement
-  const startBox = handCardElement?.getBoundingClientRect()
-  
-  if (selectedCard.value)
-    selectedCard.value = null
-
-  nextTick(() => {
-    board[row].push(card)
-    if (playerIsMe)
-      playerHand.value = playerHand.value.filter(c => c.id !== card.id)
-    else
-      oponentHand.value = oponentHand.value.filter(c => c.id !== card.id)
-
-    nextTick(() => {
-      const rowElement = document.querySelector(`.row-${row}${playerIsMe ? ':not(.row-opponent)' : '.row-opponent'}`) as HTMLElement
-      const boardCardElement = Array.from(rowElement.querySelectorAll('.cards > *')).pop() as HTMLElement | null
-      const endBox = boardCardElement?.getBoundingClientRect()
-      if (startBox && endBox) {
-        gsap.fromTo(
-          boardCardElement,
-          { x: startBox.x - endBox.x, y: startBox.y - endBox.y, opacity: 0 },
-          { x: 0, y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }
-        )
-      }
-    })
-  })
-}
-
-function simulateOponent() {
-  const card = oponentHand.value[0]
-  const row = card?.row
-
-  playCard(card, row, 'opponent')
+function isRowHighlighted(row: RowType, player: 'player' | 'opponent') {
+  if (!selectedCard.value) return false
+  const { card } = selectedCard.value
+  if (player === 'opponent' && card.ability.includes('spy') && card.row.includes(row)) {
+    return true
+  } else if (card.ability.includes('spy')) {
+    return false
+  }
+  if (player === 'player' && (card.row.includes(row) || (card.row.includes('agile') && ['close', 'ranged'].includes(row)))) {
+    return true
+  }
+  return false
 }
 </script>
 
@@ -221,9 +122,11 @@ function simulateOponent() {
   padding: 10px
   min-height: 100px
   cursor: pointer
+  pointer-events: none
 
 .row.highlight
   border-color: green
+  pointer-events: all
 
 .cards
   display: flex

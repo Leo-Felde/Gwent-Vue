@@ -5,7 +5,7 @@
     :style="cardBackground"
   >
     <div 
-      v-if="!isPreview"
+      v-if="!isPreview && card.row !== 'leader'"
       class="card-power-icon" 
       :style="powerIconStyle"
     >
@@ -31,9 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, toRefs } from 'vue'
 import type { PropType } from 'vue'
-import type { CardType } from '@/types/card'
+
+import { defineProps, computed, toRefs } from 'vue'
+import { powerTypes, type CardType } from '@/types/card'
 
 const props = defineProps({
   card: {
@@ -49,15 +50,11 @@ const props = defineProps({
 
 const { card, type } = toRefs(props)
 
-const SPECIAL_ABILITIES = new Set(['hero', 'decoy', 'scorch', 'mardroeme', 'fog', 'frost', 'rain', 'clear', 'horn', 'storm'])
-
-// Computed properties
 const isPreview = computed(() => type.value === 'preview')
 const abilities = computed(() => card.value.ability.split(' '))
 const lastAbility = computed(() => abilities.value[abilities.value.length - 1])
 const isHeroPower = computed(() => abilities.value.includes('hero'))
 
-// Image URLs
 const cardBackground = computed(() => ({
   backgroundImage: isPreview.value ? largeImageUrl.value : smallImageUrl.value
 }))
@@ -70,10 +67,9 @@ const smallImageUrl = computed(() =>
   `url(${require(`@/assets/img/card-sm/${card.value.faction}_${card.value.filename}.jpg`)})`
 )
 
-// Icon styles
 const powerIconStyle = computed(() => {
   const ability = abilities.value[0]
-  const useSpecial = SPECIAL_ABILITIES.has(ability) && !(ability === 'horn' && card.value.row)
+  const useSpecial = powerTypes.has(ability) && !(ability === 'horn' && card.value.row)
   const icon = useSpecial ? `power_${ability}` : 'power_normal'
   return { backgroundImage: `url(${require(`@/assets/img/icon/${icon}.png`)})` }
 })
@@ -88,16 +84,16 @@ const abilityIconStyle = computed(() => {
       backgroundImage: `url(${require(`@/assets/img/icon/card_ability_${lastAbility.value}.png`)})`
     }
   }
-  return {} // Return an empty object if no valid ability is found
+  return {}
 })
 
-// Visibility flags
-const showRowIcon = computed(() => !isPreview.value && card.value.row)
+const showRowIcon = computed(() => !isPreview.value && card.value.row && card.value.row !== 'leader')
 const showAbilityIcon = computed(() => 
   !isPreview.value && 
   abilities.value.length > 0 && 
   lastAbility.value !== 'hero' && 
-  card.value.row
+  card.value.row &&
+  card.value.row !== 'leader'
 )
 </script>
 

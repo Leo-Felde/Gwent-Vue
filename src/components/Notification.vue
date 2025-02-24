@@ -37,14 +37,16 @@ export default defineComponent({
         return 'Your turn'
       case 'op-turn':
         return 'Opponent\'s turn'
-      case 'player-pass':
-        return 'You passed'
-      case 'opponent-pass':
-        return 'Opponent passed'
+      case 'round-start':
+        return 'Round start'
+      case 'round-passed':
+        return 'Passed'
       case 'win-round':
         return 'You win!'
       case 'lose-round':
         return 'You lose!'
+      case 'draw-passed':
+        return 'Draw!'
       case 'draw':
         return 'It\'s a draw!'
       default:

@@ -15,11 +15,11 @@ export default defineComponent({
   props: {
     type: {
       type: String,
-      required: true
+      required: true,
     },
     message: {
       type: String,
-      default: null
+      default: null,
     },
     duration: {
       type: Number,
@@ -30,32 +30,33 @@ export default defineComponent({
     const isVisible = ref(true)
 
     const notificationMessage = computed(() => {
-      if (props.message)
-        return props.message
+      if (props.message) return props.message
       switch (props.type) {
-      case 'me-turn':
-        return 'Your turn'
-      case 'op-turn':
-        return 'Opponent\'s turn'
-      case 'round-start':
-        return 'Round start'
-      case 'round-passed':
-        return 'Passed'
-      case 'win-round':
-        return 'You win!'
-      case 'lose-round':
-        return 'You lose!'
-      case 'draw-passed':
-        return 'Draw!'
-      case 'draw':
-        return 'It\'s a draw!'
-      default:
-        return ''
+        case 'me-turn':
+          return 'Your turn'
+        case 'op-turn':
+          return "Opponent's turn"
+        case 'round-start':
+          return 'Round start'
+        case 'round-passed':
+          return 'Passed'
+        case 'win-round':
+          return 'You win!'
+        case 'lose-round':
+          return 'You lose!'
+        case 'draw-passed':
+          return 'Draw!'
+        case 'draw':
+          return "It's a draw!"
+        default:
+          return ''
       }
     })
 
     const iconPath = computed(() => {
-      return require(`@/assets/img/icon/notif_${props.type.replace('-', '_')}.png`)
+      return require(
+        `@/assets/img/icon/notif_${props.type.replace('-', '_')}.png`
+      )
     })
 
     let timeoutId: number

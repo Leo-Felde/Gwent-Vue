@@ -1,28 +1,24 @@
 <template>
-  <div 
-    class="card" 
-    :class="[{'preview': isPreview}, { 'selected': isSelected }]"
+  <div
+    class="card"
+    :class="[{ preview: isPreview }, { selected: isSelected }]"
     :style="cardBackground"
   >
-    <div 
+    <div
       v-if="!isPreview && card.row !== 'leader'"
-      class="card-power-icon" 
+      class="card-power-icon"
       :style="powerIconStyle"
     >
-      <span 
+      <span
         v-if="card.strength !== null"
-        class="card-power-value" 
-        :class="{'hero-power': isHeroPower}"
+        class="card-power-value"
+        :class="{ 'hero-power': isHeroPower }"
       >
         {{ card.strength }}
       </span>
     </div>
-    <div 
-      v-if="showRowIcon"
-      class="row-icon"
-      :style="rowIconStyle"
-    ></div>
-    <div 
+    <div v-if="showRowIcon" class="row-icon" :style="rowIconStyle"></div>
+    <div
       v-if="showAbilityIcon"
       class="ability-icon"
       :style="abilityIconStyle"
@@ -39,13 +35,13 @@ import { powerTypes, type CardType } from '@/types/card'
 const props = defineProps({
   card: {
     type: Object as PropType<CardType>,
-    required: true
+    required: true,
   },
   type: {
     type: String as PropType<'preview' | 'regular'>,
-    default: 'regular'
+    default: 'regular',
   },
-  isSelected: Boolean
+  isSelected: Boolean,
 })
 
 const { card, type } = toRefs(props)
@@ -56,44 +52,52 @@ const lastAbility = computed(() => abilities.value[abilities.value.length - 1])
 const isHeroPower = computed(() => abilities.value.includes('hero'))
 
 const cardBackground = computed(() => ({
-  backgroundImage: isPreview.value ? largeImageUrl.value : smallImageUrl.value
+  backgroundImage: isPreview.value ? largeImageUrl.value : smallImageUrl.value,
 }))
 
-const largeImageUrl = computed(() => 
-  `url(${require(`@/assets/img/card-lg/${card.value.faction}_${card.value.filename}.jpg`)})`
+const largeImageUrl = computed(
+  () =>
+    `url(${require(`@/assets/img/card-lg/${card.value.faction}_${card.value.filename}.jpg`)})`
 )
 
-const smallImageUrl = computed(() =>
-  `url(${require(`@/assets/img/card-sm/${card.value.faction}_${card.value.filename}.jpg`)})`
+const smallImageUrl = computed(
+  () =>
+    `url(${require(`@/assets/img/card-sm/${card.value.faction}_${card.value.filename}.jpg`)})`
 )
 
 const powerIconStyle = computed(() => {
   const ability = abilities.value[0]
-  const useSpecial = powerTypes.has(ability) && !(ability === 'horn' && card.value.row)
+  const useSpecial =
+    powerTypes.has(ability) && !(ability === 'horn' && card.value.row)
   const icon = useSpecial ? `power_${ability}` : 'power_normal'
-  return { backgroundImage: `url(${require(`@/assets/img/icon/${icon}.png`)})` }
+  return {
+    backgroundImage: `url(${require(`@/assets/img/icon/${icon}.png`)})`,
+  }
 })
 
 const rowIconStyle = computed(() => ({
-  backgroundImage: `url(${require(`@/assets/img/icon/card_row_${card.value.row}.png`)})`
+  backgroundImage: `url(${require(`@/assets/img/icon/card_row_${card.value.row}.png`)})`,
 }))
 
 const abilityIconStyle = computed(() => {
   if (lastAbility.value && lastAbility.value !== 'hero') {
     return {
-      backgroundImage: `url(${require(`@/assets/img/icon/card_ability_${lastAbility.value}.png`)})`
+      backgroundImage: `url(${require(`@/assets/img/icon/card_ability_${lastAbility.value}.png`)})`,
     }
   }
   return {}
 })
 
-const showRowIcon = computed(() => !isPreview.value && card.value.row && card.value.row !== 'leader')
-const showAbilityIcon = computed(() => 
-  !isPreview.value && 
-  abilities.value.length > 0 && 
-  lastAbility.value !== 'hero' && 
-  card.value.row &&
-  card.value.row !== 'leader'
+const showRowIcon = computed(
+  () => !isPreview.value && card.value.row && card.value.row !== 'leader'
+)
+const showAbilityIcon = computed(
+  () =>
+    !isPreview.value &&
+    abilities.value.length > 0 &&
+    lastAbility.value !== 'hero' &&
+    card.value.row &&
+    card.value.row !== 'leader'
 )
 </script>
 
@@ -101,7 +105,7 @@ const showAbilityIcon = computed(() =>
 .card
   $base-width: 95.4px
   $base-height: 136.13px
-  
+
   position: relative
   width: $base-width
   height: $base-height
@@ -111,11 +115,11 @@ const showAbilityIcon = computed(() =>
   cursor: pointer
   background-size: cover
   background-position: center
-  
+
   &.preview
-    width: 211px
-    height: 400px
-  
+    width: 264px
+    height: 500px
+
   &.selected
     border: 2px solid yellow
     box-shadow: 0 0 10px yellow
@@ -129,11 +133,11 @@ const showAbilityIcon = computed(() =>
     background-size: contain
     background-position: 0 0
     background-repeat: no-repeat
-    
+
     .card-power-value
       position: absolute
       left: 32%
-      top: 30% 
+      top: 30%
       transform: translate(-50%, -50%)
       font-weight: bold
       font-size: 1.15rem

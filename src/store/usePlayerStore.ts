@@ -2,7 +2,10 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { CardType, PremadeDeckType } from '@/types/card'
-import { translateCardsFromDictionary, translateLeaderCard } from '@/utils/cards'
+import {
+  translateCardsFromDictionary,
+  translateLeaderCard,
+} from '@/utils/cards'
 
 // Define player instance interface
 interface PlayerInstance {
@@ -35,25 +38,36 @@ export const usePlayerStore = defineStore('player', () => {
       deck: ref<CardType[]>([]),
       faction: ref<string | null>(null),
       leader: ref<CardType | null>(null),
-      leaderAvaliable: ref(false)
+      leaderAvaliable: ref(false),
     }
 
     const methods = {
       initializeDeck(initialDeck: PremadeDeckType) {
-        if (initialDeck.cards.length === 0 || !initialDeck.leader || !initialDeck.faction) return 
+        if (
+          initialDeck.cards.length === 0 ||
+          !initialDeck.leader ||
+          !initialDeck.faction
+        )
+          return
         state.faction.value = initialDeck.faction
         state.leader.value = translateLeaderCard(initialDeck.leader)
-        state.deck.value.splice(0, state.deck.value.length, ...translateCardsFromDictionary(initialDeck.cards))
+        state.deck.value.splice(
+          0,
+          state.deck.value.length,
+          ...translateCardsFromDictionary(initialDeck.cards)
+        )
 
         this.fillHand()
       },
 
       fillHand() {
         if (state.deck.value.length < 10) return
-        
+
         const handCards = []
         for (let i = 0; i < 10; i++) {
-          const randomIndex = Math.floor(Math.random() * state.deck.value.length)
+          const randomIndex = Math.floor(
+            Math.random() * state.deck.value.length
+          )
           const [removedElement] = state.deck.value.splice(randomIndex, 1)
           handCards.push(removedElement)
         }
@@ -65,39 +79,39 @@ export const usePlayerStore = defineStore('player', () => {
         let randomIndex = 0
         while (currentIndex != 0) {
           randomIndex = Math.floor(Math.random() * currentIndex)
-          currentIndex--;
-          [state.deck.value[currentIndex], state.deck.value[randomIndex]] = 
-            [state.deck.value[randomIndex], state.deck.value[currentIndex]]
+          currentIndex--
+          ;[state.deck.value[currentIndex], state.deck.value[randomIndex]] = [
+            state.deck.value[randomIndex],
+            state.deck.value[currentIndex],
+          ]
         }
       },
 
       drawCard(): CardType | null {
         if (state.deck.value.length === 0) return null
-        
+
         const card = state.deck.value.shift()
         return card || null
       },
 
       removeCard(card: CardType) {
-        const index = state.hand.value.findIndex(c => c.id === card.id)
+        const index = state.hand.value.findIndex((c) => c.id === card.id)
         state.hand.value.splice(index, 1)
       },
 
       hasCards(): boolean {
         let canPlay = 2
 
-        if (state.hand.value.length === 0)
-          canPlay--
-        if (state.leaderAvaliable.value)
-          canPlay--
+        if (state.hand.value.length === 0) canPlay--
+        if (state.leaderAvaliable.value) canPlay--
 
         return !!canPlay
-      }
+      },
     }
 
     return reactive({
       ...state,
-      ...methods
+      ...methods,
     }) as PlayerInstance
   }
 

@@ -53,7 +53,10 @@
         v-for="(card, index) in playerMe.hand"
         :key="index"
         :card="card"
-        :class="{ selected: selectedCard?.card.id === card.id && selectedCard?.index === index }"
+        :class="{
+          selected:
+            selectedCard?.card.id === card.id && selectedCard?.index === index,
+        }"
         @click="selectCard(card, index)"
       />
     </div>
@@ -108,12 +111,20 @@ onMounted(() => {
 function isRowHighlighted(row: RowType, player: 'player' | 'opponent') {
   if (!selectedCard.value) return false
   const { card } = selectedCard.value
-  if (player === 'opponent' && card.ability.includes('spy') && card.row.includes(row)) {
+  if (
+    player === 'opponent' &&
+    card.ability.includes('spy') &&
+    card.row.includes(row)
+  ) {
     return true
   } else if (card.ability.includes('spy')) {
     return false
   }
-  if (player === 'player' && (card.row.includes(row) || (card.row.includes('agile') && ['close', 'ranged'].includes(row)))) {
+  if (
+    player === 'player' &&
+    (card.row.includes(row) ||
+      (card.row.includes('agile') && ['close', 'ranged'].includes(row)))
+  ) {
     return true
   }
   return false

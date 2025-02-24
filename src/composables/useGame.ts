@@ -6,7 +6,7 @@ import { useWebSocket } from './useWebSocket'
 import { usePlayerStore } from '@/store/usePlayerStore'
 import { CardType, specialAbilities, weatherTypes } from '@/types/card'
 import { premadeDecks, removeCircularReferences } from '@/utils/utils'
-import { PlayerTypes, RowType } from '@/types/game'
+import { Board, PlayerTypes } from '@/types/game'
 
 const playerStore = usePlayerStore()
 const players = playerStore.players
@@ -16,30 +16,25 @@ const playerOpponent = playerStore.createPlayer('opponent', 2)
 const firstPlayer = ref<string>('player')
 const currentPlayer = ref<string>('player')
 
-const {
-  socket
-} = useWebSocket()
+const { socket } = useWebSocket()
 
 export function useGame() {
-  interface RowType {
-    cards: CardType[]
-    effects: string[]
-  }
-
-  interface Board {
-    close: RowType
-    ranged: RowType
-    siege: RowType
-  }
-
   const boardRows = ref({
-    player: ref<Board>({ close: {cards: [], effects: []}, ranged: {cards: [], effects: []}, siege: {cards: [], effects: []} }),
-    opponent: ref<Board>({ close: {cards: [], effects: []}, ranged: {cards: [], effects: []}, siege: {cards: [], effects: []}})
+    player: ref<Board>({
+      close: { cards: [], effects: [] },
+      ranged: { cards: [], effects: [] },
+      siege: { cards: [], effects: [] },
+    }),
+    opponent: ref<Board>({
+      close: { cards: [], effects: [] },
+      ranged: { cards: [], effects: [] },
+      siege: { cards: [], effects: [] },
+    }),
   })
 
-  const selectedCard = ref<{ card: CardType, index: number } | null>(null)
+  const selectedCard = ref<{ card: CardType; index: number } | null>(null)
 
-  function initalize () {
+  function initalize() {
     const defaultDeck = premadeDecks[0]
 
     playerMe.initializeDeck(defaultDeck)
@@ -73,7 +68,7 @@ export function useGame() {
           }
           firstPlayer.value = player
           currentPlayer.value = player
-                    
+
           socket.removeEventListener('message', handleMessage)
           // await ui.notification(game.firstPlayer.tag + '-coin', 1200)
           resolve(player)
@@ -83,16 +78,23 @@ export function useGame() {
     })
   }
 
-  async function initialRedraw(){
+  async function initialRedraw() {
     // aqui vai precisar chamar o carousel de cartas e esperar o retorno dele
-    socket.send(JSON.stringify({ type: 'initial_reDraw', hand: removeCircularReferences(playerMe.hand), deck: removeCircularReferences(playerMe.deck) }))
+    socket.send(
+      JSON.stringify({
+        type: 'initial_reDraw',
+        hand: removeCircularReferences(playerMe.hand),
+        deck: removeCircularReferences(playerMe.deck),
+      })
+    )
   }
 
   // Inicio de um novo round
   function startRound() {
     // reseta a pontuação, mesa e estados
     // notifica qual jogador jogará
-    currentPlayer.value = (currentPlayer.value === 'player') ? 'opponent' : 'player'
+    currentPlayer.value =
+      currentPlayer.value === 'player' ? 'opponent' : 'player'
 
     playerMe.passed = false
     playerOpponent.passed = false
@@ -101,11 +103,10 @@ export function useGame() {
   // Passe simples, após jogar uma carta
   function pass() {
     // se o jogador não tem mais cartas, passa seu round
-    if (!players[currentPlayer.value].hasCards())
-      passRound()
+    if (!players[currentPlayer.value].hasCards()) passRound()
 
-    currentPlayer.value = currentPlayer.value === 'player' ? 'opponent' : 'player'
-
+    currentPlayer.value =
+      currentPlayer.value === 'player' ? 'opponent' : 'player'
   }
 
   // Termina o round do jogador
@@ -113,18 +114,15 @@ export function useGame() {
     players[currentPlayer.value].passed = true
     // notifica que o player passou o round
 
-    if (playerMe.passed && playerOpponent.passed)
-      endRound()
+    if (playerMe.passed && playerOpponent.passed) endRound()
   }
 
   function endRound() {
     // acabou o round. armazena a pontuação de cada player
     // verifica se algum dos jogadores venceu senão decide qual jogará no prox. round
 
-    if (playerMe.health === 0 || playerOpponent.health === 0)
-      endGame()
-    else
-      startRound()
+    if (playerMe.health === 0 || playerOpponent.health === 0) endGame()
+    else startRound()
   }
 
   function endGame() {
@@ -138,29 +136,46 @@ export function useGame() {
   }
 
   function selectCard(card: CardType, index: number) {
-    if (selectedCard.value?.index === index)
-      selectedCard.value = null
-    else
-      selectedCard.value = { card, index }
+    if (selectedCard.value?.index === index) selectedCard.value = null
+    else selectedCard.value = { card, index }
   }
 
-  async function animateCard(startElement: HTMLElement | null, endElement: HTMLElement | null) {
+  async function animateCard(
+    startElement: HTMLElement | null,
+    endElement: HTMLElement | null
+  ) {
     if (!startElement || !endElement) return
-    
+
     const startBox = startElement.getBoundingClientRect()
     const endBox = endElement.getBoundingClientRect()
-    await gsap.fromTo(endElement, { x: startBox.x - endBox.x, y: startBox.y - endBox.y, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' })
+    await gsap.fromTo(
+      endElement,
+      { x: startBox.x - endBox.x, y: startBox.y - endBox.y, opacity: 0 },
+      { x: 0, y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }
+    )
   }
 
-  async function playCard(card: CardType | null, row: keyof Board, player: PlayerTypes = 'player') {
+  async function playCard(
+    card: CardType | null,
+    row: keyof Board,
+    player: PlayerTypes = 'player'
+  ) {
     if (!card || !row) return
     const isSpy = card.ability.includes('spy')
     const isPlayer = player === 'player'
-    const board = boardRows.value[isSpy ? isPlayer ? 'opponent' : 'player' : isPlayer ? 'player' : 'opponent']
+    const board =
+      boardRows.value[
+        isSpy
+          ? isPlayer
+            ? 'opponent'
+            : 'player'
+          : isPlayer
+            ? 'player'
+            : 'opponent'
+      ]
     const handElement = document.getElementById(`${player}-hand`) as HTMLElement
 
-    if (selectedCard.value)
-      selectedCard.value = null
+    if (selectedCard.value) selectedCard.value = null
 
     nextTick(() => {
       board[row].cards.push(card)
@@ -169,15 +184,25 @@ export function useGame() {
       nextTick(async () => {
         const rowElement = document.querySelector(
           `.row-${row}${
-            isSpy ? (isPlayer ? '.row-opponent' : '.row-player') : (isPlayer ? '.row-player' : '.row-opponent')
+            isSpy
+              ? isPlayer
+                ? '.row-opponent'
+                : '.row-player'
+              : isPlayer
+                ? '.row-player'
+                : '.row-opponent'
           }`
         ) as HTMLElement
-        const boardCardElement = rowElement.querySelector('.cards > *:last-child') as HTMLElement | null
+        const boardCardElement = rowElement.querySelector(
+          '.cards > *:last-child'
+        ) as HTMLElement | null
         await animateCard(handElement, boardCardElement)
 
-        const cardEffects = card.ability.split(' ').filter(ability => specialAbilities.has(ability))
+        const cardEffects = card.ability
+          .split(' ')
+          .filter((ability) => specialAbilities.has(ability))
         if (cardEffects) {
-          cardEffects.forEach(effect => {
+          cardEffects.forEach((effect) => {
             addEffect(effect)
           })
         }
@@ -186,8 +211,7 @@ export function useGame() {
   }
 
   function addEffect(effect: string) {
-    if (effect === 'decoy')
-      return
+    if (effect === 'decoy') return
 
     if (weatherTypes.has(effect)) {
       weatherToRow(effect)
@@ -195,31 +219,43 @@ export function useGame() {
   }
 
   function weatherToRow(weather: string) {
-    (Object.keys(boardRows.value) as Array<'player' | 'opponent'>).forEach(player => {
-      const affectedRows: (keyof Board)[] = []
+    ;(Object.keys(boardRows.value) as Array<'player' | 'opponent'>).forEach(
+      (player) => {
+        const affectedRows: (keyof Board)[] = []
 
-      if (weather !== 'clear') {
-        if (weather === 'fog' || weather === 'storm') {
-          affectedRows.push('ranged')
-        } else if (weather === 'rain' || weather ===  'storm') {
-          affectedRows.push('siege')
-        } else {
-          affectedRows.push('close')
-        }
-
-        affectedRows.forEach(row => {
-          if (!boardRows.value[player][row as keyof Board].effects.includes(weather))
-            boardRows.value[player][row as keyof Board].effects.push(weather)
-        })
-      } else {
-        (Object.keys(boardRows.value[player]) as (keyof Board)[]).forEach(row => {
-          const effectIndexOfWeather = boardRows.value[player][row].effects.indexOf(weather)
-          if (effectIndexOfWeather >= 0) {
-            boardRows.value[player][row].effects.splice(effectIndexOfWeather, 1)
+        if (weather !== 'clear') {
+          if (weather === 'fog' || weather === 'storm') {
+            affectedRows.push('ranged')
+          } else if (weather === 'rain' || weather === 'storm') {
+            affectedRows.push('siege')
+          } else {
+            affectedRows.push('close')
           }
-        })
+
+          affectedRows.forEach((row) => {
+            if (
+              !boardRows.value[player][row as keyof Board].effects.includes(
+                weather
+              )
+            )
+              boardRows.value[player][row as keyof Board].effects.push(weather)
+          })
+        } else {
+          ;(Object.keys(boardRows.value[player]) as (keyof Board)[]).forEach(
+            (row) => {
+              const effectIndexOfWeather =
+                boardRows.value[player][row].effects.indexOf(weather)
+              if (effectIndexOfWeather >= 0) {
+                boardRows.value[player][row].effects.splice(
+                  effectIndexOfWeather,
+                  1
+                )
+              }
+            }
+          )
+        }
       }
-    })
+    )
   }
 
   function simulateOponent() {
@@ -228,8 +264,11 @@ export function useGame() {
   }
 
   return {
-    initalize, boardRows,
-    selectedCard, selectCard,
-    playCard, simulateOponent
+    initalize,
+    boardRows,
+    selectedCard,
+    selectCard,
+    playCard,
+    simulateOponent,
   }
 }

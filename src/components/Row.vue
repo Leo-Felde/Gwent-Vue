@@ -19,7 +19,7 @@ import { CardType } from '@/types/card'
 const props = defineProps({
   owner: {
     type: String,
-    default: 'player'
+    default: 'player',
   },
   row: {
     type: String as () => RowType,

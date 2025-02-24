@@ -3,7 +3,11 @@ import Notification from '@/components/Notification.vue'
 
 const notificationPlugin = {
   install(app: App) {
-    const showNotification = (type: string, duration = 1000, message: string | null = null) => {
+    const showNotification = (
+      type: string,
+      duration = 1000,
+      message: string | null = null
+    ) => {
       return new Promise<void>((resolve) => {
         // Padding the tempo para transição
         const transitionTime = 200
@@ -12,7 +16,7 @@ const notificationPlugin = {
         const notificationInstance = createApp(Notification, {
           type,
           duration,
-          message
+          message,
         })
 
         const mountPoint = document.createElement('div')

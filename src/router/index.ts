@@ -5,23 +5,25 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
   },
   {
     path: '/play',
     name: 'game',
-    component: () => import(/* webpackChunkName: "game" */ '../views/GameView.vue')
+    component: () =>
+      import(/* webpackChunkName: "game" */ '../views/GameView.vue'),
   },
   {
     path: '/about',
     name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 })
 
 export default router

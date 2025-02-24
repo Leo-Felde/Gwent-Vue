@@ -1,24 +1,44 @@
-
-
-export const powerTypes = new Set(['hero', 'decoy', 'scorch', 'mardroeme', 'fog', 'frost', 'rain', 'clear', 'horn', 'storm'])
+export const powerTypes = new Set([
+  'hero',
+  'decoy',
+  'scorch',
+  'mardroeme',
+  'fog',
+  'frost',
+  'rain',
+  'clear',
+  'horn',
+  'storm',
+])
 export const weatherTypes = new Set(['fog', 'frost', 'rain', 'clear', 'storm'])
-export const specialAbilities = new Set(['spy','decoy', 'scorch', 'mardroeme', 'fog', 'frost', 'rain', 'clear', 'horn', 'storm'])
+export const specialAbilities = new Set([
+  'spy',
+  'decoy',
+  'scorch',
+  'mardroeme',
+  'fog',
+  'frost',
+  'rain',
+  'clear',
+  'horn',
+  'storm',
+])
 
 export interface CardType {
-  id: number;
-  name: string;
-  faction: string;
-  row: string;
-  strength: number | null;
-  ability: string;
-  filename: string;
-  count: number;
+  id: number
+  name: string
+  faction: string
+  row: string
+  strength: number | null
+  ability: string
+  filename: string
+  count: number
 }
 
 export interface PremadeDeckType {
-  faction: string;
-  leader: number;
-  cards: number[][];
+  faction: string
+  leader: number
+  cards: number[][]
 }
 
 export const cardDictionary: CardType[] = [
@@ -30,7 +50,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'hero spy',
     filename: 'mysterious_elf',
-    count: 1
+    count: 1,
   },
   {
     name: 'Decoy',
@@ -40,7 +60,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'decoy',
     filename: 'decoy',
-    count: 3
+    count: 3,
   },
   {
     name: 'Biting Frost',
@@ -50,7 +70,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'frost',
     filename: 'frost',
-    count: 3
+    count: 3,
   },
   {
     name: 'Cirilla Fiona Elen Riannon',
@@ -60,7 +80,7 @@ export const cardDictionary: CardType[] = [
     strength: 15,
     ability: 'hero',
     filename: 'ciri',
-    count: 1
+    count: 1,
   },
   {
     name: 'Clear Weather',
@@ -70,17 +90,17 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'clear',
     filename: 'clear',
-    count: 2
+    count: 2,
   },
   {
-    name: 'Commander\\\'s Horn',
+    name: "Commander\\'s Horn",
     id: 6,
     faction: 'special',
     row: '',
     strength: null,
     ability: 'horn',
     filename: 'horn',
-    count: 3
+    count: 3,
   },
   {
     name: 'Dandelion',
@@ -90,7 +110,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'horn',
     filename: 'dandelion',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emiel Regis Rohellec Terzieff',
@@ -100,7 +120,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'emiel',
-    count: 1
+    count: 1,
   },
   {
     name: 'Geralt of Rivia',
@@ -110,7 +130,7 @@ export const cardDictionary: CardType[] = [
     strength: 15,
     ability: 'hero',
     filename: 'geralt',
-    count: 1
+    count: 1,
   },
   {
     name: 'Impenetrable Fog',
@@ -120,7 +140,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'fog',
     filename: 'fog',
-    count: 3
+    count: 3,
   },
   {
     name: 'Scorch',
@@ -130,7 +150,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'scorch',
     filename: 'scorch',
-    count: 3
+    count: 3,
   },
   {
     name: 'Torrential Rain',
@@ -140,7 +160,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'rain',
     filename: 'rain',
-    count: 2
+    count: 2,
   },
   {
     name: 'Triss Merigold',
@@ -150,7 +170,7 @@ export const cardDictionary: CardType[] = [
     strength: 7,
     ability: 'hero',
     filename: 'triss',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vesemir',
@@ -160,7 +180,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'vesemir',
-    count: 1
+    count: 1,
   },
   {
     name: 'Villentretenmerth',
@@ -170,7 +190,7 @@ export const cardDictionary: CardType[] = [
     strength: 7,
     ability: 'scorch_c',
     filename: 'villen',
-    count: 1
+    count: 1,
   },
   {
     name: 'Yennefer of Vengerberg',
@@ -180,7 +200,7 @@ export const cardDictionary: CardType[] = [
     strength: 7,
     ability: 'hero medic',
     filename: 'yennefer',
-    count: 1
+    count: 1,
   },
   {
     name: 'Zoltan Chivay',
@@ -190,7 +210,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'zoltan',
-    count: 1
+    count: 1,
   },
   {
     name: 'Olgierd von Everec',
@@ -200,27 +220,27 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'morale',
     filename: 'olgierd',
-    count: 1
+    count: 1,
   },
   {
-    name: 'Gaunter O\\\'Dimm',
+    name: "Gaunter O\\'Dimm",
     id: 19,
     faction: 'neutral',
     row: 'siege',
     strength: 2,
     ability: 'muster',
     filename: 'gaunter_odimm',
-    count: 1
+    count: 1,
   },
   {
-    name: 'Gaunter O\\\'Dimm - Darkness',
+    name: "Gaunter O\\'Dimm - Darkness",
     id: 20,
     faction: 'neutral',
     row: 'ranged',
     strength: 4,
     ability: 'muster',
     filename: 'gaunter_odimm_darkness',
-    count: 3
+    count: 3,
   },
   {
     name: 'Cow',
@@ -230,7 +250,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'avenger',
     filename: 'cow',
-    count: 1
+    count: 1,
   },
   {
     name: 'Bovine Defense Force',
@@ -240,7 +260,7 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: '',
     filename: 'chort',
-    count: 0
+    count: 0,
   },
   {
     name: 'Foltest - King of Temeria',
@@ -250,7 +270,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'foltest_king',
     filename: 'foltest_silver',
-    count: 1
+    count: 1,
   },
   {
     name: 'Foltest - Lord Commander of the North',
@@ -260,7 +280,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'foltest_lord',
     filename: 'foltest_gold',
-    count: 1
+    count: 1,
   },
   {
     name: 'Foltest - The Siegemaster',
@@ -270,7 +290,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'foltest_siegemaster',
     filename: 'foltest_copper',
-    count: 1
+    count: 1,
   },
   {
     name: 'Foltest - The Steel-Forged',
@@ -280,7 +300,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'foltest_steelforged',
     filename: 'foltest_bronze',
-    count: 1
+    count: 1,
   },
   {
     name: 'Foltest - Son of Medell',
@@ -290,7 +310,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'foltest_son',
     filename: 'foltest_son_of_medell',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ballista',
@@ -300,7 +320,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'ballista',
-    count: 1
+    count: 1,
   },
   {
     name: 'Blue Stripes Commando',
@@ -310,7 +330,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'bond',
     filename: 'blue_stripes',
-    count: 3
+    count: 3,
   },
   {
     name: 'Catapult',
@@ -320,7 +340,7 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: 'bond',
     filename: 'catapult_1',
-    count: 2
+    count: 2,
   },
   {
     name: 'Crinfrid Reavers Dragon Hunter',
@@ -330,7 +350,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'bond',
     filename: 'crinfrid',
-    count: 3
+    count: 3,
   },
   {
     name: 'Dethmold',
@@ -340,7 +360,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'dethmold',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dun Banner Medic',
@@ -350,7 +370,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'medic',
     filename: 'banner_nurse',
-    count: 1
+    count: 1,
   },
   {
     name: 'Esterad Thyssen',
@@ -360,7 +380,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'esterad',
-    count: 1
+    count: 1,
   },
   {
     name: 'John Natalis',
@@ -370,7 +390,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'natalis',
-    count: 1
+    count: 1,
   },
   {
     name: 'Kaedweni Siege Expert',
@@ -380,7 +400,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege',
-    count: 1
+    count: 1,
   },
   {
     name: 'Kaedweni Siege Expert',
@@ -390,7 +410,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Kaedweni Siege Expert',
@@ -400,7 +420,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'morale',
     filename: 'kaedwen_siege_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Keira Metz',
@@ -410,7 +430,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'keira',
-    count: 1
+    count: 1,
   },
   {
     name: 'Philippa Eilhart',
@@ -420,7 +440,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'philippa',
-    count: 1
+    count: 1,
   },
   {
     name: 'Poor Fucking Infantry',
@@ -430,7 +450,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'bond',
     filename: 'poor_infantry',
-    count: 4
+    count: 4,
   },
   {
     name: 'Prince Stennis',
@@ -440,7 +460,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'spy',
     filename: 'stennis',
-    count: 1
+    count: 1,
   },
   {
     name: 'Redanian Foot Soldier',
@@ -450,7 +470,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: '',
     filename: 'redania',
-    count: 1
+    count: 1,
   },
   {
     name: 'Redanian Foot Soldier',
@@ -460,7 +480,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: '',
     filename: 'redania_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Sheldon Skaggs',
@@ -470,7 +490,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'sheldon',
-    count: 1
+    count: 1,
   },
   {
     name: 'Siege Tower',
@@ -480,7 +500,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'siege_tower',
-    count: 1
+    count: 1,
   },
   {
     name: 'Siegfried of Denesle',
@@ -490,7 +510,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'siegfried',
-    count: 1
+    count: 1,
   },
   {
     name: 'Sigismund Dijkstra',
@@ -500,7 +520,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'spy',
     filename: 'dijkstra',
-    count: 1
+    count: 1,
   },
   {
     name: 'Síle de Tansarville',
@@ -510,7 +530,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'sheala',
-    count: 1
+    count: 1,
   },
   {
     name: 'Thaler',
@@ -520,7 +540,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'spy',
     filename: 'thaler',
-    count: 1
+    count: 1,
   },
   {
     name: 'Sabrina Glevissig',
@@ -530,7 +550,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'sabrina',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vernon Roche',
@@ -540,7 +560,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'vernon',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ves',
@@ -550,7 +570,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'ves',
-    count: 1
+    count: 1,
   },
   {
     name: 'Yarpen Zigrin',
@@ -560,7 +580,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'yarpen',
-    count: 1
+    count: 1,
   },
   {
     name: 'Trebuchet',
@@ -570,7 +590,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'trebuchet',
-    count: 1
+    count: 1,
   },
   {
     name: 'Trebuchet',
@@ -580,7 +600,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'trebuchet_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emhyr var Emreis - His Imperial Majesty',
@@ -590,7 +610,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'emhyr_imperial',
     filename: 'emhyr_silver',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emhyr var Emreis - Emperor of Nilfgaard',
@@ -600,7 +620,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'emhyr_emperor',
     filename: 'emhyr_copper',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emhyr var Emreis - the White Flame',
@@ -610,7 +630,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'emhyr_whiteflame',
     filename: 'emhyr_bronze',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emhyr var Emreis - The Relentless',
@@ -620,7 +640,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'emhyr_relentless',
     filename: 'emhyr_gold',
-    count: 1
+    count: 1,
   },
   {
     name: 'Emhyr var Emreis - Invader of the North',
@@ -630,7 +650,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'emhyr_invader',
     filename: 'emhyr_invader_of_the_north',
-    count: 1
+    count: 1,
   },
   {
     name: 'Albrich',
@@ -640,7 +660,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'albrich',
-    count: 1
+    count: 1,
   },
   {
     name: 'Assire var Anahid',
@@ -650,7 +670,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'assire',
-    count: 1
+    count: 1,
   },
   {
     name: 'Black Infantry Archer',
@@ -660,7 +680,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: '',
     filename: 'black_archer',
-    count: 1
+    count: 1,
   },
   {
     name: 'Black Infantry Archer',
@@ -670,7 +690,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: '',
     filename: 'black_archer_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cahir Mawr Dyffryn aep Ceallach',
@@ -680,7 +700,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'cahir',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cynthia',
@@ -690,7 +710,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'cynthia',
-    count: 1
+    count: 1,
   },
   {
     name: 'Etolian Auxiliary Archers',
@@ -700,7 +720,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'medic',
     filename: 'archer_support',
-    count: 1
+    count: 1,
   },
   {
     name: 'Etolian Auxiliary Archers',
@@ -710,7 +730,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'medic',
     filename: 'archer_support_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Fringilla Vigo',
@@ -720,7 +740,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'fringilla',
-    count: 1
+    count: 1,
   },
   {
     name: 'Heavy Zerrikanian Fire Scorpion',
@@ -730,7 +750,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: '',
     filename: 'heavy_zerri',
-    count: 1
+    count: 1,
   },
   {
     name: 'Impera Brigade Guard',
@@ -740,7 +760,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: 'bond',
     filename: 'imperal_brigade',
-    count: 4
+    count: 4,
   },
   {
     name: 'Letho of Gulet',
@@ -750,7 +770,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'letho',
-    count: 1
+    count: 1,
   },
   {
     name: 'Menno Coehoorn',
@@ -760,7 +780,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero medic',
     filename: 'menno',
-    count: 1
+    count: 1,
   },
   {
     name: 'Morteisen',
@@ -770,7 +790,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: '',
     filename: 'morteisen',
-    count: 1
+    count: 1,
   },
   {
     name: 'Morvran Voorhis',
@@ -780,7 +800,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'moorvran',
-    count: 1
+    count: 1,
   },
   {
     name: 'Nausicaa Cavalry Rider',
@@ -790,7 +810,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'bond',
     filename: 'nauzicaa_2',
-    count: 3
+    count: 3,
   },
   {
     name: 'Puttkammer',
@@ -800,7 +820,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: '',
     filename: 'puttkammer',
-    count: 1
+    count: 1,
   },
   {
     name: 'Rainfarn',
@@ -810,7 +830,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'rainfarn',
-    count: 1
+    count: 1,
   },
   {
     name: 'Renuald aep Matsen',
@@ -820,7 +840,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'renuald',
-    count: 1
+    count: 1,
   },
   {
     name: 'Rotten Mangonel',
@@ -830,7 +850,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: '',
     filename: 'rotten',
-    count: 1
+    count: 1,
   },
   {
     name: 'Shilard Fitz-Oesterlen',
@@ -840,7 +860,7 @@ export const cardDictionary: CardType[] = [
     strength: 7,
     ability: 'spy',
     filename: 'shilard',
-    count: 1
+    count: 1,
   },
   {
     name: 'Siege Engineer',
@@ -850,7 +870,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'siege_engineer',
-    count: 1
+    count: 1,
   },
   {
     name: 'Siege Technician',
@@ -860,7 +880,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'medic',
     filename: 'siege_support',
-    count: 1
+    count: 1,
   },
   {
     name: 'Stefan Skellen',
@@ -870,7 +890,7 @@ export const cardDictionary: CardType[] = [
     strength: 9,
     ability: 'spy',
     filename: 'stefan',
-    count: 1
+    count: 1,
   },
   {
     name: 'Sweers',
@@ -880,7 +900,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'sweers',
-    count: 1
+    count: 1,
   },
   {
     name: 'Tibor Eggebracht',
@@ -890,7 +910,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'tibor',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vanhemar',
@@ -900,7 +920,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'vanhemar',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vattier de Rideaux',
@@ -910,7 +930,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'spy',
     filename: 'vattier',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vreemde',
@@ -920,7 +940,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'vreemde',
-    count: 1
+    count: 1,
   },
   {
     name: 'Young Emissary',
@@ -930,7 +950,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'bond',
     filename: 'young_emissary',
-    count: 1
+    count: 1,
   },
   {
     name: 'Young Emissary',
@@ -940,7 +960,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'bond',
     filename: 'young_emissary_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Zerrikanian Fire Scorpion',
@@ -950,7 +970,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'zerri',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eredin - Commander of the Red Riders',
@@ -960,7 +980,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'eredin_commander',
     filename: 'eredin_silver',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eredin - Bringer of Death',
@@ -970,7 +990,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'eredin_bringer_of_death',
     filename: 'eredin_bronze',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eredin - Destroyer of Worlds',
@@ -980,7 +1000,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'eredin_destroyer',
     filename: 'eredin_gold',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eredin - King of the Wild Hunt',
@@ -990,7 +1010,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'eredin_king',
     filename: 'eredin_copper',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eredin Bréacc Glas - The Treacherous',
@@ -1000,7 +1020,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'eredin_treacherous',
     filename: 'eredin_the_treacherous',
-    count: 1
+    count: 1,
   },
   {
     name: 'Arachas ',
@@ -1010,7 +1030,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'arachas',
-    count: 1
+    count: 1,
   },
   {
     name: 'Arachas ',
@@ -1020,7 +1040,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'arachas_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Arachas ',
@@ -1030,7 +1050,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'arachas_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Arachas- Behemoth',
@@ -1040,7 +1060,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'muster',
     filename: 'arachas_behemoth',
-    count: 1
+    count: 1,
   },
   {
     name: 'Botchling',
@@ -1050,7 +1070,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'poroniec',
-    count: 1
+    count: 1,
   },
   {
     name: 'Celaeno Harpy',
@@ -1060,7 +1080,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'celaeno_harpy',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cockatrice',
@@ -1070,7 +1090,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'cockatrice',
-    count: 1
+    count: 1,
   },
   {
     name: 'Crone - Brewess',
@@ -1080,7 +1100,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'muster',
     filename: 'witch_velen',
-    count: 1
+    count: 1,
   },
   {
     name: 'Crone - Weavess',
@@ -1090,7 +1110,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'muster',
     filename: 'witch_velen_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Crone - Whispess',
@@ -1100,7 +1120,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'muster',
     filename: 'witch_velen_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Draug',
@@ -1110,7 +1130,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'draug',
-    count: 1
+    count: 1,
   },
   {
     name: 'Earth Elemental',
@@ -1120,7 +1140,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'earth_elemental',
-    count: 1
+    count: 1,
   },
   {
     name: 'Endrega',
@@ -1130,7 +1150,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'endrega',
-    count: 1
+    count: 1,
   },
   {
     name: 'Fiend',
@@ -1140,7 +1160,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'fiend',
-    count: 1
+    count: 1,
   },
   {
     name: 'Fire Elemental',
@@ -1150,7 +1170,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'fire_elemental',
-    count: 1
+    count: 1,
   },
   {
     name: 'Foglet',
@@ -1160,7 +1180,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'fogling',
-    count: 1
+    count: 1,
   },
   {
     name: 'Forktail',
@@ -1170,7 +1190,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'forktail',
-    count: 1
+    count: 1,
   },
   {
     name: 'Frightener',
@@ -1180,7 +1200,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'frightener',
-    count: 1
+    count: 1,
   },
   {
     name: 'Gargoyle',
@@ -1190,7 +1210,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'gargoyle',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ghoul',
@@ -1200,7 +1220,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'muster',
     filename: 'ghoul',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ghoul',
@@ -1210,7 +1230,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'muster',
     filename: 'ghoul_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ghoul',
@@ -1220,7 +1240,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: 'muster',
     filename: 'ghoul_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Grave Hag',
@@ -1230,7 +1250,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'gravehag',
-    count: 1
+    count: 1,
   },
   {
     name: 'Griffin',
@@ -1240,7 +1260,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'gryffin',
-    count: 1
+    count: 1,
   },
   {
     name: 'Harpy',
@@ -1250,7 +1270,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'harpy',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ice Giant',
@@ -1260,7 +1280,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'frost_giant',
-    count: 1
+    count: 1,
   },
   {
     name: 'Imlerith',
@@ -1270,7 +1290,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'imlerith',
-    count: 1
+    count: 1,
   },
   {
     name: 'Kayran',
@@ -1280,7 +1300,7 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: 'hero morale',
     filename: 'kayran',
-    count: 1
+    count: 1,
   },
   {
     name: 'Leshen',
@@ -1290,7 +1310,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'leshen',
-    count: 1
+    count: 1,
   },
   {
     name: 'Nekker',
@@ -1300,7 +1320,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'nekker',
-    count: 1
+    count: 1,
   },
   {
     name: 'Nekker',
@@ -1310,7 +1330,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'nekker_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Nekker',
@@ -1320,7 +1340,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'nekker_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Plague Maiden',
@@ -1330,7 +1350,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mighty_maiden',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vampire - Bruxa',
@@ -1340,7 +1360,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'bruxa',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vampire - Ekimmara',
@@ -1350,7 +1370,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'ekkima',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vampire - Fleder',
@@ -1360,7 +1380,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'fleder',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vampire - Garkain',
@@ -1370,7 +1390,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'garkain',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vampire - Katakan',
@@ -1380,7 +1400,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'muster',
     filename: 'katakan',
-    count: 1
+    count: 1,
   },
   {
     name: 'Werewolf',
@@ -1390,7 +1410,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'werewolf',
-    count: 1
+    count: 1,
   },
   {
     name: 'Wyvern',
@@ -1400,7 +1420,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'wyvern',
-    count: 1
+    count: 1,
   },
   {
     name: 'Toad',
@@ -1410,7 +1430,7 @@ export const cardDictionary: CardType[] = [
     strength: 7,
     ability: 'scorch_r',
     filename: 'toad',
-    count: 1
+    count: 1,
   },
   {
     name: 'Francesca Findabair - Queen of Dol Blathanna',
@@ -1420,7 +1440,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'francesca_queen',
     filename: 'francesca_silver',
-    count: 1
+    count: 1,
   },
   {
     name: 'Francesca Findabair - the Beautiful',
@@ -1430,7 +1450,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'francesca_beautiful',
     filename: 'francesca_gold',
-    count: 1
+    count: 1,
   },
   {
     name: 'Francesca Findabair - Daisy of the Valley',
@@ -1440,7 +1460,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'francesca_daisy',
     filename: 'francesca_copper',
-    count: 1
+    count: 1,
   },
   {
     name: 'Francesca Findabair - Pureblood Elf',
@@ -1450,7 +1470,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'francesca_pureblood',
     filename: 'francesca_bronze',
-    count: 1
+    count: 1,
   },
   {
     name: 'Francesca Findabair - Hope of the Aen Seidhe',
@@ -1460,7 +1480,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'francesca_hope',
     filename: 'francesca_hope_of_the_aen_seidhe',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ciaran aep Easnillien',
@@ -1470,7 +1490,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: '',
     filename: 'ciaran',
-    count: 1
+    count: 1,
   },
   {
     name: 'Barclay Els',
@@ -1480,7 +1500,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'barclay',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dennis Cranmer',
@@ -1490,7 +1510,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'dennis',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dol Blathanna Archer',
@@ -1500,7 +1520,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'dol_archer',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dol Blathanna Scout',
@@ -1510,7 +1530,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'dol_infantry',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dol Blathanna Scout',
@@ -1520,7 +1540,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'dol_infantry_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dol Blathanna Scout',
@@ -1530,7 +1550,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'dol_infantry_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dwarven Skirmisher',
@@ -1540,7 +1560,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: 'muster',
     filename: 'dwarf',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dwarven Skirmisher',
@@ -1550,7 +1570,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: 'muster',
     filename: 'dwarf_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Dwarven Skirmisher',
@@ -1560,7 +1580,7 @@ export const cardDictionary: CardType[] = [
     strength: 3,
     ability: 'muster',
     filename: 'dwarf_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Eithné',
@@ -1570,7 +1590,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'eithne',
-    count: 1
+    count: 1,
   },
   {
     name: 'Elven Skirmisher',
@@ -1580,7 +1600,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher',
-    count: 1
+    count: 1,
   },
   {
     name: 'Elven Skirmisher',
@@ -1590,7 +1610,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Elven Skirmisher',
@@ -1600,7 +1620,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'muster',
     filename: 'elf_skirmisher_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Filavandrel aen Fidhail',
@@ -1610,7 +1630,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'filavandrel',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Healer',
@@ -1620,7 +1640,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Healer',
@@ -1630,7 +1650,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Healer',
@@ -1640,7 +1660,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'medic',
     filename: 'havekar_nurse_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Smuggler',
@@ -1650,7 +1670,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'muster',
     filename: 'havekar_support',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Smuggler',
@@ -1660,7 +1680,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'muster',
     filename: 'havekar_support_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Havekar Smuggler',
@@ -1670,7 +1690,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: 'muster',
     filename: 'havekar_support_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ida Emean aep Sivney',
@@ -1680,7 +1700,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'ida',
-    count: 1
+    count: 1,
   },
   {
     name: 'Iorveth',
@@ -1690,7 +1710,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'iorveth',
-    count: 1
+    count: 1,
   },
   {
     name: 'Isengrim Faoiltiarna',
@@ -1700,7 +1720,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero morale',
     filename: 'isengrim',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mahakaman Defender',
@@ -1710,7 +1730,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mahakam',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mahakaman Defender',
@@ -1720,7 +1740,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mahakam_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mahakaman Defender',
@@ -1730,7 +1750,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mahakam_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mahakaman Defender',
@@ -1740,7 +1760,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mahakam_3',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mahakaman Defender',
@@ -1750,7 +1770,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'mahakam_4',
-    count: 1
+    count: 1,
   },
   {
     name: 'Milva',
@@ -1760,7 +1780,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'morale',
     filename: 'milva',
-    count: 1
+    count: 1,
   },
   {
     name: 'Riordain',
@@ -1770,7 +1790,7 @@ export const cardDictionary: CardType[] = [
     strength: 1,
     ability: '',
     filename: 'riordain',
-    count: 1
+    count: 1,
   },
   {
     name: 'Saesenthessis',
@@ -1780,7 +1800,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'saskia',
-    count: 1
+    count: 1,
   },
   {
     name: 'Toruviel',
@@ -1790,7 +1810,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: '',
     filename: 'toruviel',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vrihedd Brigade Recruit',
@@ -1800,7 +1820,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'vrihedd_cadet',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vrihedd Brigade Veteran',
@@ -1810,7 +1830,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'vrihedd_brigade',
-    count: 1
+    count: 1,
   },
   {
     name: 'Vrihedd Brigade Veteran',
@@ -1820,7 +1840,7 @@ export const cardDictionary: CardType[] = [
     strength: 5,
     ability: '',
     filename: 'vrihedd_brigade_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Yaevinn',
@@ -1830,7 +1850,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'yaevinn',
-    count: 1
+    count: 1,
   },
   {
     name: 'Berserker',
@@ -1840,7 +1860,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'berserker',
     filename: 'berserker',
-    count: 1
+    count: 1,
   },
   {
     name: 'Birna Bran',
@@ -1850,7 +1870,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'medic',
     filename: 'birna',
-    count: 1
+    count: 1,
   },
   {
     name: 'Blueboy Lugos',
@@ -1860,7 +1880,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'blueboy',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cerys',
@@ -1870,7 +1890,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero muster',
     filename: 'cerys',
-    count: 1
+    count: 1,
   },
   {
     name: 'Clan Brokva Archer',
@@ -1880,7 +1900,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'brokva_archer',
-    count: 2
+    count: 2,
   },
   {
     name: 'Clan Dimun Pirate',
@@ -1890,7 +1910,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'scorch',
     filename: 'dimun_pirate',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
@@ -1900,7 +1920,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'bond',
     filename: 'shield_maiden',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
@@ -1910,7 +1930,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'bond',
     filename: 'shield_maiden_1',
-    count: 1
+    count: 1,
   },
   {
     name: 'Cerys - Clan Drummond Shield Maiden',
@@ -1920,7 +1940,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'bond',
     filename: 'shield_maiden_2',
-    count: 1
+    count: 1,
   },
   {
     name: 'Clan Heymaey Skald',
@@ -1930,7 +1950,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'heymaey',
-    count: 1
+    count: 1,
   },
   {
     name: 'Clan Tordarroch Armorsmith',
@@ -1940,7 +1960,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'tordarroch',
-    count: 1
+    count: 1,
   },
   {
     name: 'Clan an Craite Warrior',
@@ -1950,7 +1970,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'bond',
     filename: 'craite_warrior',
-    count: 3
+    count: 3,
   },
   {
     name: 'Donar an Hindar',
@@ -1960,7 +1980,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'donar',
-    count: 1
+    count: 1,
   },
   {
     name: 'Draig Bon-Dhu',
@@ -1970,7 +1990,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'horn',
     filename: 'draig',
-    count: 1
+    count: 1,
   },
   {
     name: 'Ermion',
@@ -1980,7 +2000,7 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: 'hero mardroeme',
     filename: 'ermion',
-    count: 1
+    count: 1,
   },
   {
     name: 'Hemdall',
@@ -1990,7 +2010,7 @@ export const cardDictionary: CardType[] = [
     strength: 11,
     ability: 'hero',
     filename: 'hemdall',
-    count: 0
+    count: 0,
   },
   {
     name: 'Hjalmar',
@@ -2000,7 +2020,7 @@ export const cardDictionary: CardType[] = [
     strength: 10,
     ability: 'hero',
     filename: 'hjalmar',
-    count: 1
+    count: 1,
   },
   {
     name: 'Holger Blackhand',
@@ -2010,7 +2030,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'holger',
-    count: 1
+    count: 1,
   },
   {
     name: 'Kambi',
@@ -2020,7 +2040,7 @@ export const cardDictionary: CardType[] = [
     strength: 0,
     ability: 'avenger_kambi',
     filename: 'kambi',
-    count: 1
+    count: 1,
   },
   {
     name: 'Light Longship',
@@ -2030,7 +2050,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: 'muster',
     filename: 'light_longship',
-    count: 3
+    count: 3,
   },
   {
     name: 'Madman Lugos',
@@ -2040,7 +2060,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: '',
     filename: 'madmad_lugos',
-    count: 1
+    count: 1,
   },
   {
     name: 'Mardroeme',
@@ -2050,7 +2070,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'mardroeme',
     filename: 'mardroeme',
-    count: 3
+    count: 3,
   },
   {
     name: 'Olaf',
@@ -2060,7 +2080,7 @@ export const cardDictionary: CardType[] = [
     strength: 12,
     ability: 'morale',
     filename: 'olaf',
-    count: 1
+    count: 1,
   },
   {
     name: 'Skellige Storm',
@@ -2070,7 +2090,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'rain fog',
     filename: 'storm',
-    count: 3
+    count: 3,
   },
   {
     name: 'Svanrige',
@@ -2080,7 +2100,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'svanrige',
-    count: 1
+    count: 1,
   },
   {
     name: 'Transformed Vildkaarl',
@@ -2090,7 +2110,7 @@ export const cardDictionary: CardType[] = [
     strength: 14,
     ability: 'morale',
     filename: 'vildkaarl',
-    count: 0
+    count: 0,
   },
   {
     name: 'Transformed Young Vildkaarl',
@@ -2100,7 +2120,7 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: 'bond',
     filename: 'young_vildkaarl',
-    count: 0
+    count: 0,
   },
   {
     name: 'Udalryk',
@@ -2110,7 +2130,7 @@ export const cardDictionary: CardType[] = [
     strength: 4,
     ability: '',
     filename: 'udalryk',
-    count: 1
+    count: 1,
   },
   {
     name: 'War Longship',
@@ -2120,7 +2140,7 @@ export const cardDictionary: CardType[] = [
     strength: 6,
     ability: 'bond',
     filename: 'war_longship',
-    count: 2
+    count: 2,
   },
   {
     name: 'Young Berserker',
@@ -2130,7 +2150,7 @@ export const cardDictionary: CardType[] = [
     strength: 2,
     ability: 'berserker',
     filename: 'young_berserker',
-    count: 3
+    count: 3,
   },
   {
     name: 'Crach an Craite',
@@ -2140,7 +2160,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'crach_an_craite',
     filename: 'crach_an_craite',
-    count: 0
+    count: 0,
   },
   {
     name: 'King Bran',
@@ -2150,7 +2170,7 @@ export const cardDictionary: CardType[] = [
     strength: null,
     ability: 'king_bran',
     filename: 'king_bran',
-    count: 0
+    count: 0,
   },
   {
     name: 'Schirru',
@@ -2160,6 +2180,461 @@ export const cardDictionary: CardType[] = [
     strength: 8,
     ability: 'scorch_s',
     filename: 'schirru',
-    count: 1
-  }
+    count: 1,
+  },
 ]
+
+export const ability_dict = {
+  clear: {
+    name: 'Clear Weather',
+    description:
+      'Removes all Weather Cards (Biting Frost, Impenetrable Fog and Torrential Rain) effects. ',
+  },
+  frost: {
+    name: 'Biting Frost',
+    description:
+      'Sets the strength of all Close Combat cards to 1 for both players. ',
+  },
+  fog: {
+    name: 'Impenetrable Fog',
+    description:
+      'Sets the strength of all Ranged Combat cards to 1 for both players. ',
+  },
+  rain: {
+    name: 'Torrential Rain',
+    description:
+      'Sets the strength of all Siege Combat cards to 1 for both players. ',
+  },
+  storm: {
+    name: 'Skellige Storm',
+    description: 'Reduces the Strength of all Range and Siege Units to 1. ',
+  },
+  hero: {
+    name: 'hero',
+    description: 'Not affected by any Special Cards or abilities. ',
+  },
+  decoy: {
+    name: 'Decoy',
+    description:
+      'Swap with a card on the battlefield to return it to your hand. ',
+  },
+  horn: {
+    name: "Commander's Horn",
+    description:
+      'Doubles the strength of all unit cards in that row. Limited to 1 per row. ',
+    // placed: async card => await card.animate('horn')
+  },
+  mardroeme: {
+    name: 'Mardroeme',
+    description:
+      'Triggers transformation of all Berserker cards on the same row. ',
+    // placed: async (card, row) => {
+    //   const berserkers = row.findCards(c => c.abilities.includes('berserker'))
+    //   await Promise.all(berserkers.map(async c => await ability_dict['berserker'].placed(c, row)))
+    // }
+  },
+  berserker: {
+    name: 'Berserker',
+    description: 'Transforms into a bear when a Mardroeme card is on its row. ',
+    // placed: async (card, row) => {
+    //   if (row.effects.mardroeme === 0)
+    //     return
+    //   row.removeCard(card)
+    //   const cardId = card.name.indexOf('Young') === -1 ? 206 : 207
+    //   await row.addCard(new Card(card_dict[cardId], card.holder))
+    // }
+  },
+  scorch: {
+    name: 'Scorch',
+    description:
+      'Discard after playing. Kills the strongest card(s) on the battlefield. ',
+    // activated: async card => {
+    //   await ability_dict['scorch'].placed(card)
+    //   await board.toGrave(card, card.holder.hand)
+    // },
+    // placed: async (card, row) => {
+    //   if (row !== undefined)
+    //     row.cards.splice( row.cards.indexOf(card), 1)
+    //   const maxUnits = board.row.map( r => [r,r.maxUnits()] ).filter( p => p[1].length > 0)
+    //   if (row !== undefined)
+    //     row.cards.push(card)
+    //   const maxPower = maxUnits.reduce( (a,p) => Math.max(a, p[1][0].power), 0 )
+    //   const scorched = maxUnits.filter( p => p[1][0].power === maxPower)
+    //   const cards = scorched.reduce( (a,p) => a.concat( p[1].map(u => [p[0], u])), [])
+
+    //   await Promise.all(cards.map( async u => await u[1].animate('scorch', true, false)) )
+    //   await Promise.all(cards.map( async u => await board.toGrave(u[1], u[0])) )
+    // }
+  },
+  scorch_c: {
+    name: 'Scorch - Close Combat',
+    description:
+      "Destroy your enemy's strongest Close Combat unit(s) if the combined strength of all his or her Close Combat units is 10 or more. ",
+    // placed: async (card) => await board.getRow(card, 'close', card.holder.opponent()).scorch()
+  },
+  scorch_r: {
+    name: 'Scorch - Ranged',
+    description:
+      "Destroy your enemy's strongest Ranged Combat unit(s) if the combined strength of all his or her Ranged Combat units is 10 or more. ",
+    // placed: async (card) => await board.getRow(card, 'ranged', card.holder.opponent()).scorch()
+  },
+  scorch_s: {
+    name: 'Scorch - Siege',
+    description:
+      "Destroys your enemy's strongest Siege Combat unit(s) if the combined strength of all his or her Siege Combat units is 10 or more. ",
+    // placed: async (card) => await board.getRow(card, 'siege', card.holder.opponent()).scorch()
+  },
+  agile: {
+    name: 'agile',
+    description:
+      'Can be placed in either the Close Combat or the Ranged Combat row. Cannot be moved once placed. ',
+  },
+  muster: {
+    name: 'muster',
+    description:
+      'Find any cards with the same name in your deck and play them instantly. ',
+    // placed: async (card) => {
+    //   const i = card.name.indexOf('-')
+    //   const cardName = i === -1 ?  card.name : card.name.substring(0, i)
+    //   const pred = c => c.name.startsWith(cardName)
+    //   const units = card.holder.hand.getCards(pred).map(x => [card.holder.hand, x])
+    //     .concat(card.holder.deck.getCards(pred).map( x => [card.holder.deck, x] ) )
+    //   if (units.length === 0)
+    //     return
+    //   await card.animate('muster')
+    //   await Promise.all( units.map( async p =>  await board.addCardToRow(p[1], p[1].row, p[1].holder, p[0])))
+    // }
+  },
+  spy: {
+    name: 'spy',
+    description:
+      "Place on your opponent's battlefield (counts towards your opponent's total) and draw 2 cards from your deck. ",
+    // placed: async (card) => {
+    //   await card.animate('spy')
+    //   for (let i=0;i<2;i++) {
+    //     if (card.holder.deck.cards.length > 0)
+    //       await card.holder.deck.draw(card.holder.hand)
+    //   }
+    //   card.holder = card.holder.opponent()
+    // }
+  },
+  medic: {
+    name: 'medic',
+    description:
+      'Choose one card from your discard pile and play it instantly (no Heroes or Special Cards). ',
+    // placed: async (card) => {
+    //   const grave = board.getRow(card, 'grave', card.holder)
+    //   const units = card.holder.grave.findCards(c => c.isUnit())
+    //   if (units.length <= 0)
+    //     return
+    //   const wrapper = {card : null}
+    //   if (game.randomRespawn) {
+    // 		 wrapper.card = grave.findCardsRandom(c => c.isUnit())[0]
+    //   } else if (card.holder.controller instanceof ControllerOponent) {
+    //     console.log('Oponent has played a medic, wait for him to chose which card to respawn')
+    //     // Wait for the oponent to choose which card to revive
+    //     wrapper.card = await new Promise((resolve) => {
+    //       const handleMessage = async (event) => {
+    //         const data = JSON.parse(event.data)
+    //         if (data.type === 'medicDraw') {
+    //           const drawnCard = grave.cards.filter(c => c.filename === data.card)[0]
+    //           if (drawnCard) {
+    //             resolve(drawnCard)
+    //             return
+    //           }
+    //         }
+    //       }
+    //       socket.addEventListener('message', handleMessage)
+    //     })
+    //   } else
+    //     await ui.queueCarousel(card.holder.grave, 1, (c, i) => wrapper.card=c.cards[i], c => c.isUnit(), true)
+    //   const res = wrapper.card
+    //   grave.removeCard(res)
+    //   grave.addCard(res)
+    //   await res.animate('medic')
+    //   await res.autoplay(grave)
+    //   return
+    // }
+  },
+  morale: {
+    name: 'Morale',
+    description: 'Adds +1 to all units in the row (excluding itself). ',
+    // placed: async card => await card.animate('morale')
+  },
+  bond: {
+    name: 'Tight Bond',
+    description:
+      'Place next to a card with the same name to double the strength of both cards. ',
+    // placed: async card => {
+    //   const bonds = board.getRow(card, card.row, card.holder).findCards(c => c.name === card.name)
+    //   if (bonds.length > 1)
+    //     await Promise.all( bonds.map(c => c.animate('bond')) )
+    // }
+  },
+  avenger: {
+    name: 'Avenger',
+    description:
+      'When this card is removed from the battlefield, it summons a powerful new Unit Card to take its place. ',
+    // removed: async (card) => {
+    //   const bdf = new Card(card_dict[21], card.holder)
+    //   bdf.removed.push( () => setTimeout( () => bdf.holder.grave.removeCard(bdf), 1001) )
+    //   await board.addCardToRow(bdf, 'close', card.holder)
+    // },
+  },
+  avenger_kambi: {
+    name: 'Avenger',
+    description:
+      'When this card is removed from the battlefield, it summons a powerful new Unit Card to take its place. ',
+    // removed: async card => {
+    //   const bdf = new Card(card_dict[196], card.holder)
+    //   bdf.removed.push( () => setTimeout( () => bdf.holder.grave.removeCard(bdf), 1001) )
+    //   await board.addCardToRow(bdf, 'close', card.holder)
+    // },
+  },
+  foltest_king: {
+    description:
+      'Pick an Impenetrable Fog card from your deck and play it instantly.',
+    // activated: async card => {
+    //   const out = card.holder.deck.findCard(c => c.name === 'Impenetrable Fog')
+    //   if (out)
+    //     await out.autoplay(card.holder.deck)
+    // },
+  },
+  foltest_lord: {
+    description:
+      'Clear any weather effects (resulting from Biting Frost, Torrential Rain or Impenetrable Fog cards) in play.',
+    // activated: async () => {
+    //   tocar('clear', false)
+    //   await weather.clearWeather()
+    // },
+  },
+  foltest_siegemaster: {
+    description:
+      "Doubles the strength of all your Siege units (unless a Commander's Horn is also present on that row).",
+    // activated: async card => await board.getRow(card, 'siege', card.holder).leaderHorn(),
+  },
+  foltest_steelforged: {
+    description:
+      "Destroy your enemy's strongest Siege unit(s) if the combined strength of all his or her Siege units is 10 or more.",
+    // activated: async card => await ability_dict['scorch_s'].placed(card),
+  },
+  foltest_son: {
+    description:
+      "Destroy your enemy's strongest Ranged Combat unit(s) if the combined strength of all his or her Ranged Combat units is 10 or more.",
+    // activated: async card => await ability_dict['scorch_r'].placed(card),
+  },
+  emhyr_imperial: {
+    description:
+      'Pick a Torrential Rain card from your deck and play it instantly.',
+    // activated: async card => {
+    //   const out = card.holder.deck.findCard(c => c.name === 'Torrential Rain')
+    //   if (out)
+    //     await out.autoplay(card.holder.deck)
+    // },
+  },
+  emhyr_emperor: {
+    description: "Look at 3 random cards from your opponent's hand.",
+    // activated: async card => {
+    //   // Wait for the oponent to close the carousel
+    //   if (card.holder.controller instanceof ControllerOponent) {
+    //     await new Promise((resolve) => {
+    //       const handleMessage = async (event) => {
+    //         const data = JSON.parse(event.data)
+    //         if (data.type === 'containerClosed') {
+    //           resolve(true)
+    //         }
+    //       }
+    //       socket.addEventListener('message', handleMessage)
+    //     })
+
+    //     return
+    //   }
+    //   const container = new CardContainer()
+    //   container.cards = card.holder.opponent().hand.findCardsRandom(() => true, 3)
+    //   Carousel.curr.cancel()
+    //   await ui.viewCardsInContainer(container)
+    // },
+  },
+  emhyr_whiteflame: {
+    description: "Cancel your opponent's Leader Ability.",
+  },
+  emhyr_relentless: {
+    description: "Draw a card from your opponent's discard pile.",
+    // activated: async card => {
+    //   const grave = board.getRow(card, 'grave', card.holder.opponent())
+    //   if (grave.findCards(c => c.isUnit()).length === 0)
+    //     return
+    //   if (card.holder.controller instanceof ControllerOponent) {
+    //     const newCard = await new Promise((resolve) => {
+    //       const handleMessage = async (event) => {
+    //         const data = JSON.parse(event.data)
+
+    //         if (data.type === 'addCardHand') {
+    //           const drawnCard = grave.cards.filter(c => c.isUnit())[data.index]
+    //           if (drawnCard) {
+    //             drawnCard.holder = player_op
+    //             resolve(drawnCard)
+    //           }
+    //         }
+    //       }
+    //       socket.addEventListener('message', handleMessage)
+    //     })
+    //     newCard.holder = player_op
+    //     board.toHand(newCard, grave)
+    //     return
+    //   }
+
+    //   Carousel.curr.cancel()
+    //   await ui.queueCarousel(grave, 1, (c,i) => {
+    //     const newCard = c.cards[i]
+    //     newCard.holder = card.holder
+    //     board.toHand(newCard, grave)
+    //   }, c => c.isUnit(), true)
+    // },
+  },
+  emhyr_invader: {
+    description:
+      'Medics cannot choose which card to revive and draw a random one from the graveyard (affects both players).',
+    // gameStart: () => game.randomRespawn = true
+  },
+  eredin_commander: {
+    description:
+      "Double the strength of all your Close Combat units (unless a Commander's horn is 	also present on that row).",
+    // activated: async card => await board.getRow(card, 'close', card.holder).leaderHorn(),
+  },
+  eredin_bringer_of_death: {
+    name: 'Eredin : Bringer of Death',
+    description: 'Restore a card from your discard pile to your hand.',
+    // activated: async card => {
+  },
+  eredin_destroyer: {
+    description:
+      'Discard 2 card and draw 1 card of your choice from your deck.',
+    // activated: async (card) => {
+    //   const hand = board.getRow(card, 'hand', card.holder)
+    //   const deck = board.getRow(card, 'deck', card.holder)
+    //   if (card.holder.controller instanceof ControllerOponent) {
+    //     // Wait for the opponent to choose which cards to discard and which to get
+    //     await new Promise((resolve) => {
+    //       let flag = 0
+    //       const handleMessage = async (event) => {
+    //         const data = JSON.parse(event.data)
+    //         if (data.type === 'removeCardHand') {
+    //           const card = hand.cards[data.index]
+    //           hand.removeCard(card)
+    //           flag+=1
+    //         }
+    //         if (data.type === 'addCardHand') {
+    //           const drawnCard = player_op.deck.cards[data.index]
+    //           hand.addCard(drawnCard)
+    //           flag+=1
+    //         }
+
+    //         if (flag === 3) {
+    //           resolve(true)
+    //         }
+    //       }
+    //       socket.addEventListener('message', handleMessage)
+    //     })
+
+    //     return
+    //   } else
+    //     Carousel.curr.exit()
+    //   await ui.queueCarousel(hand, 2, (c,i) => board.toGrave(c.cards[i], c), () => true)
+    //   await ui.queueCarousel(deck, 1, (c,i) => board.toHand(c.cards[i], deck), () => true, true)
+    // },
+  },
+  eredin_king: {
+    description: 'Pick any weather card from your deck and play it instantly.',
+    // activated: async card => {
+    //   const deck = board.getRow(card, 'deck', card.holder)
+
+    //   // Wait for the opponent to choose which weather card to play
+    //   if (card.holder.controller instanceof ControllerOponent) {
+    //     const card = await new Promise((resolve) => {
+    //       const handleMessage = async (event) => {
+    //         const data = JSON.parse(event.data)
+    //         if (data.type === 'weatherDraw') {
+    //           const drawnCard = deck.cards.filter(c => c.faction === 'weather' && c.filename === data.card)[0]
+    //           if (drawnCard) {
+    //             resolve(drawnCard)
+    //           }
+    //         }
+    //       }
+    //       socket.addEventListener('message', handleMessage)
+    //     })
+    //     board.toWeather(card, deck)
+    //   } else {
+    //     Carousel.curr.cancel()
+    //     await ui.queueCarousel(deck, 1, (c,i) => board.toWeather(c.cards[i], deck), c => c.faction === 'weather', true)
+    //   }
+    // },
+  },
+  eredin_treacherous: {
+    description:
+      'Doubles the strength of all spy cards (affects both players).',
+    // gameStart: () => game.doubleSpyPower = true
+  },
+  francesca_queen: {
+    description:
+      "Destroy your enemy's strongest Close Combat unit(s) if the combined strength of all his or her Close Combat units is 10 or more.",
+    // activated: async card => await ability_dict['scorch_c'].placed(card),
+  },
+  francesca_beautiful: {
+    description:
+      "Doubles the strength of all your Ranged Combat units (unless a Commander's Horn is also present on that row).",
+    // activated: async card => await board.getRow(card, 'ranged', card.holder).leaderHorn(),
+  },
+  francesca_daisy: {
+    description: 'Draw an extra card at the beginning of the battle.',
+    // placed: card => game.gameStart.push( () => {
+    //   const draw = card.holder.deck.removeCard(0)
+    //   card.holder.hand.addCard( draw )
+    //   return true
+    // })
+  },
+  francesca_pureblood: {
+    description:
+      'Pick a Biting Frost card from your deck and play it instantly.',
+    // activated: async card => {
+    //   const out = card.holder.deck.findCard(c => c.name === 'Biting Frost')
+    //   if (out)
+    //     await out.autoplay(card.holder.deck)
+    // },
+  },
+  francesca_hope: {
+    description:
+      "Move agile units to whichever valid row maximizes their strength (don't move units already in optimal row).",
+    // activated: async card => {
+    //   const close = board.getRow(card, 'close')
+    //   const ranged =  board.getRow(card, 'ranged')
+    //   const cards = ability_dict['francesca_hope'].helper(card)
+    //   await Promise.all(cards.map(async p => await board.moveTo(p.card, p.row === close ? ranged : close, p.row) ) )
+
+    // },
+    // helper: card => {
+    //   const close = board.getRow(card, 'close')
+    //   const ranged =  board.getRow(card, 'ranged')
+    //   return validCards(close).concat( validCards(ranged) )
+    //   function validCards(cont) {
+    //     return cont.findCards(c => c.row === 'agile').filter(c => dif(c,cont) > 0).map(c => ({card:c, row:cont, weight:dif(c,cont)}))
+    //   }
+    //   function dif(card, source) {
+    //     return (source === close ? ranged : close).calcCardScore(card) - card.power
+    //   }
+    // }
+  },
+  crach_an_craite: {
+    description:
+      "Shuffle all cards from each player's graveyard back into their decks.",
+    // activated: async card => {
+    //   Promise.all(card.holder.grave.cards.map(c => board.toDeck(c, card.holder.grave)))
+    //   await Promise.all(card.holder.opponent().grave.cards.map(c => board.toDeck(c, card.holder.opponent().grave)))
+    // },
+  },
+  king_bran: {
+    description:
+      'Units only lose half their Strength in bad weather conditions.',
+    // placed: card => board.row.filter((c,i) => card.holder === player_me ^ i<3).forEach(r => r.halfWeather = true)
+  },
+}

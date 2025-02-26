@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
 
+import './assets/styles/main.sass'
+
 import notificationPlugin from './plugins/notificationPlugin'
 
 const app = createApp(App)

@@ -2,10 +2,7 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { CardType, PremadeDeckType } from '@/types/card'
-import {
-  translateCardsFromDictionary,
-  translateLeaderCard,
-} from '@/utils/cards'
+import { translateCards, translateCard } from '@/utils/cards'
 
 // Define player instance interface
 interface PlayerInstance {
@@ -36,7 +33,7 @@ export const usePlayerStore = defineStore('player', () => {
       hand: ref<CardType[]>([]),
       discardPile: ref<CardType[]>([]),
       deck: ref<CardType[]>([]),
-      faction: ref<string | null>(null),
+      faction: ref<string>('realms'),
       leader: ref<CardType | null>(null),
       leaderAvaliable: ref(false),
     }
@@ -50,11 +47,11 @@ export const usePlayerStore = defineStore('player', () => {
         )
           return
         state.faction.value = initialDeck.faction
-        state.leader.value = translateLeaderCard(initialDeck.leader)
+        state.leader.value = translateCard(initialDeck.leader)
         state.deck.value.splice(
           0,
           state.deck.value.length,
-          ...translateCardsFromDictionary(initialDeck.cards)
+          ...translateCards(initialDeck.cards)
         )
 
         this.fillHand()

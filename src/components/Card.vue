@@ -82,7 +82,7 @@ const rowIconStyle = computed(() => ({
 const abilityIconStyle = computed(() => {
   if (lastAbility.value && lastAbility.value !== 'hero') {
     return {
-      backgroundImage: `url(${require(`@/assets/img/icon/card_ability_${lastAbility.value}.png`)})`,
+      backgroundImage: `url(${require(`@/assets/img/icon/card_ability_${trimSuffix(lastAbility.value)}.png`)})`,
     }
   }
   return {}
@@ -99,6 +99,18 @@ const showAbilityIcon = computed(
     card.value.row &&
     card.value.row !== 'leader'
 )
+
+const trimSuffix = (name: string): string => {
+  const suffixes = ['_r', '_s', '_c']
+
+  for (const suffix of suffixes) {
+    if (name.endsWith(suffix)) {
+      return name.slice(0, -suffix.length)
+    }
+  }
+
+  return name
+}
 </script>
 
 <style lang="sass" scoped>

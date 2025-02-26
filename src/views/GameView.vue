@@ -5,11 +5,11 @@
       <Card v-if="playerOpponent.leader" :card="playerOpponent.leader" />
     </div>
 
-    <!-- Opponent's Hand -->
+    <!-- Opponent's Hand  /// Hidden element -->
     <div id="opponent-hand" class="hand">
       <Card
         v-for="(card, index) in playerOpponent.hand"
-        :key="card.id"
+        :key="`opponent-hand-card-${index}`"
         :card="card"
         :class="{ selected: selectedCard?.card.id === card.id }"
         @click="selectCard(card, index)"
@@ -23,7 +23,7 @@
         <Row
           v-for="row in [...rows].reverse()"
           owner="opponent"
-          :key="row"
+          :key="`opponent-${String(row)}-row`"
           :row="row"
           :cards="boardRows.opponent[row].cards"
           :is-highlighted="isRowHighlighted(row, 'opponent')"
@@ -38,7 +38,7 @@
         <Row
           v-for="row in rows"
           owner="player"
-          :key="row"
+          :key="`player-${String(row)}-row`"
           :row="row"
           :cards="boardRows.player[row].cards"
           :is-highlighted="isRowHighlighted(row, 'player')"
@@ -51,7 +51,7 @@
     <div id="player-hand" class="hand">
       <Card
         v-for="(card, index) in playerMe.hand"
-        :key="index"
+        :key="`player-hand-card-${index}`"
         :card="card"
         :class="{
           selected:
@@ -102,13 +102,13 @@ const {
   simulateOponent,
 } = useGame()
 
-const rows = computed(() => ['close', 'ranged', 'siege'] as RowType[])
+const rows = computed(() => ['close', 'ranged', 'siege'])
 
 onMounted(() => {
   initalize()
 })
 
-function isRowHighlighted(row: RowType, player: 'player' | 'opponent') {
+function isRowHighlighted(row: string, player: 'player' | 'opponent') {
   if (!selectedCard.value) return false
   const { card } = selectedCard.value
   if (

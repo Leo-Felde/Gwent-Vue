@@ -13,7 +13,6 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 import Card from './Card.vue'
-import { RowType } from '@/types/game'
 import { CardType } from '@/types/card'
 
 const props = defineProps({
@@ -22,7 +21,7 @@ const props = defineProps({
     default: 'player',
   },
   row: {
-    type: String as () => RowType,
+    type: String,
     required: true,
   },
   cards: {

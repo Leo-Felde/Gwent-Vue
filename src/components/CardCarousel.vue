@@ -6,7 +6,7 @@
     <div class="carousel">
       <div
         v-for="(card, index) in cards"
-        :key="card.id"
+        :key="`carousel-card-${index}`"
         :class="['carousel-item', { 'center-card': index === focusedIndex }]"
         :style="getCardStyle(index)"
         @click.stop="onCardClick(index)"
@@ -21,6 +21,7 @@
     <div
       class="carousel-ability"
       v-show="focusedCardAbility !== null"
+      :style="`opacity: ${playingAnimation ? 0 : 1};`"
       @click.stop=""
     >
       <img :src="iconPath" alt="Ability icon" class="icon" />
@@ -44,6 +45,7 @@
 import { computed, defineComponent, PropType, ref } from 'vue'
 import { ability_dict } from '@/types/card'
 import Card from './Card.vue'
+import gsap from 'gsap'
 
 export interface CardType {
   id: number
@@ -77,9 +79,11 @@ export default defineComponent({
     show: Boolean,
     readonly: Boolean,
   },
+
   emits: ['select', 'close'],
   setup(props, { emit }) {
     const focusedIndex = ref(0)
+    const playingAnimation = ref(false)
 
     const focusedAbility = computed(() => {
       return props.cards[focusedIndex.value].ability
@@ -99,9 +103,44 @@ export default defineComponent({
       )
     })
 
-    const onCardClick = (index: number) => {
+    const onCardClick = async (index: number) => {
+      if (playingAnimation.value) return
+
       if (index === focusedIndex.value && !props.readonly) {
-        emit('select', index)
+        const selectedCard = document.querySelectorAll('.carousel-item')[
+          index
+        ] as HTMLElement
+        if (!selectedCard) {
+          emit('select', index)
+          return
+        }
+        try {
+          playingAnimation.value = true
+          await gsap.to(selectedCard, {
+            y: 2000,
+            duration: 0.5,
+            ease: 'power1.out',
+            onComplete: () => {
+              emit('select', index)
+
+              setTimeout(() => {
+                const newCard = document.querySelectorAll('.carousel-item')[
+                  index
+                ] as HTMLElement
+
+                if (newCard) {
+                  gsap.set(newCard, { y: 0 })
+                }
+              }, 100)
+            },
+          })
+        } catch {
+          // nada
+        } finally {
+          setTimeout(() => {
+            playingAnimation.value = false
+          }, 500)
+        }
       } else {
         focusedIndex.value = index
       }
@@ -125,6 +164,7 @@ export default defineComponent({
     }
 
     return {
+      playingAnimation,
       focusedCardAbility,
       iconPath,
       focusedIndex,
@@ -181,6 +221,7 @@ export default defineComponent({
   height: 120px
   width: 550px
   color: tan
+  transition: opacity 1s ease-in-out
   .icon
     height: 40px
     position: absolute

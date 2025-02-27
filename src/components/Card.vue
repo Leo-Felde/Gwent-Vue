@@ -19,6 +19,13 @@
     </div>
     <div v-if="showRowIcon" class="row-icon" :style="rowIconStyle"></div>
     <div
+      v-if="showCount"
+      class="card-count"
+      :style="`background-image: url(${require(`@/assets/img/icon/preview_count.png`)})`"
+    >
+      {{ card.count }}
+    </div>
+    <div
       v-if="showAbilityIcon"
       class="ability-icon"
       :style="abilityIconStyle"
@@ -42,6 +49,7 @@ const props = defineProps({
     default: 'regular',
   },
   isSelected: Boolean,
+  showCount: Boolean,
 })
 
 const { card, type } = toRefs(props)
@@ -180,4 +188,16 @@ const trimSuffix = (name: string): string => {
   background-size: contain
   background-position: center
   background-repeat: no-repeat
+
+.card-count
+  font-size: 1.2rem
+  font-weight: bold
+  color: #84642d
+  background-size: contain
+  background-repeat: no-repeat
+  width: 85px
+  padding-top: 5px
+  position: absolute
+  right: -30px
+  bottom: 11%
 </style>

@@ -2,31 +2,29 @@ import { cardDictionary, CardType } from '@/types/card'
 
 // Cria um banco de cartas que podem ser utilizadas pela facção
 export function makeBank(faction: string, deck: number[][] = []): CardType[] {
-  const blackListedIds = deck.length ? deck.map((d) => d[0]) : []
-
   // Cria um mapa para armazenar a quantidade de cada carta no deck
   const deckCountMap = new Map<number, number>()
-  deck.forEach(([id, count]) => {
-    deckCountMap.set(id, count)
-  })
+  if (deck.length > 0) {
+    deck.forEach(([id, count]) => {
+      deckCountMap.set(id, count)
+    })
+  }
 
   // Filtra e mapeia as cartas para incluir as quantidades restantes
   const cards = cardDictionary
     .filter(
       (cd) =>
-        !blackListedIds.includes(cd.id) && // Exclui cartas que estão no deck
-        [faction, 'neutral', 'weather', 'special'].includes(cd.faction) &&
-        cd.row !== 'leader'
+        cd.row !== 'leader' &&
+        [faction, 'neutral', 'weather', 'special'].includes(cd.faction)
     )
     .map((cd) => {
       const deckCount = deckCountMap.get(cd.id) || 0
       const remainingCount = cd.count - deckCount
       return {
         ...cd,
-        count: remainingCount > 0 ? remainingCount : 0,
+        count: remainingCount,
       }
     })
-    .filter((cd) => cd.count > 0) // Inclui apenas cartas com quantidade positiva
 
   // Ordenação personalizada para ordenar as cartas com base no poder e facção (neutras, clima e especiais são incluídas)
   cards.sort((a, b) => {
@@ -42,13 +40,13 @@ export function makeBank(faction: string, deck: number[][] = []): CardType[] {
       faction: b.faction,
       isHero: b.ability.includes('hero'),
     }
-    return compare(c1, c2)
+    return compareCardStrength(c1, c2)
   })
 
   return cards
 }
 
-function compare(
+export function compareCardStrength(
   a: { name: string; basePower: number; faction: string; isHero: boolean },
   b: { name: string; basePower: number; faction: string; isHero: boolean }
 ) {
@@ -78,7 +76,7 @@ export function translateCards(cards: number[][]): CardType[] {
     for (let i = 0; i < card.count; i++) {
       const foundCard = translateCard(card.id)
       if (foundCard) {
-        translatedCards.push(foundCard)
+        translatedCards.push({ ...foundCard, count: 1 })
       }
     }
   })

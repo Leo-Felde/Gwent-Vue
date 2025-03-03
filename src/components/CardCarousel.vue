@@ -76,16 +76,22 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    defaultFocus: {
+      type: Number,
+      default: 0,
+    },
     show: Boolean,
     readonly: Boolean,
   },
 
   emits: ['select', 'close'],
   setup(props, { emit }) {
-    const focusedIndex = ref(0)
+    const focusedIndex = ref(props.defaultFocus)
     const playingAnimation = ref(false)
 
     const focusedAbility = computed(() => {
+      const focusedCard = props.cards[focusedIndex.value]
+      if (focusedCard.row === 'leader') return null
       return props.cards[focusedIndex.value].ability
         .split(' ')
         .filter((a) => a !== 'hero')[0]
@@ -153,11 +159,9 @@ export default defineComponent({
     const getCardStyle = (index: number) => {
       const distanceFromCenter = index - focusedIndex.value
       const scale = 1 - Math.abs(distanceFromCenter) * 0.08
-      const opacity = 1 - Math.abs(distanceFromCenter) * 0.15
       const offset = distanceFromCenter * 269
       return {
         transform: `translateX(${offset}px) scale(${scale})`,
-        opacity: opacity,
         padding: `${Math.abs(distanceFromCenter) * 15}px`,
         zIndex: 10 - Math.abs(distanceFromCenter),
       }
@@ -215,13 +219,16 @@ export default defineComponent({
 
 .carousel-ability
   position: absolute
-  background: #000000ab
+  background: #1c1c1ca1
   bottom: 5%
   padding: 10px 20px 10px 20px
   height: 120px
   width: 550px
   color: tan
-  transition: opacity 1s ease-in-out
+  transition: opacity 0.5s ease-in-out
+  border: 1px solid #ffffff57
+  border-left: none
+  border-right: none
   .icon
     height: 40px
     position: absolute

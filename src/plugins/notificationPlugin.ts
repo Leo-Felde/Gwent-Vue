@@ -9,7 +9,7 @@ const notificationPlugin = {
       message: string | null = null
     ) => {
       return new Promise<void>((resolve) => {
-        // Padding the tempo para transição
+        // Padding de tempo para transição
         const transitionTime = 200
         const totalDuration = duration + transitionTime
 

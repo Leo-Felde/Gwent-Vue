@@ -2,6 +2,16 @@
   <router-view />
 </template>
 
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { usePlayerStore } from './store/usePlayerStore'
+
+const playerStore = usePlayerStore()
+onMounted(() => {
+  playerStore.createPlayer('player', 1)
+})
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

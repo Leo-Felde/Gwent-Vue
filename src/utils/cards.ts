@@ -67,6 +67,16 @@ function factionRank(f: string, isHero: boolean) {
   return 1
 }
 
+// Retorna as cartas de lider da facção
+export function getLeaders(faction: string): CardType[] {
+  const leaderCards = translateCards(
+    cardDictionary
+      .filter((card) => card.faction === faction && card.row === 'leader')
+      .map((card) => [card.id, card.count])
+  )
+  return leaderCards
+}
+
 // Traduz uma coleção de cartas para objetos CardType.
 export function translateCards(cards: number[][]): CardType[] {
   const cardMap = cards.map((c) => ({ id: c[0], count: c[1] }))

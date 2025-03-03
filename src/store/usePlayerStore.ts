@@ -16,6 +16,7 @@ interface PlayerInstance {
   leader: CardType | null
   leaderAvaliable: boolean
   initializeDeck: (initialDeck: PremadeDeckType) => void
+  fillHand: () => void
   shuffleDeck: () => void
   drawCard: () => void
   hasCards: () => boolean
@@ -53,8 +54,6 @@ export const usePlayerStore = defineStore('player', () => {
           state.deck.value.length,
           ...translateCards(initialDeck.cards)
         )
-
-        this.fillHand()
       },
 
       fillHand() {

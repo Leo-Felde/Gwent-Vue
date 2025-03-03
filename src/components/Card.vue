@@ -139,6 +139,7 @@ const trimSuffix = (name: string): string => {
   &.preview
     width: 264px
     height: 500px
+    border: none
 
   &.selected
     border: 2px solid yellow

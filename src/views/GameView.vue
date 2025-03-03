@@ -81,10 +81,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { usePlayerStore } from '@/store/usePlayerStore'
 import { useGame } from '@/composables/useGame'
-import { RowType } from '@/types/game'
 import Card from '../components/Card.vue'
 import Row from '../components/Row.vue'
 import CardPile from '../components/CardPile.vue' // Import the CardPile component
@@ -104,7 +103,7 @@ const {
 
 const rows = computed(() => ['close', 'ranged', 'siege'])
 
-onMounted(() => {
+onBeforeMount(() => {
   initalize()
 })
 

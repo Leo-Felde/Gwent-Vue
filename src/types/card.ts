@@ -41,6 +41,88 @@ export interface PremadeDeckType {
   cards: number[][]
 }
 
+export const factionCard: CardType[] = [
+  {
+    name: 'Northern Realms',
+    id: 1,
+    faction: 'faction',
+    filename: 'realms',
+    row: '',
+    strength: null,
+    ability: '',
+    count: 0,
+  },
+  {
+    name: 'Nilfgaardian Empire',
+    id: 1,
+    faction: 'faction',
+    filename: 'nilfgaard',
+    row: '',
+    strength: null,
+    ability: '',
+    count: 0,
+  },
+  {
+    name: 'monsters',
+    id: 1,
+    faction: 'faction',
+    filename: 'monsters',
+    row: '',
+    strength: null,
+    ability: '',
+    count: 0,
+  },
+  {
+    name: "Scoia'tael",
+    id: 1,
+    faction: 'faction',
+    filename: 'scoiatael',
+    row: '',
+    strength: null,
+    ability: '',
+    count: 0,
+  },
+  {
+    name: 'Skellige',
+    id: 1,
+    faction: 'faction',
+    filename: 'skellige',
+    row: '',
+    strength: null,
+    ability: '',
+    count: 0,
+  },
+]
+
+export const factionDictionary = {
+  realms: {
+    icon: 'realms',
+    name: 'Northern Realms',
+    description: 'Draw a card from your deck whenever you win a round.',
+  },
+  nilfgaard: {
+    icon: 'nilfgaard',
+    name: 'Nilfgaardian Empire',
+    description: 'Wins any round that ends in a draw.',
+  },
+  monsters: {
+    icon: 'monsters',
+    name: 'Monsters',
+    description: 'Keeps a random Unit Card out after each round.',
+  },
+  scoiatael: {
+    icon: 'scoiatael',
+    name: "Scoia'tael",
+    description: 'Decides who takes first turn.',
+  },
+  skellige: {
+    icon: 'skellige',
+    name: 'Skellige',
+    description:
+      '2 random cards from the graveyard are placed on the battlefield at the start of the third round.',
+  },
+}
+
 export const cardDictionary: CardType[] = [
   {
     name: 'Mysterious Elf',

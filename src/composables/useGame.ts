@@ -10,7 +10,8 @@ import { Board, PlayerTypes } from '@/types/game'
 
 const playerStore = usePlayerStore()
 const players = playerStore.players
-const playerMe = playerStore.createPlayer('player', 1)
+const playerMe =
+  playerStore.players?.player || playerStore.createPlayer('player', 1)
 const playerOpponent = playerStore.createPlayer('opponent', 2)
 
 const firstPlayer = ref<string>('player')
@@ -35,10 +36,13 @@ export function useGame() {
   const selectedCard = ref<{ card: CardType; index: number } | null>(null)
 
   function initalize() {
+    console.log('Initialize game')
     const defaultDeck = premadeDecks[0]
 
-    playerMe.initializeDeck(defaultDeck)
+    // playerMe.initializeDeck(defaultDeck)
+    playerMe.fillHand()
     playerOpponent.initializeDeck(defaultDeck)
+    playerOpponent.fillHand()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -325,7 +325,7 @@ export default defineComponent({
     }
 
     const selectLeaderCard = async () => {
-      const leaderIndex = await useCarousel({
+      const leaderCard = await useCarousel({
         cards: leaderCards.value,
         amount: 1,
         title: '',
@@ -333,15 +333,14 @@ export default defineComponent({
           (lc) => lc.id === playerMe.leader?.id
         ),
       })
-      if (!leaderIndex.length) return
-      const leaderCard = leaderCards.value[leaderIndex[0]]
+      if (!leaderCard.id) return
       if (leaderCard.id === playerMe.leader?.id) return
 
       if (leaderCard) playerMe.leader = leaderCard
     }
 
     const changeFaction = async () => {
-      const factionIndex = await useCarousel({
+      const faction = await useCarousel({
         cards: factionCard,
         amount: 1,
         title: '',
@@ -350,8 +349,7 @@ export default defineComponent({
         ),
       })
 
-      if (!factionIndex.length) return
-      const faction = factionCard[factionIndex[0]]
+      if (!faction) return
       if (faction.filename === playerMe.faction) return
 
       playerMe.deck = []

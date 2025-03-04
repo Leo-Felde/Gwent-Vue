@@ -85,6 +85,10 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
+    animate: {
+      type: Boolean,
+      default: true,
+    },
     show: Boolean,
     readonly: Boolean,
   },
@@ -128,32 +132,36 @@ export default defineComponent({
           emit('select', index)
           return
         }
-        try {
-          playingAnimation.value = true
-          await gsap.to(selectedCard, {
-            y: 2000,
-            duration: 0.5,
-            ease: 'power1.out',
-            onComplete: () => {
-              emit('select', index)
+        if (props.animate) {
+          try {
+            playingAnimation.value = true
+            await gsap.to(selectedCard, {
+              y: 2000,
+              duration: 0.5,
+              ease: 'power1.out',
+              onComplete: () => {
+                emit('select', index)
 
-              setTimeout(() => {
-                const newCard = document.querySelectorAll('.carousel-item')[
-                  index
-                ] as HTMLElement
+                setTimeout(() => {
+                  const newCard = document.querySelectorAll('.carousel-item')[
+                    index
+                  ] as HTMLElement
 
-                if (newCard) {
-                  gsap.set(newCard, { y: 0 })
-                }
-              }, 100)
-            },
-          })
-        } catch {
-          // nada
-        } finally {
-          setTimeout(() => {
-            playingAnimation.value = false
-          }, 500)
+                  if (newCard) {
+                    gsap.set(newCard, { y: 0 })
+                  }
+                }, 100)
+              },
+            })
+          } catch {
+            // nada
+          } finally {
+            setTimeout(() => {
+              playingAnimation.value = false
+            }, 500)
+          }
+        } else {
+          emit('select', index)
         }
       } else {
         focusedIndex.value = index

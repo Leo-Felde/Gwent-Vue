@@ -9,7 +9,7 @@ interface CarouselOptions {
   defaultFocus?: number
 }
 
-const useCarousel = (options: CarouselOptions): Promise<number[]> => {
+const useCarousel = (options: CarouselOptions): Promise<any> => {
   return new Promise((resolve) => {
     const selectedCards = ref<number[]>([])
     const app = createApp(
@@ -23,7 +23,12 @@ const useCarousel = (options: CarouselOptions): Promise<number[]> => {
               show.value = false
               setTimeout(() => {
                 app.unmount()
-                resolve(selectedCards.value)
+                const selectedObjects = selectedCards.value.map(
+                  (i) => options.cards[i]
+                )
+                resolve(
+                  options.amount === 1 ? selectedObjects[0] : selectedObjects
+                )
               }, 300)
             }
           }
@@ -32,7 +37,12 @@ const useCarousel = (options: CarouselOptions): Promise<number[]> => {
             show.value = false
             setTimeout(() => {
               app.unmount()
-              resolve(selectedCards.value) // Resolve with selected cards
+              const selectedObjects = selectedCards.value.map(
+                (i) => options.cards[i]
+              )
+              resolve(
+                options.amount === 1 ? selectedObjects[0] : selectedObjects
+              )
             }, 300)
           }
 
@@ -42,6 +52,7 @@ const useCarousel = (options: CarouselOptions): Promise<number[]> => {
               title: options.title || '',
               defaultFocus: options?.defaultFocus ?? 0,
               show: show.value,
+              animate: options.amount > 0,
               onSelect,
               onClose,
             })

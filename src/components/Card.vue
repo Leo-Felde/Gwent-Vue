@@ -164,6 +164,7 @@ const trimSuffix = (name: string): string => {
       font-size: 1.15rem
       text-align: center
       width: 100%
+      color: black
 
       &.hero-power
         color: white

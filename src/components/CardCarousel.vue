@@ -24,7 +24,12 @@
       :style="`opacity: ${playingAnimation ? 0 : 1};`"
       @click.stop=""
     >
-      <img :src="iconPath" alt="Ability icon" class="icon" />
+      <img
+        :src="iconPath"
+        alt="Ability icon"
+        class="icon"
+        v-if="showAbilityIcon"
+      />
       <h3>
         {{ focusedCardAbility?.name || 'Leader Ability' }}
       </h3>
@@ -90,8 +95,6 @@ export default defineComponent({
     const playingAnimation = ref(false)
 
     const focusedAbility = computed(() => {
-      const focusedCard = props.cards[focusedIndex.value]
-      if (focusedCard.row === 'leader') return null
       return props.cards[focusedIndex.value].ability
         .split(' ')
         .filter((a) => a !== 'hero')[0]
@@ -101,6 +104,11 @@ export default defineComponent({
       return (
         ability_dict[focusedAbility.value as keyof typeof ability_dict] || null
       )
+    })
+
+    const showAbilityIcon = computed(() => {
+      const focusedCard = props.cards[focusedIndex.value]
+      return focusedCard.row !== 'leader'
     })
 
     const iconPath = computed(() => {
@@ -170,6 +178,7 @@ export default defineComponent({
     return {
       playingAnimation,
       focusedCardAbility,
+      showAbilityIcon,
       iconPath,
       focusedIndex,
       onCardClick,
@@ -219,7 +228,7 @@ export default defineComponent({
 
 .carousel-ability
   position: absolute
-  background: #1c1c1ca1
+  background: rgba(11, 11, 11, 0.81)
   bottom: 5%
   padding: 10px 20px 10px 20px
   height: 120px

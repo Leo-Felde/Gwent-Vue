@@ -93,6 +93,14 @@ export function translateCards(cards: number[][]): CardType[] {
 
   return translatedCards
 }
+
+// Traduz o ID da carta para um Object do type CardType (Json -> Object)
+export function translateCard(id: number): CardType | null {
+  const translatedCard = cardDictionary.find((dc) => dc.id === id)
+
+  return translatedCard || null
+}
+
 // Traduz uma coleção de objetos CardType para um Dicionário.
 export function reverseTranslateCards(cards: CardType[]): number[][] {
   const cardMap = cards.map((c) => c.id)
@@ -108,13 +116,6 @@ export function reverseTranslateCards(cards: CardType[]): number[][] {
   })
 
   return translatedCards
-}
-
-// Traduz o ID da carta para um Object do type CardType (Json -> Object)
-export function translateCard(id: number): CardType | null {
-  const translatedCard = cardDictionary.find((dc) => dc.id === id)
-
-  return translatedCard || null
 }
 
 // Traduz o id de uma carta para um valor do Dicionário (Object -> Json)

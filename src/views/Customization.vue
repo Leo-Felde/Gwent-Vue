@@ -11,9 +11,17 @@
         </span>
         <span class="faction-ability"> {{ faction.description }} </span>
         <div class="actions">
-          <Button> Import deck </Button>
+          <Button @click="importDeckJson"> Import deck </Button>
           <Button @click="changeFaction"> Change faction </Button>
-          <Button> Download deck </Button>
+          <input
+            type="file"
+            id="add-file"
+            style="display: none"
+            accept="application/JSON"
+            @change="onJsonUpload"
+          />
+          <Button @click="downloadDeckJson"> Download deck </Button>
+          <a id="download-json" style="display: none"></a>
         </div>
       </div>
       <h2 class="deck-label">Cards in Deck</h2>
@@ -46,14 +54,15 @@
         </p>
         <p>
           <span> Number of Unit Cards </span>
-          <span>
+          <span :style="!hasEnoughUnitCards ? 'color: red' : ''">
             <img :src="require('@/assets/img/icon/deck_stats_unit.png')" />
             {{ numberOfUnitCards }}
+            <span v-if="!hasEnoughUnitCards">/22</span>
           </span>
         </p>
         <p>
           <span> Special Cards </span>
-          <span>
+          <span :styte="numberOfSpecialsAllowed ? '' : 'red'">
             <img :src="require('@/assets/img/icon/deck_stats_special.png')" />
             {{ numberOfSpecialCards }}/10
           </span>
@@ -72,6 +81,9 @@
             {{ numberOfHeroCards }}
           </span>
         </p>
+        <div id="summary-actions">
+          <Button @click="onPlay"> Play </Button>
+        </div>
       </section>
       <section id="cards-deck" class="card-container">
         <Card
@@ -96,12 +108,15 @@ import {
   getLeaders,
   makeBank,
   reverseTranslateCards,
+  translateCard,
+  translateCards,
 } from '@/utils/cards'
 import { premadeDecks } from '@/utils/utils'
 import { computed, defineComponent, onBeforeMount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 import Button from '@/components/Button.vue'
 import { useCarousel } from '@/plugins/carouselPlugin'
+import router from '@/router'
 
 export default defineComponent({
   name: 'CustomizationView',
@@ -158,13 +173,12 @@ export default defineComponent({
 
     const numberOfUnitCards = computed(() => {
       return playerMe.deck.filter((card) => {
-        return (
-          !card.ability.includes('hero') &&
-          !card.ability.includes('spy') &&
-          card.faction !== 'special' &&
-          card.faction !== 'weather'
-        )
+        return card.faction !== 'special' && card.faction !== 'weather'
       }).length
+    })
+
+    const hasEnoughUnitCards = computed(() => {
+      return numberOfUnitCards.value > 22
     })
 
     const totalUnitCardStrength = computed(() => {
@@ -182,6 +196,10 @@ export default defineComponent({
 
     const numberOfSpecialCards = computed(() => {
       return playerMe.deck.filter((card) => card.faction === 'special').length
+    })
+
+    const numberOfSpecialsAllowed = computed(() => {
+      return numberOfSpecialCards.value < 11
     })
 
     const numberOfHeroCards = computed(() => {
@@ -296,11 +314,15 @@ export default defineComponent({
       const defaultDeck = premadeDecks[0]
       playerMe.initializeDeck(defaultDeck)
 
+      makeCardBank()
+    })
+
+    const makeCardBank = () => {
       const translatedDeck = reverseTranslateCards(playerMe.deck)
       const bank = makeBank(playerMe.faction || 'realms', translatedDeck)
 
       cardBank.value = bank
-    })
+    }
 
     const selectLeaderCard = async () => {
       const leaderIndex = await useCarousel({
@@ -340,6 +362,75 @@ export default defineComponent({
       cardBank.value = makeBank(faction.filename)
     }
 
+    const importDeckJson = () => {
+      const inputElement = document.getElementById('add-file')
+
+      if (!inputElement) return
+      inputElement.click()
+    }
+
+    const onJsonUpload = (event: Event) => {
+      const inputElement = event.target as HTMLInputElement
+      if (!inputElement) return
+
+      if (inputElement.files && inputElement.files.length > 0) {
+        const file = inputElement.files[0]
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          if (e.target && e.target.result) {
+            try {
+              const deckData = JSON.parse(e.target.result as string)
+              const keys = Object.keys(deckData)
+
+              if (
+                !['cards', 'leader', 'faction'].every((key) =>
+                  keys.includes(key)
+                )
+              ) {
+                // notifica json inválido
+                return
+              }
+              const formattedDeck = translateCards(deckData.cards)
+              const formattedLeader = translateCard(deckData.leader)
+
+              playerMe.faction = deckData.faction
+              playerMe.deck = formattedDeck
+              playerMe.leader = formattedLeader
+
+              makeCardBank()
+            } catch (error) {
+              console.error('Error parsing JSON:', error)
+            }
+          }
+        }
+        reader.readAsText(file)
+      }
+    }
+
+    const downloadDeckJson = () => {
+      let json = JSON.stringify({
+        faction: playerMe.faction,
+        leaderCards: playerMe.leader?.id,
+        cards: reverseTranslateCards(playerMe.deck),
+      })
+
+      let str = 'data:text/json;charset=utf-8,' + encodeURIComponent(json)
+      let hidden_elem = document.getElementById(
+        'download-json'
+      ) as HTMLAnchorElement
+      if (!hidden_elem) return
+
+      hidden_elem.href = str
+      hidden_elem.download = `${playerMe.faction}-deck.json`
+      hidden_elem.click()
+    }
+
+    const onPlay = () => {
+      // REMOVER ASAP
+
+      router.push('/play')
+    }
+
     return {
       playerMe,
       faction,
@@ -349,11 +440,17 @@ export default defineComponent({
       addCardToDeck,
       removeCardFromDeck,
       numberOfUnitCards,
+      hasEnoughUnitCards,
       totalUnitCardStrength,
       numberOfSpecialCards,
+      numberOfSpecialsAllowed,
       numberOfHeroCards,
       selectLeaderCard,
       changeFaction,
+      importDeckJson,
+      onJsonUpload,
+      downloadDeckJson,
+      onPlay, // remover asap
     }
   },
 })
@@ -382,7 +479,6 @@ export default defineComponent({
 #customization-summary
   width: 20%
   color: #b68e46
-  font-weight: bold
   font-size: 1.1rem
   &>div
     margin-left: auto
@@ -402,6 +498,12 @@ export default defineComponent({
     height: 247px
     width: 132px
 
+#summary-actions
+  display: flex
+  .button
+    width: 160px
+    margin-left: auto
+    margin-right: auto
 .faction-name
   display: flex
   img

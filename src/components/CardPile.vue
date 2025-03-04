@@ -1,19 +1,33 @@
 <template>
-  <div class="card-pile" @click="$emit('click')">
-    <div class="cover" v-if="cover" :style="coverStyle" />
-    <div
-      v-for="(card, index) in cards"
-      :key="`deck-${card.id}`"
-      class="card-wrapper"
-      :style="getCardStyle(index)"
-    >
-      <Card :card="card" />
+  <div
+    class="card-pile"
+    @click="$emit('click')"
+    :class="{ clickable: !!$attrs.onClick && cards.length > 0 }"
+  >
+    <div v-if="onlyCovers">
+      <div
+        v-for="(card, index) in cards"
+        :key="`pile-cover-${index}`"
+        :style="getCardStyle(index, true)"
+        class="card-wrapper card-cover"
+      />
+    </div>
+    <div v-else>
+      <div
+        v-for="(card, index) in cards"
+        :key="`pile-${card.id}`"
+        class="card-wrapper"
+        :style="getCardStyle(index)"
+      >
+        <Card :card="card" v-if="index === cards.length - 1" />
+        <div v-else class="card-cover" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, PropType, ref } from 'vue'
+import { defineProps, PropType, ref } from 'vue'
 import Card from './Card.vue' // Import the Card component
 import { CardType } from '@/types/card'
 
@@ -24,23 +38,17 @@ const props = defineProps({
   },
   cover: {
     type: String as PropType<string | null>,
-    default: null,
+    required: true,
   },
+  onlyCovers: Boolean,
 })
 
 const stackOffset = ref<number>(0.3)
-
-const coverStyle = computed(() => {
-  const index = props.cards.length
+const getCardStyle = (index: number, cover = false) => {
   return {
-    backgroundImage: `url(${require(`@/assets/img/card-lg/faction_${props.cover}.jpg`)})`,
-    transform: `translate(${-index * stackOffset.value}px, ${-index * stackOffset.value}px)`,
-    zIndex: index,
-  }
-})
-
-const getCardStyle = (index: number) => {
-  return {
+    backgroundImage: cover
+      ? `url(${require(`@/assets/img/card-lg/faction_${props.cover}.jpg`)})`
+      : 'initial',
     transform: `translate(${-index * stackOffset.value}px, ${-index * stackOffset.value}px)`,
     zIndex: index,
   }
@@ -49,27 +57,27 @@ const getCardStyle = (index: number) => {
 
 <style lang="sass" scoped>
 .card-pile
-  position: relative;
+  position: relative
   width: 100px
   height: 150px
-
-.cover
-  position: relative
-  z-index: 99
-  width: 95.4px
-  height: 136.13px
-  background: white
-  border: 1px solid #9b8405
-  border-radius: 6.5%
-  cursor: pointer
-  background-size: cover
-  background-position: center
 
 .card-wrapper
   position: absolute
   top: 0
   left: 0
   transition: transform 0.2s ease-in-out
+  height: 0px
+  width: 0px
   .card
     pointer-events: none
+    height: 150px
+    width: 100px
+
+.card-cover
+  height: 150px
+  width: 100px
+  background-size: contain
+  border-right: 1px solid #9d9d9d
+  border-bottom: 1px solid #9d9d9d
+  border-radius: 6.5%
 </style>

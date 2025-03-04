@@ -70,11 +70,19 @@
     <div id="player-deck" class="deck-area">
       <div class="discard-pile">
         <h3>Discard Pile</h3>
-        <CardPile :cards="playerMe.discardPile" :hidden="false" />
+        <CardPile
+          :cards="playerMe.discardPile"
+          :cover="playerMe.faction"
+          @click="showDiscardPile"
+        />
       </div>
       <div class="deck">
         <h3>Deck</h3>
-        <CardPile :cards="playerMe.deck" :cover="playerMe.faction" />
+        <CardPile
+          :cards="playerMe.deck"
+          :cover="playerMe.faction"
+          only-covers
+        />
       </div>
     </div>
   </div>
@@ -87,6 +95,7 @@ import { useGame } from '@/composables/useGame'
 import Card from '../components/Card.vue'
 import Row from '../components/Row.vue'
 import CardPile from '../components/CardPile.vue' // Import the CardPile component
+import { useCarousel } from '@/plugins/carouselPlugin'
 
 const playerStore = usePlayerStore()
 const playerMe = playerStore.players.player
@@ -107,7 +116,7 @@ onBeforeMount(() => {
   initalize()
 })
 
-function isRowHighlighted(row: string, player: 'player' | 'opponent') {
+const isRowHighlighted = (row: string, player: 'player' | 'opponent') => {
   if (!selectedCard.value) return false
   const { card } = selectedCard.value
   if (
@@ -127,6 +136,17 @@ function isRowHighlighted(row: string, player: 'player' | 'opponent') {
     return true
   }
   return false
+}
+
+const showDiscardPile = () => {
+  console.log(playerMe.discardPile?.length)
+  if (playerMe.discardPile?.length <= 0) return
+
+  useCarousel({
+    cards: playerMe.discardPile,
+    amount: 0,
+    title: '',
+  })
 }
 </script>
 

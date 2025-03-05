@@ -15,7 +15,25 @@
         @click="selectCard(card, index)"
       />
     </div>
-    <!-- <button @click="simulateOponent">Simulate Opponent</button> -->
+
+    <!-- Opponent's Discard Pile and Deck -->
+    <div id="opponent-deck" class="deck-area">
+      <div class="discard-pile">
+        <CardPile
+          :cards="playerOpponent.discardPile"
+          :cover="playerOpponent.faction"
+          @click="showDiscardPile"
+        />
+      </div>
+      <div class="deck">
+        <CardPile
+          :cards="playerOpponent.deck"
+          :cover="playerOpponent.faction"
+          count
+          only-covers
+        />
+      </div>
+    </div>
 
     <!-- Opponent's Board -->
     <div id="opponent-board" class="board">
@@ -79,10 +97,9 @@
       <Card v-if="playerMe.leader" :card="playerMe.leader" />
     </div>
 
-    <!-- Discard Pile and Deck -->
+    <!-- Player Discard Pile and Deck -->
     <div id="player-deck" class="deck-area">
       <div class="discard-pile">
-        <h3>Discard Pile</h3>
         <CardPile
           :cards="playerMe.discardPile"
           :cover="playerMe.faction"
@@ -90,10 +107,10 @@
         />
       </div>
       <div class="deck">
-        <h3>Deck</h3>
         <CardPile
           :cards="playerMe.deck"
           :cover="playerMe.faction"
+          count
           only-covers
         />
       </div>
@@ -223,10 +240,16 @@ const showDiscardPile = () => {
 
 .deck-area
   position: absolute
-  bottom: 90px
-  right: 85px
   display: flex
   gap: 20px
+
+#player-deck
+  bottom: 90px
+  right: 85px
+
+#opponent-deck
+  top: 80px
+  right: 85px
 
 .discard-pile
   margin-right: 56px

@@ -23,6 +23,9 @@
         <div class="card-cover" v-else />
       </div>
     </div>
+    <div class="pile-counter" v-if="count">
+      {{ cards.length }}
+    </div>
   </div>
 </template>
 
@@ -41,6 +44,7 @@ const props = defineProps({
     required: true,
   },
   onlyCovers: Boolean,
+  count: Boolean,
 })
 
 const stackOffset = ref<number>(0.3)
@@ -86,4 +90,14 @@ const getCoverStyle = (index: number, hideBckg = false) => {
   border-right: 1px solid #9d9d9d
   border-bottom: 1px solid #9d9d9d
   border-radius: 6.5%
+
+.pile-counter
+  position: absolute
+  z-index: 999
+  bottom: 18%
+  left: 15%
+  background: #000000a0
+  padding: 4px 12px 4px 12px
+  font-size: 1.2rem
+  color: tan
 </style>

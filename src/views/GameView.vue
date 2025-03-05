@@ -25,14 +25,25 @@
           owner="opponent"
           :key="`opponent-${String(row)}-row`"
           :row="row"
-          :cards="boardRows.opponent[row].cards"
-          :is-highlighted="isRowHighlighted(row, 'opponent')"
-          @row-click="(row) => playCard(selectedCard?.card, row)"
+          :data="boardRows.opponent[row]"
+          :highlight="rowHighlightElem(row, 'opponent')"
+          @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
         />
       </div>
     </div>
 
-    <div id="board-effects"></div>
+    <div
+      id="board-effects"
+      :class="{ highlight: highlightEffects() }"
+      @click="playWeatherCard(selectedCard?.card)"
+    >
+      <Card
+        v-for="(card, index) in boardEffects"
+        :key="`board-effect-${index}`"
+        :card="card"
+        class="my-auto"
+      />
+    </div>
 
     <!-- Player's Board -->
     <div id="player-board" class="board">
@@ -42,9 +53,9 @@
           owner="player"
           :key="`player-${String(row)}-row`"
           :row="row"
-          :cards="boardRows.player[row].cards"
-          :is-highlighted="isRowHighlighted(row, 'player')"
-          @row-click="(row) => playCard(selectedCard?.card, row)"
+          :data="boardRows.player[row]"
+          :highlight="rowHighlightElem(row, 'player')"
+          @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
         />
       </div>
     </div>
@@ -106,9 +117,11 @@ const playerOpponent = playerStore.players.opponent
 const {
   initalize,
   boardRows,
+  boardEffects,
   selectedCard,
   selectCard,
-  playCard,
+  playCardtoRow,
+  playWeatherCard,
   simulateOponent,
 } = useGame()
 
@@ -118,26 +131,41 @@ onBeforeMount(() => {
   initalize()
 })
 
-const isRowHighlighted = (row: string, player: 'player' | 'opponent') => {
-  if (!selectedCard.value) return false
+const rowHighlightElem = (
+  row: string,
+  player: 'player' | 'opponent'
+): string | null => {
+  if (!selectedCard.value) return null
+
   const { card } = selectedCard.value
+  if (
+    player === 'player' &&
+    !card.row &&
+    ['horn', 'mardroeme'].includes(card.ability)
+  ) {
+    return 'special'
+  }
   if (
     player === 'opponent' &&
     card.ability.includes('spy') &&
     card.row.includes(row)
   ) {
-    return true
-  } else if (card.ability.includes('spy')) {
-    return false
+    return 'cards'
   }
   if (
     player === 'player' &&
+    !card.ability.includes('spy') &&
     (card.row.includes(row) ||
       (card.row.includes('agile') && ['close', 'ranged'].includes(row)))
   ) {
-    return true
+    return 'cards'
   }
-  return false
+  return null
+}
+
+const highlightEffects = () => {
+  if (!selectedCard.value) return false
+  return selectedCard.value.card.faction === 'weather'
 }
 
 const showDiscardPile = () => {
@@ -213,13 +241,25 @@ const showDiscardPile = () => {
   position: absolute
   top: -200px
 
+#player-hand
+  .card
+    &:hover, &.selected
+      transition: 0.1s transform ease-in-out
+      transform: translateY(-16px)
+
+
 #board-effects
   height: 168px
   position: absolute
   top: 40%
   left: 6.5%
   width: 304px
-  border: 2px red dotted
+  pointer-events: none
+  display: flex
+  justify-content: center
+  &.highlight
+    pointer-events: all !important
+    cursor: pointer !important
 
 #opponent-board
   margin-top: 14px

@@ -3,6 +3,7 @@ import { CardType } from './card'
 export interface RowType {
   cards: CardType[]
   effects: string[]
+  special: CardType[]
 }
 
 export interface Board {

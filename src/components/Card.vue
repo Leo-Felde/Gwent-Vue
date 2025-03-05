@@ -142,13 +142,13 @@ const trimSuffix = (name: string): string => {
     border: none
 
   &.selected
-    border: 2px solid yellow
-    box-shadow: 0 0 10px yellow
+    border: 2px solid #f9ad37
+    box-shadow: 0 0 10px #ffff0062
 
   &-power-icon
     position: absolute
     top: -4%
-    left: -4%
+    left: -6%
     width: 70%
     height: 50%
     background-size: contain

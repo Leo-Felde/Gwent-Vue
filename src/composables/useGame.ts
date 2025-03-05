@@ -22,21 +22,21 @@ const { socket } = useWebSocket()
 export function useGame() {
   const boardRows = ref({
     player: ref<Board>({
-      close: { cards: [], effects: [] },
-      ranged: { cards: [], effects: [] },
-      siege: { cards: [], effects: [] },
+      close: { cards: [], effects: [], special: [] },
+      ranged: { cards: [], effects: [], special: [] },
+      siege: { cards: [], effects: [], special: [] },
     }),
     opponent: ref<Board>({
-      close: { cards: [], effects: [] },
-      ranged: { cards: [], effects: [] },
-      siege: { cards: [], effects: [] },
+      close: { cards: [], effects: [], special: [] },
+      ranged: { cards: [], effects: [], special: [] },
+      siege: { cards: [], effects: [], special: [] },
     }),
   })
+  const boardEffects = ref<CardType[]>([])
 
   const selectedCard = ref<{ card: CardType; index: number } | null>(null)
 
   function initalize() {
-    console.log('Initialize game')
     const defaultDeck = premadeDecks[0]
 
     // playerMe.initializeDeck(defaultDeck)
@@ -159,13 +159,14 @@ export function useGame() {
     )
   }
 
-  async function playCard(
+  async function playCardtoRow(
     card: CardType | null,
-    row: keyof Board,
+    target: keyof Board,
     player: PlayerTypes = 'player'
   ) {
-    if (!card || !row) return
+    if (!card) return
     const isSpy = card.ability.includes('spy')
+    const isSpecial = ['horn', 'mardroeme'].includes(card.ability) && !card.row
     const isPlayer = player === 'player'
     const board =
       boardRows.value[
@@ -182,12 +183,12 @@ export function useGame() {
     if (selectedCard.value) selectedCard.value = null
 
     nextTick(() => {
-      board[row].cards.push(card)
       players[currentPlayer.value].removeCard(card)
+      board[target][isSpecial ? 'special' : 'cards'].push(card)
 
       nextTick(async () => {
         const rowElement = document.querySelector(
-          `.row-${row}${
+          `.row-${target}${
             isSpy
               ? isPlayer
                 ? '.row-opponent'
@@ -198,7 +199,7 @@ export function useGame() {
           }`
         ) as HTMLElement
         const boardCardElement = rowElement.querySelector(
-          '.cards > *:last-child'
+          isSpecial ? '.special > *:last-child' : '.cards > *:last-child'
         ) as HTMLElement | null
         await animateCard(handElement, boardCardElement)
 
@@ -216,13 +217,51 @@ export function useGame() {
 
   function addEffect(effect: string) {
     if (effect === 'decoy') return
-
-    if (weatherTypes.has(effect)) {
-      weatherToRow(effect)
-    }
+    // todo
   }
 
-  function weatherToRow(weather: string) {
+  async function playWeatherCard(
+    card: CardType,
+    player: PlayerTypes = 'player'
+  ) {
+    const weathers = ['clear', 'fog', 'rain', 'storm', 'frost']
+    console.log('playWeatherCard', card)
+    if (!weathers.includes(card.filename)) return
+
+    const weather = card.filename
+
+    players[currentPlayer.value].removeCard(card)
+
+    boardEffects.value.push(card)
+    if (selectedCard.value) selectedCard.value = null
+
+    nextTick(async () => {
+      const handElement = document.getElementById(
+        `${player}-hand`
+      ) as HTMLElement
+      const effectsElement = document.getElementById(
+        'board-effects'
+      ) as HTMLElement
+      const boardCardElement = effectsElement.querySelector(
+        '.card:last-child'
+      ) as HTMLElement | null
+
+      await animateCard(handElement, boardCardElement)
+      // remove efeitos duplicados
+      if (weather === 'clear') {
+        boardEffects.value = []
+      } else {
+        boardEffects.value = boardEffects.value.reduce(
+          (acc: CardType[], card: CardType) => {
+            if (!acc.some((c: CardType) => c.filename === card.filename)) {
+              acc.push(card)
+            }
+            return acc
+          },
+          []
+        )
+      }
+    })
     ;(Object.keys(boardRows.value) as Array<'player' | 'opponent'>).forEach(
       (player) => {
         const affectedRows: (keyof Board)[] = []
@@ -264,15 +303,17 @@ export function useGame() {
 
   function simulateOponent() {
     const card = playerOpponent.hand[0]
-    if (card) playCard(card, card.row as keyof Board, 'opponent')
+    if (card) playCardtoRow(card, card.row as keyof Board, 'opponent')
   }
 
   return {
     initalize,
     boardRows,
+    boardEffects,
     selectedCard,
     selectCard,
-    playCard,
+    playCardtoRow,
+    playWeatherCard,
     simulateOponent,
   }
 }

@@ -1,12 +1,22 @@
 <template>
   <div
     class="row"
-    :class="[`row-${owner}`, `row-${row}`, { highlight: isHighlighted }]"
+    :class="[`row-${owner}`, `row-${row}`, { highlight: highlight }]"
     @click="onRowClick"
   >
-    <div class="effects">todo</div>
-    <div class="cards">
-      <Card v-for="card in cards" :key="`hand-${card.id}`" :card="card" />
+    <div class="special" :class="{ highlight: highlight === 'special' }">
+      <Card
+        v-for="(card, index) in data.special"
+        :key="`${card.id}-special-${index}`"
+        :card="card"
+      />
+    </div>
+    <div class="cards" :class="{ highlight: highlight === 'cards' }">
+      <Card
+        v-for="(card, index) in data.cards"
+        :key="`${card.id}-card-${index}`"
+        :card="card"
+      />
     </div>
   </div>
 </template>
@@ -14,7 +24,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 import Card from './Card.vue'
-import { CardType } from '@/types/card'
+import { RowType } from '@/types/game'
 
 const props = defineProps({
   owner: {
@@ -25,13 +35,13 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  cards: {
-    type: Array as () => CardType[],
+  data: {
+    type: Object as () => RowType,
     required: true,
   },
-  isHighlighted: {
-    type: Boolean,
-    default: false,
+  highlight: {
+    type: [String, null],
+    default: null,
   },
 })
 
@@ -48,14 +58,15 @@ function onRowClick() {
   height: 119.5px
   cursor: pointer
   pointer-events: none
+  background-color: transparent !important
+  &.highlight
+    pointer-events: all
 
-.row.highlight
-  pointer-events: all
-  background-color: #dbb64a2e
-
-.effects
+.special
   width: 15%
   height: 100%
+  justify-content: center
+  display: flex
 
 .cards
   display: flex

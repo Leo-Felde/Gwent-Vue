@@ -8,7 +8,7 @@
       <div
         v-for="(card, index) in cards"
         :key="`pile-cover-${index}`"
-        :style="getCardStyle(index, true)"
+        :style="getCoverStyle(index, index !== cards.length - 1)"
         class="card-wrapper card-cover"
       />
     </div>
@@ -20,7 +20,7 @@
         :style="getCardStyle(index)"
       >
         <Card :card="card" v-if="index === cards.length - 1" />
-        <div v-else class="card-cover" />
+        <div class="card-cover" v-else />
       </div>
     </div>
   </div>
@@ -44,11 +44,18 @@ const props = defineProps({
 })
 
 const stackOffset = ref<number>(0.3)
-const getCardStyle = (index: number, cover = false) => {
+const getCardStyle = (index: number) => {
   return {
-    backgroundImage: cover
-      ? `url(${require(`@/assets/img/card-lg/faction_${props.cover}.jpg`)})`
-      : 'initial',
+    transform: `translate(${-index * stackOffset.value}px, ${-index * stackOffset.value}px)`,
+    zIndex: index,
+  }
+}
+
+const getCoverStyle = (index: number, hideBckg = false) => {
+  return {
+    backgroundImage: hideBckg
+      ? 'none'
+      : `url(${require(`@/assets/img/card-lg/faction_${props.cover}.jpg`)})`,
     transform: `translate(${-index * stackOffset.value}px, ${-index * stackOffset.value}px)`,
     zIndex: index,
   }
@@ -70,12 +77,11 @@ const getCardStyle = (index: number, cover = false) => {
   width: 0px
   .card
     pointer-events: none
-    height: 150px
-    width: 100px
-
+    height: 127px
+    width: 90px
 .card-cover
-  height: 150px
-  width: 100px
+  height: 127px
+  width: 90px
   background-size: contain
   border-right: 1px solid #9d9d9d
   border-bottom: 1px solid #9d9d9d

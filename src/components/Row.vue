@@ -4,6 +4,7 @@
     :class="[`row-${owner}`, `row-${row}`, { highlight: isHighlighted }]"
     @click="onRowClick"
   >
+    <div class="effects">todo</div>
     <div class="cards">
       <Card v-for="card in cards" :key="`hand-${card.id}`" :card="card" />
     </div>
@@ -41,25 +42,26 @@ function onRowClick() {
 }
 </script>
 
-<style scoped>
-.row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 2px dashed #aaa;
-  padding: 10px;
-  min-height: 100px;
-  cursor: pointer;
-  pointer-events: none;
-}
+<style lang="sass" scoped>
+.row
+  display: flex
+  height: 119.5px
+  cursor: pointer
+  pointer-events: none
 
-.row.highlight {
-  border-color: green;
-  pointer-events: all;
-}
+.row.highlight
+  pointer-events: all
+  background-color: #dbb64a2e
 
-.cards {
-  display: flex;
-  gap: 10px;
-}
+.effects
+  width: 15%
+  height: 100%
+
+.cards
+  display: flex
+  width: 85%
+  height: 100%
+  gap: 4px
+  display: flex
+  justify-content: center
 </style>

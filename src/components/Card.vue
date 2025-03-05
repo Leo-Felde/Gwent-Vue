@@ -123,8 +123,8 @@ const trimSuffix = (name: string): string => {
 
 <style lang="sass" scoped>
 .card
-  $base-width: 95.4px
-  $base-height: 136.13px
+  $base-width: 80px
+  $base-height: 115px
 
   position: relative
   width: $base-width

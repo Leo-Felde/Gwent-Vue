@@ -207,12 +207,13 @@ export default defineComponent({
         .length
     })
 
-    const animateCardElement = (
+    const animateCardElement = async (
       cardElement: HTMLElement,
       direction: number,
       onComplete: () => void,
       isLastCard: boolean
     ) => {
+      cardElement.style.pointerEvents = 'none'
       const clone = cardElement.cloneNode(true) as HTMLElement
       cardElement.parentElement?.appendChild(clone)
 
@@ -221,6 +222,7 @@ export default defineComponent({
 
       gsap.set(clone, {
         position: 'absolute',
+        pointerEvents: 'none',
         top: cardElement.offsetTop - scrollTop,
         left: cardElement.offsetLeft - scrollLeft,
       })
@@ -229,7 +231,7 @@ export default defineComponent({
         cardElement.style.opacity = '0'
       }
 
-      gsap.to(clone, {
+      await gsap.to(clone, {
         x: direction * 300,
         opacity: 0,
         duration: 0.5,
@@ -241,6 +243,8 @@ export default defineComponent({
           }
         },
       })
+
+      cardElement.style.pointerEvents = 'all'
     }
 
     const addCardToDeck = (card: CardType, event: MouseEvent) => {
@@ -379,13 +383,12 @@ export default defineComponent({
             try {
               const deckData = JSON.parse(e.target.result as string)
               const keys = Object.keys(deckData)
-
               if (
                 !['cards', 'leader', 'faction'].every((key) =>
                   keys.includes(key)
                 )
               ) {
-                // notifica json inválido
+                // notificar json inválido
                 return
               }
               const formattedDeck = translateCards(deckData.cards)
@@ -408,7 +411,7 @@ export default defineComponent({
     const downloadDeckJson = () => {
       let json = JSON.stringify({
         faction: playerMe.faction,
-        leaderCards: playerMe.leader?.id,
+        leader: playerMe.leader?.id,
         cards: reverseTranslateCards(playerMe.deck),
       })
 

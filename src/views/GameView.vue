@@ -15,7 +15,7 @@
         @click="selectCard(card, index)"
       />
     </div>
-    <button @click="simulateOponent">Simulate Opponent</button>
+    <!-- <button @click="simulateOponent">Simulate Opponent</button> -->
 
     <!-- Opponent's Board -->
     <div id="opponent-board" class="board">
@@ -31,6 +31,8 @@
         />
       </div>
     </div>
+
+    <div id="board-effects"></div>
 
     <!-- Player's Board -->
     <div id="player-board" class="board">
@@ -139,7 +141,6 @@ const isRowHighlighted = (row: string, player: 'player' | 'opponent') => {
 }
 
 const showDiscardPile = () => {
-  console.log(playerMe.discardPile?.length)
   if (playerMe.discardPile?.length <= 0) return
 
   useCarousel({
@@ -157,36 +158,50 @@ const showDiscardPile = () => {
   align-items: center
   gap: 20px
   position: relative
+  height: calc(100vw * 1080 / 1920)
+  background-image: url('../assets/img/board.jpg')
+
 
 .hand
   display: flex
   gap: 10px
   min-height: 100px
+  left: 85px
+  position: relative
 
 .board
-  width: 70%
+  width: 49.8%
+  position: relative
+  left: 82px
 
 .rows
   display: flex
   flex-direction: column
-  gap: 10px
+  gap: 16px
 
 .leader
   position: absolute
-  top: 0
-  left: 0
+  left: 142px
   z-index: 10
+  .card
+    height: 127px
+    width: 90px
 
 #player-leader
-  top: auto
-  bottom: 0
+  bottom: 114px
+
+#opponent-leader
+  top: 82px
 
 .deck-area
   position: absolute
-  bottom: 0
-  right: 0
+  bottom: 90px
+  right: 85px
   display: flex
   gap: 20px
+
+.discard-pile
+  margin-right: 56px
 
 .discard-pile, .deck
   display: flex
@@ -197,4 +212,21 @@ const showDiscardPile = () => {
 #opponent-hand
   position: absolute
   top: -200px
+
+#board-effects
+  height: 168px
+  position: absolute
+  top: 40%
+  left: 6.5%
+  width: 304px
+  border: 2px red dotted
+
+#opponent-board
+  margin-top: 14px
+
+#player-board
+  margin-top: 10px
+
+.card
+  border: 2px solid transparent
 </style>

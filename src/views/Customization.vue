@@ -460,7 +460,6 @@ export default defineComponent({
   flex-direction: column
   padding: 15px
   gap: 10px
-  height: 100%
   padding: 30px
 #customization-header
   display: flex

@@ -16,6 +16,7 @@
         v-for="(card, index) in data.cards"
         :key="`${card.id}-card-${index}`"
         :card="card"
+        @click.stop.prevent="$emit('card-click', card)"
       />
     </div>
   </div>
@@ -45,7 +46,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['row-click'])
+const emit = defineEmits(['row-click', 'card-click'])
 
 function onRowClick() {
   emit('row-click', props.row)
@@ -56,11 +57,9 @@ function onRowClick() {
 .row
   display: flex
   height: 119.5px
-  cursor: pointer
-  pointer-events: none
   background-color: transparent !important
   &.highlight
-    pointer-events: all
+    cursor: pointer
 
 .special
   width: 15%

@@ -18,25 +18,10 @@
         />
       </div>
     </div>
-    <div
-      class="carousel-ability"
-      v-show="focusedCardAbility !== null"
-      :style="`opacity: ${playingAnimation ? 0 : 1};`"
-      @click.stop=""
-    >
-      <img
-        :src="iconPath"
-        alt="Ability icon"
-        class="icon"
-        v-if="showAbilityIcon"
-      />
-      <h3>
-        {{ focusedCardAbility?.name || 'Leader Ability' }}
-      </h3>
-      <span v-if="focusedCardAbility">
-        {{ focusedCardAbility.description }}
-      </span>
-    </div>
+    <CardAbility
+      :card="cards[focusedIndex]"
+      :playingAnimation="playingAnimation"
+    />
     <Card
       v-if="replacementCard"
       :card="replacementCard"
@@ -47,26 +32,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
-import { ability_dict } from '@/types/card'
-import Card from './Card.vue'
+import { defineComponent, PropType, ref } from 'vue'
 import gsap from 'gsap'
 
-export interface CardType {
-  id: number
-  name: string
-  faction: string
-  row: string
-  strength: number | null
-  ability: string
-  filename: string
-  count: number
-}
+import { CardType } from '@/types/card'
+
+import Card from './Card.vue'
+import CardAbility from './CardAbility.vue'
 
 export default defineComponent({
   name: 'CardCarousel',
   components: {
     Card,
+    CardAbility,
   },
   props: {
     replacementCard: {
@@ -97,29 +75,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const focusedIndex = ref(props.defaultFocus)
     const playingAnimation = ref(false)
-
-    const focusedAbility = computed(() => {
-      return props.cards[focusedIndex.value].ability
-        .split(' ')
-        .filter((a) => a !== 'hero')[0]
-    })
-
-    const focusedCardAbility = computed(() => {
-      return (
-        ability_dict[focusedAbility.value as keyof typeof ability_dict] || null
-      )
-    })
-
-    const showAbilityIcon = computed(() => {
-      const focusedCard = props.cards[focusedIndex.value]
-      return focusedCard.row !== 'leader'
-    })
-
-    const iconPath = computed(() => {
-      return require(
-        `@/assets/img/icon/card_ability_${focusedAbility.value || 'decoy'}.png`
-      )
-    })
 
     const onCardClick = async (index: number) => {
       if (playingAnimation.value) return
@@ -185,9 +140,6 @@ export default defineComponent({
 
     return {
       playingAnimation,
-      focusedCardAbility,
-      showAbilityIcon,
-      iconPath,
       focusedIndex,
       onCardClick,
       onOverlayClick,
@@ -231,6 +183,8 @@ export default defineComponent({
   top: 10%
   padding: 20px
   box-shadow: 0 0 13px #ffffff57
+  justify-content: center
+  display: flex
   span
     font-size: 2rem
 
@@ -246,10 +200,13 @@ export default defineComponent({
   border: 1px solid #ffffff57
   border-left: none
   border-right: none
+  text-align: center
   .icon
     height: 40px
     position: absolute
     left: 15px
+  h3
+    margin-top: 10px
 
 .center-card
   opacity: 1

@@ -50,6 +50,7 @@
       </div>
     </div>
 
+    <!-- Board effects -->
     <div
       id="board-effects"
       :class="{ highlight: highlightEffects() }"
@@ -63,6 +64,14 @@
       />
     </div>
 
+    <!-- Preview of Selected Card -->
+    <CardPreview
+      v-if="selectedCard"
+      :card="selectedCard.card"
+      :align="selectedCard.index > 0 ? 'right' : 'center'"
+      @close="clearSelectedCard"
+    />
+
     <!-- Player's Board -->
     <div id="player-board" class="board">
       <div class="rows">
@@ -74,6 +83,7 @@
           :data="boardRows.player[row]"
           :highlight="rowHighlightElem(row, 'player')"
           @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
+          @card-click="selectCard($event, -1)"
         />
       </div>
     </div>
@@ -120,12 +130,15 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue'
-import { usePlayerStore } from '@/store/usePlayerStore'
+
 import { useGame } from '@/composables/useGame'
+import { usePlayerStore } from '@/store/usePlayerStore'
+import { useCarousel } from '@/plugins/carouselPlugin'
+
 import Card from '../components/Card.vue'
 import Row from '../components/Row.vue'
-import CardPile from '../components/CardPile.vue' // Import the CardPile component
-import { useCarousel } from '@/plugins/carouselPlugin'
+import CardPile from '../components/CardPile.vue'
+import CardPreview from '../components/CardPreview.vue'
 
 const playerStore = usePlayerStore()
 const playerMe = playerStore.players.player
@@ -136,6 +149,7 @@ const {
   boardRows,
   boardEffects,
   selectedCard,
+  clearSelectedCard,
   selectCard,
   playCardtoRow,
   playWeatherCard,
@@ -152,7 +166,8 @@ const rowHighlightElem = (
   row: string,
   player: 'player' | 'opponent'
 ): string | null => {
-  if (!selectedCard.value) return null
+  console.log(selectedCard.value)
+  if (!selectedCard.value || selectedCard.value.index < 0) return null
 
   const { card } = selectedCard.value
   if (
@@ -292,4 +307,8 @@ const showDiscardPile = () => {
 
 .card
   border: 2px solid transparent
+
+:deep(.card-preview.align-right)
+  .card.preview
+    margin-left: 35%
 </style>

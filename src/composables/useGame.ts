@@ -39,7 +39,6 @@ export function useGame() {
   function initalize() {
     const defaultDeck = premadeDecks[0]
 
-    // playerMe.initializeDeck(defaultDeck)
     playerMe.fillHand()
     playerOpponent.initializeDeck(defaultDeck)
     playerOpponent.fillHand()
@@ -54,7 +53,7 @@ export function useGame() {
     await initialRedraw()
   }
 
-  // Aguarda o servidor retornar qual jogador irá primeiro
+  // Aguarda o cointoss no servidor
   async function coinToss(): Promise<string> {
     return new Promise((resolve) => {
       const handleMessage = async (event: MessageEvent) => {
@@ -139,8 +138,12 @@ export function useGame() {
     // demais lógica
   }
 
+  function clearSelectedCard() {
+    selectedCard.value = null
+  }
+
   function selectCard(card: CardType, index: number) {
-    if (selectedCard.value?.index === index) selectedCard.value = null
+    if (selectedCard.value?.index === index) clearSelectedCard
     else selectedCard.value = { card, index }
   }
 
@@ -164,7 +167,7 @@ export function useGame() {
     target: keyof Board,
     player: PlayerTypes = 'player'
   ) {
-    if (!card) return
+    if (!card || !selectedCard.value || selectedCard.value.index < 0) return
     const isSpy = card.ability.includes('spy')
     const isSpecial = ['horn', 'mardroeme'].includes(card.ability) && !card.row
     const isPlayer = player === 'player'
@@ -217,7 +220,18 @@ export function useGame() {
 
   function addEffect(effect: string) {
     if (effect === 'decoy') return
-    // todo
+    // A FAZER
+    switch (effect) {
+      case 'horn':
+        //
+        break
+      case 'bond':
+        //
+        break
+      case 'morale':
+        //
+        break
+    }
   }
 
   async function playWeatherCard(
@@ -311,6 +325,7 @@ export function useGame() {
     boardRows,
     boardEffects,
     selectedCard,
+    clearSelectedCard,
     selectCard,
     playCardtoRow,
     playWeatherCard,

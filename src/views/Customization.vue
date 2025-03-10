@@ -337,7 +337,7 @@ export default defineComponent({
           (lc) => lc.id === playerMe.leader?.id
         ),
       })
-      if (!leaderCard.id) return
+      if (!leaderCard) return
       if (leaderCard.id === playerMe.leader?.id) return
 
       if (leaderCard) playerMe.leader = leaderCard

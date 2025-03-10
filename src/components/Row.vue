@@ -74,4 +74,7 @@ function onRowClick() {
   gap: 4px
   display: flex
   justify-content: center
+  &.highlight
+    .card
+      pointer-events: none
 </style>

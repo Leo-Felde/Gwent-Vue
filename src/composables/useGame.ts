@@ -143,7 +143,7 @@ export function useGame() {
   }
 
   function selectCard(card: CardType, index: number) {
-    if (selectedCard.value?.index === index) clearSelectedCard
+    if (selectedCard.value?.index === index) clearSelectedCard()
     else selectedCard.value = { card, index }
   }
 
@@ -239,7 +239,6 @@ export function useGame() {
     player: PlayerTypes = 'player'
   ) {
     const weathers = ['clear', 'fog', 'rain', 'storm', 'frost']
-    console.log('playWeatherCard', card)
     if (!weathers.includes(card.filename)) return
 
     const weather = card.filename

@@ -46,6 +46,7 @@
           :data="boardRows.opponent[row]"
           :highlight="rowHighlightElem(row, 'opponent')"
           @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
+          @card-click="selectCard($event, -1)"
         />
       </div>
     </div>
@@ -68,7 +69,7 @@
     <CardPreview
       v-if="selectedCard"
       :card="selectedCard.card"
-      :align="selectedCard.index > 0 ? 'right' : 'center'"
+      :align="selectedCard.index >= 0 ? 'right' : 'center'"
       @close="clearSelectedCard"
     />
 
@@ -166,7 +167,6 @@ const rowHighlightElem = (
   row: string,
   player: 'player' | 'opponent'
 ): string | null => {
-  console.log(selectedCard.value)
   if (!selectedCard.value || selectedCard.value.index < 0) return null
 
   const { card } = selectedCard.value

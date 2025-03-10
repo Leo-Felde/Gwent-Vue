@@ -54,4 +54,5 @@ const handleClickOutside = () => {
 .card-ability
   bottom: -30%
   left: -172px
+  pointer-events: none
 </style>

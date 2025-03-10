@@ -16,7 +16,7 @@
         v-for="(card, index) in data.cards"
         :key="`${card.id}-card-${index}`"
         :card="card"
-        @click.stop.prevent="$emit('card-click', card)"
+        @click.stop.prevent="$emit('card-click', { card, index })"
       />
     </div>
   </div>
@@ -49,7 +49,7 @@ const props = defineProps({
 const emit = defineEmits(['row-click', 'card-click'])
 
 function onRowClick() {
-  emit('row-click', props.row)
+  if (props.highlight) emit('row-click', props.row)
 }
 </script>
 

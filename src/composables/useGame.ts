@@ -34,7 +34,11 @@ export function useGame() {
   })
   const boardEffects = ref<CardType[]>([])
 
-  const selectedCard = ref<{ card: CardType; index: number } | null>(null)
+  const selectedCard = ref<{
+    card: CardType
+    index: number
+    isHand: boolean
+  } | null>(null)
 
   function initalize() {
     const defaultDeck = premadeDecks[0]
@@ -142,9 +146,20 @@ export function useGame() {
     selectedCard.value = null
   }
 
-  function selectCard(card: CardType, index: number) {
-    if (selectedCard.value?.index === index) clearSelectedCard()
-    else selectedCard.value = { card, index }
+  function selectCard(
+    card: CardType,
+    index: number,
+    row: keyof Board | null = null
+  ) {
+    if (selectedCard.value?.card) {
+      if (selectedCard.value.index === index) {
+        clearSelectedCard()
+      } else if (selectedCard.value.card.ability === 'decoy' && row !== null) {
+        playDecoytoRow(card, row, index)
+      }
+    }
+
+    selectedCard.value = { card, index, isHand: row === null }
   }
 
   async function animateCard(
@@ -165,7 +180,8 @@ export function useGame() {
   async function playCardtoRow(
     card: CardType | null,
     target: keyof Board,
-    player: PlayerTypes = 'player'
+    player: PlayerTypes = 'player',
+    replaceIndex: number | null = null
   ) {
     if (!card || !selectedCard.value || selectedCard.value.index < 0) return
     const isSpy = card.ability.includes('spy')
@@ -187,7 +203,16 @@ export function useGame() {
 
     nextTick(() => {
       players[currentPlayer.value].removeCard(card)
-      board[target][isSpecial ? 'special' : 'cards'].push(card)
+
+      if (replaceIndex !== null) {
+        board[target][isSpecial ? 'special' : 'cards'].splice(
+          replaceIndex,
+          1,
+          card
+        )
+      } else {
+        board[target][isSpecial ? 'special' : 'cards'].push(card)
+      }
 
       nextTick(async () => {
         const rowElement = document.querySelector(
@@ -218,8 +243,39 @@ export function useGame() {
     })
   }
 
+  async function playDecoytoRow(
+    card: CardType,
+    target: keyof Board,
+    index: number
+  ) {
+    if (!selectedCard.value) return
+    const replacedCard = boardRows.value.player[target].cards[index]
+    const targetRow = document.querySelector(
+      `.row-${target}.row-player`
+    ) as HTMLElement
+    const handIndex = playerMe.hand.findIndex(
+      (hc) => selectedCard.value && hc.id === selectedCard.value.card.id
+    )
+
+    if (!replacedCard || !targetRow || !handIndex) return
+
+    playCardtoRow(selectedCard.value.card, target, 'player', index)
+    playerMe.hand.splice(handIndex, 1, card)
+    const handElement = document.getElementById('player-hand')
+    if (!handElement) return
+
+    const handCardElement = handElement.querySelector(
+      `.card:nth-child(${handIndex + 1})`
+    ) as HTMLElement
+    nextTick(() => {
+      animateCard(targetRow, handCardElement)
+    })
+
+    return
+  }
+
   function addEffect(effect: string) {
-    if (effect === 'decoy') return
+    if (effect === 'decoy') return // necessário? provavelmente não.
     // A FAZER
     switch (effect) {
       case 'horn':

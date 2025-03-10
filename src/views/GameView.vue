@@ -45,8 +45,8 @@
           :row="row"
           :data="boardRows.opponent[row]"
           :highlight="rowHighlightElem(row, 'opponent')"
-          @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
-          @card-click="selectCard($event, -1)"
+          @row-click="(row) => selectRow(row)"
+          @card-click="selectCard($event.card, $event.index, row)"
         />
       </div>
     </div>
@@ -69,7 +69,7 @@
     <CardPreview
       v-if="selectedCard"
       :card="selectedCard.card"
-      :align="selectedCard.index >= 0 ? 'right' : 'center'"
+      :align="selectedCard.isHand ? 'right' : 'center'"
       @close="clearSelectedCard"
     />
 
@@ -83,8 +83,8 @@
           :row="row"
           :data="boardRows.player[row]"
           :highlight="rowHighlightElem(row, 'player')"
-          @row-click="(row) => playCardtoRow(selectedCard?.card, row)"
-          @card-click="selectCard($event, -1)"
+          @row-click="(row) => selectRow(row)"
+          @card-click="selectCard($event.card, $event.index, row)"
         />
       </div>
     </div>
@@ -140,6 +140,7 @@ import Card from '../components/Card.vue'
 import Row from '../components/Row.vue'
 import CardPile from '../components/CardPile.vue'
 import CardPreview from '../components/CardPreview.vue'
+import { Board } from '@/types/game'
 
 const playerStore = usePlayerStore()
 const playerMe = playerStore.players.player
@@ -167,7 +168,7 @@ const rowHighlightElem = (
   row: string,
   player: 'player' | 'opponent'
 ): string | null => {
-  if (!selectedCard.value || selectedCard.value.index < 0) return null
+  if (!selectedCard.value || !selectedCard.value.isHand) return null
 
   const { card } = selectedCard.value
   if (
@@ -196,7 +197,7 @@ const rowHighlightElem = (
 }
 
 const highlightEffects = () => {
-  if (!selectedCard.value) return false
+  if (!selectedCard.value || !selectedCard.value.isHand) return false
   return selectedCard.value.card.faction === 'weather'
 }
 
@@ -208,6 +209,11 @@ const showDiscardPile = () => {
     amount: 0,
     title: '',
   })
+}
+
+const selectRow = (row: string) => {
+  if (!selectedCard.value || !selectedCard.value.isHand) return
+  playCardtoRow(selectedCard.value.card, row as keyof Board)
 }
 </script>
 

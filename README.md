@@ -6,7 +6,9 @@
   <img height="150" src="https://user-images.githubusercontent.com/26311830/116256903-f1599b00-a7b6-11eb-84a1-16dcb5c9bfc6.jpg"  />
 </div>
 
-This is a multiplayer remake of the Classic Gwent mini-game from The Witcher 3: Wild Hunt developed by CD PROJEKT RED.
+This is a multiplayer remake of the Classic Gwent mini-game from The Witcher 3: Wild Hunt using Vue.js and Typescript.
+**This project is still in active development** and is in no way in a playable state yet.<br>
+If you're looking to play righ now, please check [My other project](https://github.com/Leo-Felde/gwent-multiplayer).
 
 ###
 
@@ -26,35 +28,24 @@ This is a multiplayer remake of the Classic Gwent mini-game from The Witcher 3: 
 
 ###
 
-## Known issues:
+## Known bugs and Todo:
 
-###### feel free to report any bugs and share your suggestions.
 
 <ul>
-  <li>None so far</li>
+  <li>[bug] Playing decoys opens the target card as a preview</li>
+  <li>[todo] Playing a card does not sum it's power to the row</li>
+  <li>[todo] Abilities and effects such as Muster, Morale, Commander's horn, weather card, etc</li>
+  <li>[todo] Leader cards abilities </li>
 </ul>
 
-## How to play multiplayer
-
-Either you or a friend must host the server. I cannot afford to run a public one but there are some very easy options out there such as [Glitch](https://glitch.com), [Fly.io](https://fly.io/docs/js/) and [Render](https://render.com/), you could also host it locally.
-
-## How to host a server
-
-If you're just going to connect, skip to the next part.
-
+## Development
 #### Install dependencies
 
 This project requires [Node.js](https://nodejs.org/en/download) to run and install dependencies.<br> After having Node.js installed open a command terminal in the project's root (where index.html is located, in windows 11 right clicking should display an option to open in terminal) and run `npm install`
 
-#### Run the server
-
-Open a command terminal in the project's root and run `node server.js`. After a few seconds you should see a message "## Server is up and running ##", if you don't see this message something went wrong, make sure you have node.js intalled.
-
-#### Connect clients to the same server
-
-in `gwent.js` look for `const socket = new WebSocket('ws://localhost:8080');`. Change the value inside `WebSocket('## here ##')` to the remote server address.
-
-If the connection is successful you should see the options to Create a game or Join a game. Creating a game will give you a session ID which should be used to
+#### Run project / development server
+After installing the dependencies, open a terminal in the project's root folder and run `npm run serve`<br>
+this should run the project locally, acessible by default in `http://localhost:8080`
 
 ## Rules
 

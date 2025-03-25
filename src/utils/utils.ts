@@ -196,3 +196,33 @@ export function removeCircularReferences(obj: any) {
     })
   )
 }
+
+export function getChangedKey(oldObj: any, newObj: any): string | null {
+  try {
+    if (
+      !oldObj ||
+      !newObj ||
+      typeof oldObj !== 'object' ||
+      typeof newObj !== 'object'
+    ) {
+      return null
+    }
+
+    const oldKeys = Object.keys(oldObj)
+    const newKeys = Object.keys(newObj)
+
+    if (oldKeys.length === 0 || newKeys.length === 0) {
+      return null
+    }
+
+    for (const key of newKeys) {
+      if (!Object.is(oldObj[key], newObj[key])) {
+        return key
+      }
+    }
+
+    return null
+  } catch (err) {
+    return null
+  }
+}

@@ -12,16 +12,22 @@ export const powerTypes = new Set([
 ])
 export const weatherTypes = new Set(['fog', 'frost', 'rain', 'clear', 'storm'])
 export const specialAbilities = new Set([
-  'spy',
-  'decoy',
-  'scorch',
-  'mardroeme',
-  'fog',
-  'frost',
-  'rain',
-  'clear',
   'horn',
-  'storm',
+  'mardroeme',
+  'morale',
+  'bond',
+  'muster',
+  'scorch_c',
+  'scorch_r',
+  'scorch_s',
+])
+
+export const cardPowerModifiers = new Set([
+  'horn',
+  'mardroeme',
+  'morale',
+  'bond',
+  'weather',
 ])
 
 export interface CardType {

@@ -37,7 +37,12 @@
 import type { PropType } from 'vue'
 
 import { defineProps, computed, toRefs } from 'vue'
-import { powerTypes, type CardType } from '@/types/card'
+import { powerTypes, cardPowerModifiers, type CardType } from '@/types/card'
+
+interface PowerModifier {
+  modifier: typeof cardPowerModifiers
+  times: number
+}
 
 const props = defineProps({
   card: {
@@ -47,6 +52,10 @@ const props = defineProps({
   type: {
     type: String as PropType<'preview' | 'regular'>,
     default: 'regular',
+  },
+  powerModifier: {
+    type: Object as PropType<PowerModifier>,
+    default: () => ({}),
   },
   isSelected: Boolean,
   showCount: Boolean,

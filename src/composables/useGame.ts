@@ -1,4 +1,4 @@
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, inject } from 'vue'
 import gsap from 'gsap'
 
 import { useWebSocket } from './useWebSocket'
@@ -7,6 +7,12 @@ import { usePlayerStore } from '@/store/usePlayerStore'
 import { CardType, specialAbilities, weatherTypes } from '@/types/card'
 import { premadeDecks, removeCircularReferences } from '@/utils/utils'
 import { Board, PlayerTypes } from '@/types/game'
+
+const notification = inject('notification') as (
+  type: string,
+  duration?: number,
+  messsage?: string
+) => Promise<void>
 
 const playerStore = usePlayerStore()
 const players = playerStore.players
@@ -22,14 +28,14 @@ const { socket } = useWebSocket()
 export function useGame() {
   const boardRows = ref({
     player: ref<Board>({
-      close: { cards: [], effects: [], special: [] },
-      ranged: { cards: [], effects: [], special: [] },
-      siege: { cards: [], effects: [], special: [] },
+      close: { cards: [], effects: [], special: [], sum: 0 },
+      ranged: { cards: [], effects: [], special: [], sum: 0 },
+      siege: { cards: [], effects: [], special: [], sum: 0 },
     }),
     opponent: ref<Board>({
-      close: { cards: [], effects: [], special: [] },
-      ranged: { cards: [], effects: [], special: [] },
-      siege: { cards: [], effects: [], special: [] },
+      close: { cards: [], effects: [], special: [], sum: 0 },
+      ranged: { cards: [], effects: [], special: [], sum: 0 },
+      siege: { cards: [], effects: [], special: [], sum: 0 },
     }),
   })
   const boardEffects = ref<CardType[]>([])
@@ -41,19 +47,24 @@ export function useGame() {
   } | null>(null)
 
   function initalize() {
+    // defaultDeck apenas para debug, remover
     const defaultDeck = premadeDecks[0]
 
     playerMe.fillHand()
     playerOpponent.initializeDeck(defaultDeck)
     playerOpponent.fillHand()
+    // gameStart()
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function gameStart() {
-    // após isso, aguarda o servidor enviar que o jogo está pronto para começar
-    const startingPlayer = await coinToss()
-    firstPlayer.value = startingPlayer
-    currentPlayer.value = startingPlayer
+    await coinToss()
+
+    await notification(
+      `${currentPlayer.value === 'player' ? 'me' : 'op'}-turn`,
+      1200
+    )
+
     await initialRedraw()
   }
 
@@ -67,9 +78,6 @@ export function useGame() {
           let player
           if (data.player === playerMe.index) {
             player = 'player'
-            // passButton.classList.remove("hidden");
-            // document.addEventListener('keydown', handleKeyDown);
-            // document.addEventListener('keyup', handleKeyUp);
           } else {
             player = 'opponent'
           }
@@ -77,7 +85,6 @@ export function useGame() {
           currentPlayer.value = player
 
           socket.removeEventListener('message', handleMessage)
-          // await ui.notification(game.firstPlayer.tag + '-coin', 1200)
           resolve(player)
         }
       }
@@ -87,6 +94,7 @@ export function useGame() {
 
   async function initialRedraw() {
     // aqui vai precisar chamar o carousel de cartas e esperar o retorno dele
+    // vai precisar chamar o componente, não o plugin!
     socket.send(
       JSON.stringify({
         type: 'initial_reDraw',
@@ -186,17 +194,12 @@ export function useGame() {
     if (!card || !selectedCard.value || selectedCard.value.index < 0) return
     const isSpy = card.ability.includes('spy')
     const isSpecial = ['horn', 'mardroeme'].includes(card.ability) && !card.row
-    const isPlayer = player === 'player'
-    const board =
-      boardRows.value[
-        isSpy
-          ? isPlayer
-            ? 'opponent'
-            : 'player'
-          : isPlayer
-            ? 'player'
-            : 'opponent'
-      ]
+    const playerTarget = isSpy
+      ? player === 'player'
+        ? 'opponent'
+        : 'player'
+      : player
+    const board = boardRows.value[playerTarget]
     const handElement = document.getElementById(`${player}-hand`) as HTMLElement
 
     if (selectedCard.value) selectedCard.value = null
@@ -216,15 +219,7 @@ export function useGame() {
 
       nextTick(async () => {
         const rowElement = document.querySelector(
-          `.row-${target}${
-            isSpy
-              ? isPlayer
-                ? '.row-opponent'
-                : '.row-player'
-              : isPlayer
-                ? '.row-player'
-                : '.row-opponent'
-          }`
+          `.row-${target}.row-${playerTarget}`
         ) as HTMLElement
         const boardCardElement = rowElement.querySelector(
           isSpecial ? '.special > *:last-child' : '.cards > *:last-child'
@@ -236,9 +231,13 @@ export function useGame() {
           .filter((ability) => specialAbilities.has(ability))
         if (cardEffects) {
           cardEffects.forEach((effect) => {
-            addEffect(effect)
+            board[target].effects.push(effect)
           })
         }
+        runEffects(
+          isSpy ? (player === 'player' ? 'opponent' : 'player') : 'player',
+          target
+        )
       })
     })
   }
@@ -274,28 +273,11 @@ export function useGame() {
     return
   }
 
-  function addEffect(effect: string) {
-    if (effect === 'decoy') return // necessário? provavelmente não.
-    // A FAZER
-    switch (effect) {
-      case 'horn':
-        //
-        break
-      case 'bond':
-        //
-        break
-      case 'morale':
-        //
-        break
-    }
-  }
-
   async function playWeatherCard(
     card: CardType,
     player: PlayerTypes = 'player'
   ) {
-    const weathers = ['clear', 'fog', 'rain', 'storm', 'frost']
-    if (!weathers.includes(card.filename)) return
+    if (!weatherTypes.has(card.filename)) return
 
     const weather = card.filename
 
@@ -368,6 +350,17 @@ export function useGame() {
         }
       }
     )
+  }
+
+  function runEffects(player: 'player' | 'opponent', row: keyof Board) {
+    const playerRow = boardRows.value[player][row]
+
+    let sum = 0
+    playerRow.cards.forEach((card: CardType) => {
+      sum += card.strength || 0
+    })
+
+    playerRow.sum = sum
   }
 
   function simulateOponent() {

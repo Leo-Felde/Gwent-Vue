@@ -4,6 +4,9 @@
     :class="[`row-${owner}`, `row-${row}`, { highlight: highlight }]"
     @click="onRowClick"
   >
+    <div class="rowValue">
+      {{ data.sum }}
+    </div>
     <div class="special" :class="{ highlight: highlight === 'special' }">
       <Card
         v-for="(card, index) in data.special"
@@ -58,6 +61,7 @@ function onRowClick() {
   display: flex
   height: 119.5px
   background-color: transparent !important
+  position: relative
   &.highlight
     cursor: pointer
 
@@ -77,4 +81,16 @@ function onRowClick() {
   &.highlight
     .card
       pointer-events: none
+
+.rowValue
+  position: absolute
+  color: black
+  text-shadow: 0 0 5px white
+  font-weight: bold
+  font-size: 1.8rem
+  text-align: center
+  width: 100%
+  left: -49px
+  top: 40px
+  width: 41px
 </style>

@@ -4,6 +4,7 @@ export interface RowType {
   cards: CardType[]
   effects: string[]
   special: CardType[]
+  sum: number
 }
 
 export interface Board {

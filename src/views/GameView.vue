@@ -130,7 +130,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, onMounted } from 'vue'
+import router from '@/router'
 
 import { useGame } from '@/composables/useGame'
 import { usePlayerStore } from '@/store/usePlayerStore'
@@ -162,6 +163,12 @@ const rows = computed(() => ['close', 'ranged', 'siege'])
 
 onBeforeMount(() => {
   initalize()
+})
+
+onMounted(() => {
+  if (!playerMe.deck.length || !playerMe.hand.length) {
+    router.push('/customization')
+  }
 })
 
 const rowHighlightElem = (

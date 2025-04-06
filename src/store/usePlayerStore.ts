@@ -1,4 +1,3 @@
-// player-store.ts
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { CardType, PremadeDeckType } from '@/types/card'

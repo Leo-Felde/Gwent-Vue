@@ -164,6 +164,7 @@ export function useGame() {
         clearSelectedCard()
       } else if (selectedCard.value.card.ability === 'decoy' && row !== null) {
         playDecoytoRow(card, row, index)
+        return
       }
     }
 
@@ -263,13 +264,14 @@ export function useGame() {
     const handElement = document.getElementById('player-hand')
     if (!handElement) return
 
+    selectedCard.value = null
+
     const handCardElement = handElement.querySelector(
       `.card:nth-child(${handIndex + 1})`
     ) as HTMLElement
     nextTick(() => {
       animateCard(targetRow, handCardElement)
     })
-
     return
   }
 

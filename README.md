@@ -32,10 +32,9 @@ If you're looking to play righ now, please check [My other project](https://gith
 
 
 <ul>
-  <li>[bug] Playing decoys opens the target card as a preview</li>
-  <li>[todo] Playing a card does not sum it's power to the row</li>
   <li>[todo] Abilities and effects such as Muster, Morale, Commander's horn, weather card, etc</li>
   <li>[todo] Leader cards abilities </li>
+  <li>[todo] Server integration </li>
 </ul>
 
 ## Development

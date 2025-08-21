@@ -1,3 +1,5 @@
+import { Board } from './game'
+
 export const powerTypes = new Set([
   'hero',
   'decoy',
@@ -10,6 +12,7 @@ export const powerTypes = new Set([
   'horn',
   'storm',
 ])
+
 export const weatherTypes = new Set(['fog', 'frost', 'rain', 'clear', 'storm'])
 export const specialAbilities = new Set([
   'horn',
@@ -34,7 +37,7 @@ export interface CardType {
   id: number
   name: string
   faction: string
-  row: string
+  row: keyof Board | string
   strength: number | null
   ability: string
   filename: string
@@ -2316,21 +2319,25 @@ export const ability_dict = {
     name: 'Mardroeme',
     description:
       'Triggers transformation of all Berserker cards on the same row. ',
-    // placed: async (card, row) => {
-    //   const berserkers = row.findCards(c => c.abilities.includes('berserker'))
-    //   await Promise.all(berserkers.map(async c => await ability_dict['berserker'].placed(c, row)))
-    // }
+    placed: async (card: CardType, row: CardType[]) => {
+      const berserkers = row.filter((c) => c.ability.includes('berserker'))
+      await Promise.all(
+        berserkers.map(
+          async (c) => await ability_dict['berserker'].placed(c, row)
+        )
+      )
+    },
   },
   berserker: {
     name: 'Berserker',
     description: 'Transforms into a bear when a Mardroeme card is on its row. ',
-    // placed: async (card, row) => {
-    //   if (row.effects.mardroeme === 0)
-    //     return
-    //   row.removeCard(card)
-    //   const cardId = card.name.indexOf('Young') === -1 ? 206 : 207
-    //   await row.addCard(new Card(card_dict[cardId], card.holder))
-    // }
+    placed: async (card: CardType, row: any) => {
+      if (row.effects.mardroeme === 0) return
+      // todo
+      // row.removeCard(card)
+      // const cardId = card.name.indexOf('Young') === -1 ? 206 : 207
+      // await row.addCard(new Card(card_dict[cardId], card.holder))
+    },
   },
   scorch: {
     name: 'Scorch',
@@ -2380,18 +2387,23 @@ export const ability_dict = {
   muster: {
     name: 'muster',
     description:
-      'Find any cards with the same name in your deck and play them instantly. ',
-    // placed: async (card) => {
-    //   const i = card.name.indexOf('-')
-    //   const cardName = i === -1 ?  card.name : card.name.substring(0, i)
-    //   const pred = c => c.name.startsWith(cardName)
-    //   const units = card.holder.hand.getCards(pred).map(x => [card.holder.hand, x])
-    //     .concat(card.holder.deck.getCards(pred).map( x => [card.holder.deck, x] ) )
-    //   if (units.length === 0)
-    //     return
-    //   await card.animate('muster')
-    //   await Promise.all( units.map( async p =>  await board.addCardToRow(p[1], p[1].row, p[1].holder, p[0])))
-    // }
+      'Find any cards with the same name in your deck and play them instantly.',
+    // placed: async (card: CardType) => {
+    //   const cardName = card.name.split(' - ')[0]
+    //   const musteredCards = players[currentPlayer.value].deck.filter(
+    //     (deckCard: CardType) => deckCard.name.includes(cardName)
+    //   )
+
+    //   if (musteredCards.length > 0) {
+    //     musteredCards.forEach((mustered: CardType) => {
+    //       return playCardtoRow(
+    //         mustered,
+    //         mustered.row as keyof Board,
+    //         currentPlayer.value
+    //       )
+    //     })
+    //   }
+    // },
   },
   spy: {
     name: 'spy',

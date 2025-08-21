@@ -20,8 +20,8 @@ const playerMe =
   playerStore.players?.player || playerStore.createPlayer('player', 1)
 const playerOpponent = playerStore.createPlayer('opponent', 2)
 
-const firstPlayer = ref<string>('player')
-const currentPlayer = ref<string>('player')
+const firstPlayer = ref<PlayerTypes>('player')
+const currentPlayer = ref<PlayerTypes>('player')
 
 const { socket } = useWebSocket()
 
@@ -75,7 +75,7 @@ export function useGame() {
         const data = JSON.parse(event.data)
 
         if (data.type === 'coinToss') {
-          let player
+          let player: PlayerTypes
           if (data.player === playerMe.index) {
             player = 'player'
           } else {
@@ -106,13 +106,26 @@ export function useGame() {
 
   // Inicio de um novo round
   function startRound() {
-    // reseta a pontuação, mesa e estados
     // notifica qual jogador jogará
     currentPlayer.value =
       currentPlayer.value === 'player' ? 'opponent' : 'player'
 
     playerMe.passed = false
     playerOpponent.passed = false
+
+    // reseta todas as cartas e efeitos
+    boardRows.value = {
+      player: {
+        close: { cards: [], effects: [], special: [], sum: 0 },
+        ranged: { cards: [], effects: [], special: [], sum: 0 },
+        siege: { cards: [], effects: [], special: [], sum: 0 },
+      },
+      opponent: {
+        close: { cards: [], effects: [], special: [], sum: 0 },
+        ranged: { cards: [], effects: [], special: [], sum: 0 },
+        siege: { cards: [], effects: [], special: [], sum: 0 },
+      },
+    }
   }
 
   // Passe simples, após jogar uma carta
@@ -231,14 +244,12 @@ export function useGame() {
           .split(' ')
           .filter((ability) => specialAbilities.has(ability))
         if (cardEffects) {
+          console.log('cardEffects', cardEffects)
           cardEffects.forEach((effect) => {
-            board[target].effects.push(effect)
+            playCardSpecial(effect)
           })
         }
-        runEffects(
-          isSpy ? (player === 'player' ? 'opponent' : 'player') : 'player',
-          target
-        )
+        runEffects(player, target)
       })
     })
   }
@@ -354,6 +365,10 @@ export function useGame() {
     )
   }
 
+  const playCardSpecial = (effect: string) => {
+    console.log('playCardSpecial', effect)
+  }
+
   function runEffects(player: 'player' | 'opponent', row: keyof Board) {
     const playerRow = boardRows.value[player][row]
 
@@ -375,6 +390,8 @@ export function useGame() {
     boardRows,
     boardEffects,
     selectedCard,
+    players,
+    currentPlayer,
     clearSelectedCard,
     selectCard,
     playCardtoRow,

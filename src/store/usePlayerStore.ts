@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 import { CardType, PremadeDeckType } from '@/types/card'
 import { translateCards, translateCard } from '@/utils/cards'
+import { PlayerTypes } from '@/types/game'
 
 // Define player instance interface
 interface PlayerInstance {
@@ -23,7 +24,10 @@ interface PlayerInstance {
 }
 
 export const usePlayerStore = defineStore('player', () => {
-  const players = reactive<Record<string, PlayerInstance>>({})
+  const players = reactive<Record<PlayerTypes, PlayerInstance>>({
+    player: {} as PlayerInstance,
+    opponent: {} as PlayerInstance,
+  })
 
   const createPlayer = (index: number): PlayerInstance => {
     const state = {
@@ -113,10 +117,10 @@ export const usePlayerStore = defineStore('player', () => {
   // Public store methods
   return {
     players,
-    createPlayer: (id: string, index: number) => {
+    createPlayer: (id: PlayerTypes, index: number) => {
       players[id] = createPlayer(index)
       return players[id]
     },
-    getPlayer: (id: string) => players[id],
+    getPlayer: (id: PlayerTypes) => players[id],
   }
 })

@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from 'vue'
-import { ability_dict, CardType } from '@/types/card'
+import { abilityMeta, CardType } from '@/types/card'
 
 export default defineComponent({
   name: 'CardAbility',
@@ -37,10 +37,9 @@ export default defineComponent({
 
   setup(props) {
     const cardAbility = computed(() => {
-      const abilityKey = props.card.ability
-        .split(' ')
-        .filter((a) => a !== 'hero')[0]
-      return ability_dict[abilityKey as keyof typeof ability_dict] || null
+      const abilityKey =
+        props.card.ability?.filter((a) => a !== 'hero')[0] ?? []
+      return abilityMeta[abilityKey as keyof typeof abilityMeta] || null
     })
 
     const showAbilityIcon = computed(() => {
@@ -48,9 +47,8 @@ export default defineComponent({
     })
 
     const iconPath = computed(() => {
-      const abilityKey = props.card.ability
-        .split(' ')
-        .filter((a) => a !== 'hero')[0]
+      const abilityKey =
+        props.card.ability?.filter((a) => a !== 'hero')[0] ?? []
       return require(
         `@/assets/img/icon/card_ability_${abilityKey || 'decoy'}.png`
       )

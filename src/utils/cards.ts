@@ -32,13 +32,13 @@ export function makeBank(faction: string, deck: number[][] = []): CardType[] {
       name: a.name,
       basePower: -(a.strength || 0),
       faction: a.faction,
-      isHero: a.ability.includes('hero'),
+      isHero: a.ability?.includes('hero') ?? false,
     }
     const c2 = {
       name: b.name,
       basePower: -(b.strength || 0),
       faction: b.faction,
-      isHero: b.ability.includes('hero'),
+      isHero: b.ability?.includes('hero') ?? false,
     }
     return compareCardStrength(c1, c2)
   })

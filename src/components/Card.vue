@@ -64,7 +64,7 @@ const props = defineProps({
 const { card, type } = toRefs(props)
 
 const isPreview = computed(() => type.value === 'preview')
-const abilities = computed(() => card.value.ability.split(' '))
+const abilities = computed(() => card.value.ability ?? [])
 const lastAbility = computed(() => abilities.value[abilities.value.length - 1])
 const isHeroPower = computed(() => abilities.value.includes('hero'))
 

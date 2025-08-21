@@ -4,9 +4,15 @@ import gsap from 'gsap'
 import { useWebSocket } from './useWebSocket'
 
 import { usePlayerStore } from '@/store/usePlayerStore'
-import { CardType, specialAbilities, weatherTypes } from '@/types/card'
+import {
+  AbilityKey,
+  CardType,
+  specialAbilities,
+  weatherTypes,
+} from '@/types/card'
 import { premadeDecks, removeCircularReferences } from '@/utils/utils'
 import { Board, PlayerTypes } from '@/types/game'
+import { useCardAbilities } from './useCardAbilities'
 
 const notification = inject('notification') as (
   type: string,
@@ -14,18 +20,21 @@ const notification = inject('notification') as (
   messsage?: string
 ) => Promise<void>
 
-const playerStore = usePlayerStore()
-const players = playerStore.players
-const playerMe =
-  playerStore.players?.player || playerStore.createPlayer('player', 1)
-const playerOpponent = playerStore.createPlayer('opponent', 2)
-
-const firstPlayer = ref<PlayerTypes>('player')
-const currentPlayer = ref<PlayerTypes>('player')
+const { abilityActions } = useCardAbilities()
 
 const { socket } = useWebSocket()
 
 export function useGame() {
+  const playerStore = usePlayerStore()
+
+  const firstPlayer = ref<PlayerTypes>('player')
+  const currentPlayer = ref<PlayerTypes>('player')
+
+  const players = playerStore.players
+  const playerMe =
+    playerStore.players?.player || playerStore.createPlayer('player', 1)
+  const playerOpponent = playerStore.createPlayer('opponent', 2)
+
   const boardRows = ref({
     player: ref<Board>({
       close: { cards: [], effects: [], special: [], sum: 0 },
@@ -175,7 +184,10 @@ export function useGame() {
     if (selectedCard.value?.card) {
       if (selectedCard.value.index === index) {
         clearSelectedCard()
-      } else if (selectedCard.value.card.ability === 'decoy' && row !== null) {
+      } else if (
+        !selectedCard.value.card?.ability?.includes('decoy') &&
+        row !== null
+      ) {
         playDecoytoRow(card, row, index)
         return
       }
@@ -205,9 +217,13 @@ export function useGame() {
     player: PlayerTypes = 'player',
     replaceIndex: number | null = null
   ) {
+    console.log('Está chegando aqui mas não está colocando a carta na linha ??')
     if (!card || !selectedCard.value || selectedCard.value.index < 0) return
-    const isSpy = card.ability.includes('spy')
-    const isSpecial = ['horn', 'mardroeme'].includes(card.ability) && !card.row
+    const isSpy = card.ability?.includes('spy') ?? false
+
+    const specialKeys = ['horn', 'mardroeme'] as AbilityKey[]
+    const isSpecial =
+      card.ability?.some((a) => specialKeys.includes(a)) && !card.row
     const playerTarget = isSpy
       ? player === 'player'
         ? 'opponent'
@@ -240,15 +256,21 @@ export function useGame() {
         ) as HTMLElement | null
         await animateCard(handElement, boardCardElement)
 
-        const cardEffects = card.ability
-          .split(' ')
-          .filter((ability) => specialAbilities.has(ability))
-        if (cardEffects) {
-          console.log('cardEffects', cardEffects)
-          cardEffects.forEach((effect) => {
-            playCardSpecial(effect)
-          })
+        // Verifica se a carta possui uma habilidade
+        if (card.ability !== null) {
+          const cardEffects =
+            card.ability?.filter((ability) => specialAbilities.has(ability)) ??
+            []
+
+          // Se possui uma habilidade, toca seu efeito
+          if (cardEffects.length > 0) {
+            console.log('carta possui os efeitos', cardEffects)
+            cardEffects.forEach((effect) => {
+              playCardSpecial(card, effect)
+            })
+          }
         }
+
         runEffects(player, target)
       })
     })
@@ -365,8 +387,14 @@ export function useGame() {
     )
   }
 
-  const playCardSpecial = (effect: string) => {
-    console.log('playCardSpecial', effect)
+  const playCardSpecial = async (
+    card: CardType,
+    effect: AbilityKey
+  ): Promise<void> => {
+    const action = abilityActions[effect]
+    if (action && typeof action.placed === 'function') {
+      await action.placed(card)
+    }
   }
 
   function runEffects(player: 'player' | 'opponent', row: keyof Board) {

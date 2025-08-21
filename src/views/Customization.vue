@@ -158,13 +158,13 @@ export default defineComponent({
           name: a.name,
           basePower: -(a.strength || 0),
           faction: a.faction,
-          isHero: a.ability.includes('hero'),
+          isHero: a.ability?.includes('hero') ?? false,
         }
         const c2 = {
           name: b.name,
           basePower: -(b.strength || 0),
           faction: b.faction,
-          isHero: b.ability.includes('hero'),
+          isHero: b.ability?.includes('hero') ?? false,
         }
         return compareCardStrength(c1, c2)
       })
@@ -185,8 +185,8 @@ export default defineComponent({
       return playerMe.deck
         .filter((card) => {
           return (
-            !card.ability.includes('hero') &&
-            !card.ability.includes('spy') &&
+            !card.ability?.includes('hero') &&
+            !card.ability?.includes('spy') &&
             card.faction !== 'special' &&
             card.faction !== 'weather'
           )
@@ -203,7 +203,7 @@ export default defineComponent({
     })
 
     const numberOfHeroCards = computed(() => {
-      return playerMe.deck.filter((card) => card.ability.includes('hero'))
+      return playerMe.deck.filter((card) => card.ability?.includes('hero'))
         .length
     })
 

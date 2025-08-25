@@ -32,9 +32,10 @@ If you're looking to play righ now, please check [My other project](https://gith
 
 
 <ul>
-  <li>[todo] Abilities and effects such as Muster, Morale, Commander's horn, weather card, etc</li>
+  <li>[todo][in progress] Abilities and effects such as Muster, Morale, Commander's horn, weather card, etc. </li>
   <li>[todo] Leader cards abilities </li>
   <li>[todo] Server integration </li>
+  <li>[todo] General performance. It's debugging time so it's a mess!! </li>
 </ul>
 
 ## Development

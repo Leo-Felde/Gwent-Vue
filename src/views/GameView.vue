@@ -17,15 +17,15 @@
     </div>
 
     <!-- Opponent's Discard Pile and Deck -->
-    <div id="opponent-deck" class="deck-area">
-      <div class="discard-pile">
+    <div id="opponent-area" class="deck-area">
+      <div class="discard-pile" id="opponent-discardPile">
         <CardPile
           :cards="playerOpponent.discardPile"
           :cover="playerOpponent.faction"
           @click="showDiscardPile"
         />
       </div>
-      <div class="deck">
+      <div class="deck" id="opponent-deck">
         <CardPile
           :cards="playerOpponent.deck"
           :cover="playerOpponent.faction"
@@ -109,15 +109,15 @@
     </div>
 
     <!-- Player Discard Pile and Deck -->
-    <div id="player-deck" class="deck-area">
-      <div class="discard-pile">
+    <div id="player-area" class="deck-area">
+      <div class="discard-pile" id="player-discardPile">
         <CardPile
           :cards="playerMe.discardPile"
           :cover="playerMe.faction"
           @click="showDiscardPile"
         />
       </div>
-      <div class="deck">
+      <div class="deck" id="player-deck">
         <CardPile
           :cards="playerMe.deck"
           :cover="playerMe.faction"
@@ -133,7 +133,8 @@
 import { computed, onBeforeMount, onMounted } from 'vue'
 import router from '@/router'
 
-import { useGame } from '@/composables/useGame'
+import { registerAbilityActions, useGame } from '@/composables/useGame'
+import { createAbilityActions } from '@/composables/useCardAbilities'
 import { usePlayerStore } from '@/store/usePlayerStore'
 import { useCarousel } from '@/plugins/carouselPlugin'
 
@@ -154,10 +155,11 @@ const {
   selectedCard,
   clearSelectedCard,
   selectCard,
-  playCardtoRow,
+  playCardToRow,
   playWeatherCard,
   simulateOponent,
 } = useGame()
+const abilityActions = createAbilityActions()
 
 const rows = computed(() => ['close', 'ranged', 'siege'])
 
@@ -166,6 +168,8 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
+  registerAbilityActions(abilityActions)
+
   if (!playerMe.deck.length || !playerMe.hand.length) {
     router.push('/customization')
   }
@@ -187,14 +191,14 @@ const rowHighlightElem = (
   }
   if (
     player === 'opponent' &&
-    card.ability.includes('spy') &&
+    card.ability?.includes('spy') &&
     card.row.includes(row)
   ) {
     return 'cards'
   }
   if (
     player === 'player' &&
-    !card.ability.includes('spy') &&
+    !card.ability?.includes('spy') &&
     (card.row.includes(row) ||
       (card.row.includes('agile') && ['close', 'ranged'].includes(row)))
   ) {
@@ -209,6 +213,7 @@ const highlightEffects = () => {
 }
 
 const showDiscardPile = () => {
+  console.log('showDiscardPile')
   if (playerMe.discardPile?.length <= 0) return
 
   useCarousel({
@@ -220,7 +225,7 @@ const showDiscardPile = () => {
 
 const selectRow = (row: string) => {
   if (!selectedCard.value || !selectedCard.value.isHand) return
-  playCardtoRow(selectedCard.value.card, row as keyof Board)
+  playCardToRow(selectedCard.value.card, row as keyof Board)
 }
 </script>
 
@@ -271,11 +276,11 @@ const selectRow = (row: string) => {
   display: flex
   gap: 20px
 
-#player-deck
+#player-area
   bottom: 90px
   right: 85px
 
-#opponent-deck
+#opponent-area
   top: 80px
   right: 85px
 

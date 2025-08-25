@@ -1,45 +1,46 @@
+// useCardAbilities.ts
+import { useGame } from './useGame'
 import type { CardType } from '@/types/card'
 import type { Board } from '@/types/game'
-import { useGame } from '@/composables/useGame'
-import { abilityMeta, AbilityKey } from '@/types/card'
+import { AbilityKey } from '@/types/card'
 
-export function useCardAbilities() {
-  const { players, currentPlayer, playCardtoRow } = useGame()
+type MusteredCard = { card: CardType; source: 'deck' | 'hand' }
 
-  const abilityActions: Partial<
-    Record<
-      AbilityKey,
-      {
-        placed?: (card: CardType, row?: any) => Promise<void>
-        activated?: (card: CardType) => Promise<void>
-        removed?: (card: CardType) => Promise<void>
-      }
-    >
-  > = {
+export function createAbilityActions() {
+  const { players, currentPlayer, playCardToRow } = useGame()
+
+  return {
     muster: {
       placed: async (card: CardType) => {
-        // SE a carta tem ' - ' apenas joga as cartas do mesmo nome. Se não, também joga as cartas cujo nome tem ' - '
-        // Gaunter O'din joga as cartas Darkness mas não vice-versa
-        const cardName = card.name.includes(' - ')
-          ? card.name
-          : card.name.split(' - ')[0]
-        const musteredCards = players[currentPlayer.value].deck.filter(
-          (deckCard: CardType) => deckCard.name.includes(cardName)
-        )
+        const cardName =
+          card.name === "Gaunter O\\'Dimm - Darkness"
+            ? "Gaunter O\\'Dimm - Darkness"
+            : card.name.includes(' - ')
+              ? card.name.split(' - ')[0]
+              : card.name
 
-        if (musteredCards.length > 0) {
-          musteredCards.forEach((mustered) => {
-            playCardtoRow(
-              mustered,
-              mustered.row as keyof Board,
-              currentPlayer.value
+        const musteredCards: MusteredCard[] = [
+          ...players[currentPlayer.value].hand
+            .filter((c) => c.name.includes(cardName))
+            .map((c) => ({ card: c, source: 'hand' as const })),
+          ...players[currentPlayer.value].deck
+            .filter((c) => c.name.includes(cardName))
+            .map((c) => ({ card: c, source: 'deck' as const })),
+        ]
+
+        musteredCards.forEach((mustered) => {
+          setTimeout(() => {
+            playCardToRow(
+              mustered.card,
+              mustered.card.row as keyof Board,
+              currentPlayer.value,
+              mustered.source,
+              null,
+              true
             )
-          })
-        }
+          }, 500)
+        })
       },
     },
-    // FAZER AS OUTRAS HABILIDADES AQUI
   }
-
-  return { abilityMeta, abilityActions }
 }

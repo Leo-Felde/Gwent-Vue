@@ -4,7 +4,7 @@
     :class="`card-preview align-${align}`"
     v-click-outside="handleClickOutside"
   >
-    <Card :card="card" type="preview" />
+    <Card :card="card" type="preview" @click="$emit('close')" />
     <CardAbility :card="card" />
   </div>
 </template>

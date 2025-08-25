@@ -1,8 +1,8 @@
 <template>
   <div
     class="card-pile"
+    :class="{ clickable: $attrs.onClick !== undefined && cards.length > 0 }"
     @click="$emit('click')"
-    :class="{ clickable: !!$attrs.onClick && cards.length > 0 }"
   >
     <div v-if="onlyCovers">
       <div
@@ -23,15 +23,15 @@
         <div class="card-cover" v-else />
       </div>
     </div>
-    <div class="pile-counter" v-if="count">
+    <div v-show="cards.length > 0" class="pile-counter" v-if="count">
       {{ cards.length }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, PropType, ref } from 'vue'
-import Card from './Card.vue' // Import the Card component
+import { defineProps, defineEmits, PropType, ref } from 'vue'
+import Card from './Card.vue'
 import { CardType } from '@/types/card'
 
 const props = defineProps({
@@ -46,6 +46,7 @@ const props = defineProps({
   onlyCovers: Boolean,
   count: Boolean,
 })
+defineEmits(['click'])
 
 const stackOffset = ref<number>(0.3)
 const getCardStyle = (index: number) => {

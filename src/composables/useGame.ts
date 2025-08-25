@@ -12,7 +12,6 @@ import {
 } from '@/types/card'
 import { premadeDecks, removeCircularReferences } from '@/utils/utils'
 import { Board, PlayerTypes } from '@/types/game'
-import { useCardAbilities } from './useCardAbilities'
 
 const notification = inject('notification') as (
   type: string,
@@ -20,41 +19,61 @@ const notification = inject('notification') as (
   messsage?: string
 ) => Promise<void>
 
-const { abilityActions } = useCardAbilities()
-
 const { socket } = useWebSocket()
 
+const playerStore = usePlayerStore()
+
+const firstPlayer = ref<PlayerTypes>('player')
+const currentPlayer = ref<PlayerTypes>('player')
+
+const players = playerStore.players
+const playerMe =
+  playerStore.players?.player || playerStore.createPlayer('player', 1)
+const playerOpponent = playerStore.createPlayer('opponent', 2)
+
+let abilityActions: Partial<
+  Record<
+    AbilityKey,
+    {
+      placed?: (card: CardType, row?: any) => Promise<void>
+      activated?: (card: CardType) => Promise<void>
+      removed?: (card: CardType) => Promise<void>
+    }
+  >
+> = {}
+
+const boardRows = ref({
+  player: ref<Board>({
+    close: { cards: [], effects: [], special: [], sum: 0 },
+    ranged: { cards: [], effects: [], special: [], sum: 0 },
+    siege: { cards: [], effects: [], special: [], sum: 0 },
+  }),
+  opponent: ref<Board>({
+    close: { cards: [], effects: [], special: [], sum: 0 },
+    ranged: { cards: [], effects: [], special: [], sum: 0 },
+    siege: { cards: [], effects: [], special: [], sum: 0 },
+  }),
+})
+const boardEffects = ref<CardType[]>([])
+
+const selectedCard = ref<{
+  card: CardType
+  index: number
+  isHand: boolean
+} | null>(null)
+
+export function registerAbilityActions(actions: typeof abilityActions) {
+  abilityActions = actions
+}
+
+async function playCardSpecial(card: CardType, effect: AbilityKey) {
+  const action = abilityActions[effect]
+  if (action?.placed) {
+    await action.placed(card)
+  }
+}
+
 export function useGame() {
-  const playerStore = usePlayerStore()
-
-  const firstPlayer = ref<PlayerTypes>('player')
-  const currentPlayer = ref<PlayerTypes>('player')
-
-  const players = playerStore.players
-  const playerMe =
-    playerStore.players?.player || playerStore.createPlayer('player', 1)
-  const playerOpponent = playerStore.createPlayer('opponent', 2)
-
-  const boardRows = ref({
-    player: ref<Board>({
-      close: { cards: [], effects: [], special: [], sum: 0 },
-      ranged: { cards: [], effects: [], special: [], sum: 0 },
-      siege: { cards: [], effects: [], special: [], sum: 0 },
-    }),
-    opponent: ref<Board>({
-      close: { cards: [], effects: [], special: [], sum: 0 },
-      ranged: { cards: [], effects: [], special: [], sum: 0 },
-      siege: { cards: [], effects: [], special: [], sum: 0 },
-    }),
-  })
-  const boardEffects = ref<CardType[]>([])
-
-  const selectedCard = ref<{
-    card: CardType
-    index: number
-    isHand: boolean
-  } | null>(null)
-
   function initalize() {
     // defaultDeck apenas para debug, remover
     const defaultDeck = premadeDecks[0]
@@ -211,14 +230,17 @@ export function useGame() {
     )
   }
 
-  async function playCardtoRow(
-    card: CardType | null,
+  async function playCardToRow(
+    card: CardType,
     target: keyof Board,
     player: PlayerTypes = 'player',
-    replaceIndex: number | null = null
+    source: 'hand' | 'deck' | 'discardPile' = 'hand',
+    replaceIndex: number | null = null,
+    ignoreEffects = false
   ) {
-    console.log('Está chegando aqui mas não está colocando a carta na linha ??')
-    if (!card || !selectedCard.value || selectedCard.value.index < 0) return
+    console.log(
+      `${player}| Plays card ${card.name} from ${source} to ${target}`
+    )
     const isSpy = card.ability?.includes('spy') ?? false
 
     const specialKeys = ['horn', 'mardroeme'] as AbilityKey[]
@@ -229,35 +251,36 @@ export function useGame() {
         ? 'opponent'
         : 'player'
       : player
-    const board = boardRows.value[playerTarget]
-    const handElement = document.getElementById(`${player}-hand`) as HTMLElement
+
+    const sourceElement = document.getElementById(
+      `${player}-${source}`
+    ) as HTMLElement
 
     if (selectedCard.value) selectedCard.value = null
 
-    nextTick(() => {
-      players[currentPlayer.value].removeCard(card)
+    // nextTick(() => {
+    players[player].removeCard(card, source)
+    if (replaceIndex !== null) {
+      boardRows.value[playerTarget][target][
+        isSpecial ? 'special' : 'cards'
+      ].splice(replaceIndex, 1, card)
+    } else {
+      boardRows.value[playerTarget][target][
+        isSpecial ? 'special' : 'cards'
+      ].push(card)
+    }
+    await nextTick(async () => {
+      const rowElement = document.querySelector(
+        `.row-${target}.row-${playerTarget}`
+      ) as HTMLElement
+      const boardCardElement = rowElement.querySelector(
+        isSpecial ? '.special > *:last-child' : '.cards > *:last-child'
+      ) as HTMLElement | null
+      animateCard(sourceElement, boardCardElement)
 
-      if (replaceIndex !== null) {
-        board[target][isSpecial ? 'special' : 'cards'].splice(
-          replaceIndex,
-          1,
-          card
-        )
-      } else {
-        board[target][isSpecial ? 'special' : 'cards'].push(card)
-      }
-
-      nextTick(async () => {
-        const rowElement = document.querySelector(
-          `.row-${target}.row-${playerTarget}`
-        ) as HTMLElement
-        const boardCardElement = rowElement.querySelector(
-          isSpecial ? '.special > *:last-child' : '.cards > *:last-child'
-        ) as HTMLElement | null
-        await animateCard(handElement, boardCardElement)
-
-        // Verifica se a carta possui uma habilidade
-        if (card.ability !== null) {
+      // Verifica se a carta possui uma habilidade
+      nextTick(() => {
+        if (card.ability !== null && !ignoreEffects) {
           const cardEffects =
             card.ability?.filter((ability) => specialAbilities.has(ability)) ??
             []
@@ -270,10 +293,10 @@ export function useGame() {
             })
           }
         }
-
-        runEffects(player, target)
+        runBoardEffects(player, target)
       })
     })
+    // })
   }
 
   async function playDecoytoRow(
@@ -292,7 +315,7 @@ export function useGame() {
 
     if (!replacedCard || !targetRow || !handIndex) return
 
-    playCardtoRow(selectedCard.value.card, target, 'player', index)
+    playCardToRow(selectedCard.value.card, target, 'player', 'hand', index)
     playerMe.hand.splice(handIndex, 1, card)
     const handElement = document.getElementById('player-hand')
     if (!handElement) return
@@ -316,7 +339,7 @@ export function useGame() {
 
     const weather = card.filename
 
-    players[currentPlayer.value].removeCard(card)
+    players[currentPlayer.value].removeCard(card, 'hand')
 
     boardEffects.value.push(card)
     if (selectedCard.value) selectedCard.value = null
@@ -387,17 +410,17 @@ export function useGame() {
     )
   }
 
-  const playCardSpecial = async (
-    card: CardType,
-    effect: AbilityKey
-  ): Promise<void> => {
-    const action = abilityActions[effect]
-    if (action && typeof action.placed === 'function') {
-      await action.placed(card)
-    }
-  }
+  // const playCardSpecial = async (
+  //   card: CardType,
+  //   effect: AbilityKey
+  // ): Promise<void> => {
+  //   const action = abilityActions[effect]
+  //   if (action && typeof action.placed === 'function') {
+  //     await action.placed(card)
+  //   }
+  // }
 
-  function runEffects(player: 'player' | 'opponent', row: keyof Board) {
+  function runBoardEffects(player: 'player' | 'opponent', row: keyof Board) {
     const playerRow = boardRows.value[player][row]
 
     let sum = 0
@@ -410,19 +433,23 @@ export function useGame() {
 
   function simulateOponent() {
     const card = playerOpponent.hand[0]
-    if (card) playCardtoRow(card, card.row as keyof Board, 'opponent')
+    if (card) playCardToRow(card, card.row as keyof Board, 'opponent')
   }
 
   return {
-    initalize,
+    players,
+    playerMe,
+    playerOpponent,
     boardRows,
     boardEffects,
     selectedCard,
-    players,
     currentPlayer,
+    firstPlayer,
+    socket,
+    initalize,
     clearSelectedCard,
     selectCard,
-    playCardtoRow,
+    playCardToRow,
     playWeatherCard,
     simulateOponent,
   }

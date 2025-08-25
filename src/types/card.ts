@@ -2446,7 +2446,7 @@ export const abilityMeta: Record<AbilityKey, AbilityMeta> = {
 
     //   if (musteredCards.length > 0) {
     //     musteredCards.forEach((mustered: CardType) => {
-    //       return playCardtoRow(
+    //       return playCardToRow(
     //         mustered,
     //         mustered.row as keyof Board,
     //         currentPlayer.value

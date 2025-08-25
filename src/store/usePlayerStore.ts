@@ -20,7 +20,7 @@ interface PlayerInstance {
   shuffleDeck: () => void
   drawCard: () => void
   hasCards: () => boolean
-  removeCard: (card: CardType) => void
+  removeCard: (card: CardType, source: 'hand' | 'deck' | 'discardPile') => void
 }
 
 export const usePlayerStore = defineStore('player', () => {
@@ -93,9 +93,12 @@ export const usePlayerStore = defineStore('player', () => {
         return card || null
       },
 
-      removeCard(card: CardType) {
-        const index = state.hand.value.findIndex((c) => c.id === card.id)
-        state.hand.value.splice(index, 1)
+      removeCard(
+        card: CardType,
+        source: 'hand' | 'deck' | 'discardPile' = 'hand'
+      ) {
+        const index = state[source].value.findIndex((c) => c.id === card.id)
+        state[source].value.splice(index, 1)
       },
 
       hasCards(): boolean {
